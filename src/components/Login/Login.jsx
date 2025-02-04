@@ -13,7 +13,7 @@ const Container = styled.div`
 // 로그인 박스
 const LoginBox = styled.div`
   width: 704px;
-  height: 586px;
+  height: 500px;
   border: 2px solid #dcdcdc;
   display: flex;
   flex-direction: column;
@@ -27,7 +27,7 @@ const LoginTitle = styled.h1`
   font-size: 50px;
   font-weight: bold;
   color: #ff7710;
-  margin-bottom: 20px;
+  /* margin-bottom: 50px; */
 `;
 
 // 입력창 스타일
