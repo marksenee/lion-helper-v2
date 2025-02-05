@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { proPage } from "../../apis/api";
 
-// 스타일 정의
 const BoxContainer = styled.div`
   width: 886px;
-  height: 394px;
   background-color: white;
   border: 1px solid #dcdcdc;
   border-radius: 10px;
@@ -23,6 +22,8 @@ const Title = styled.div`
 
 const ChecklistContainer = styled.div`
   margin-top: 20px;
+  max-height: ${(props) => (props.itemCount > 5 ? "250px" : "auto")};
+  overflow-y: ${(props) => (props.itemCount > 5 ? "auto" : "visible")};
 `;
 
 const CheckboxContainer = styled.div`
@@ -86,43 +87,90 @@ const SubmitButton = styled.button`
 `;
 
 const DailyCheckList = () => {
-  const [isChecked1, setIsChecked1] = useState(false);
-  const [isChecked2, setIsChecked2] = useState(false);
+  const [checkItems, setCheckItems] = useState([]);
+  const [checkedStates, setCheckedStates] = useState({});
   const [reason, setReason] = useState("");
 
-  const handleCheckboxChange1 = () => {
-    setIsChecked1(!isChecked1);
-  };
+  useEffect(() => {
+    const fetchChecklist = async () => {
+      try {
+        const response = await proPage.getDailyCheck();
+        console.log(response.data);
 
-  const handleCheckboxChange2 = () => {
-    setIsChecked2(!isChecked2);
+        if (response && response.data && Array.isArray(response.data.data)) {
+          setCheckItems(response.data.data);
+
+          // API에서 받아온 `is_checked` 값을 반영하여 초기 체크 상태 설정
+          const initialCheckedStates = response.data.data.reduce(
+            (acc, item) => {
+              acc[item.id] = item.is_checked;
+              return acc;
+            },
+            {}
+          );
+          setCheckedStates(initialCheckedStates);
+        }
+      } catch (error) {
+        console.error("Error fetching checklist:", error);
+      }
+    };
+
+    fetchChecklist();
+  }, []);
+
+  const handleCheckboxChange = (id) => {
+    setCheckedStates((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
   };
 
   const handleReasonChange = (e) => {
     setReason(e.target.value);
   };
 
+  // 미체크된 항목들을 필터링하고, 사유와 함께 백엔드로 전송
+  const handleSubmit = async () => {
+    const uncheckedItems = checkItems
+      .filter((item) => !checkedStates[item.id]) // 미체크된 항목
+      .map((item) => ({
+        id: item.id,
+        task_name: item.task_name,
+      }));
+
+    const unCheckedDescriptionData = {
+      description: reason,
+      unchecked_items: uncheckedItems,
+    };
+
+    try {
+      const response = await proPage.postUnCheckedDescriptions(
+        unCheckedDescriptionData
+      );
+      console.log("Response from API:", response);
+
+      if (response.status === 201) {
+        alert("저장이 완료되었습니다");
+      }
+    } catch (error) {
+      console.error("Error posting issue:", error);
+    }
+  };
+
   return (
     <BoxContainer>
       <Title>✅ 일일 업무 체크리스트</Title>
-      <ChecklistContainer>
-        <CheckboxContainer>
-          <Checkbox
-            type="checkbox"
-            checked={isChecked1}
-            onChange={handleCheckboxChange1}
-          />
-          <CheckboxLabel>교강사 일지 작성 여부</CheckboxLabel>
-        </CheckboxContainer>
-
-        <CheckboxContainer>
-          <Checkbox
-            type="checkbox"
-            checked={isChecked2}
-            onChange={handleCheckboxChange2}
-          />
-          <CheckboxLabel>교강사 일지 작성 여부</CheckboxLabel>
-        </CheckboxContainer>
+      <ChecklistContainer itemCount={checkItems.length}>
+        {checkItems.map((item) => (
+          <CheckboxContainer key={item.id}>
+            <Checkbox
+              type="checkbox"
+              checked={checkedStates[item.id] || false}
+              onChange={() => handleCheckboxChange(item.id)}
+            />
+            <CheckboxLabel>{item.task_name}</CheckboxLabel>
+          </CheckboxContainer>
+        ))}
       </ChecklistContainer>
 
       <ReasonInputContainer>
@@ -131,7 +179,7 @@ const DailyCheckList = () => {
           value={reason}
           onChange={handleReasonChange}
         />
-        <SubmitButton>등록</SubmitButton>
+        <SubmitButton onClick={handleSubmit}>등록</SubmitButton>
       </ReasonInputContainer>
     </BoxContainer>
   );

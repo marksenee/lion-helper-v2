@@ -13,7 +13,7 @@ const HeaderContainer = styled.header`
   justify-content: space-between;
   padding: 0 20px; */
 
-  width: 1420px;
+  width: 100%;
   height: 80px;
   background-color: #fff;
   border-bottom: 1px solid #d6d6d6;
@@ -82,8 +82,8 @@ const Header = () => {
         <NavItem to="/pro" activeClassName="active">
           프로
         </NavItem>
-        <NavItem to="/lead" activeClassName="active">
-          리드
+        <NavItem to="/admin" activeClassName="active">
+          어드민
         </NavItem>
       </Nav>
 
