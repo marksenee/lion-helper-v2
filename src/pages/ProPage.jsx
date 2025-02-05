@@ -9,15 +9,19 @@ import ProPageWithNotice from "../components/Notice/ProPageWithNotice";
 import AttendancePage from "../components/Attendance/Attendance";
 import DailyCheckList from "../components/DailyCheck/DailyCheckList";
 import SaveButtonComponent from "../components/button/SaveButton";
+import Issues from "../components/issue/Issue";
 
 const ProPageContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start; /* 헤더 공간을 확보하기 위해 변경 */
   height: 100vh;
   background-color: #fff;
-  position: relative; /* 버튼을 오른쪽에 배치하기 위해 상대 위치를 설정 */
+  position: relative;
+  padding-top: 1%; /* 헤더 높이만큼 패딩 추가 */
+  overflow: auto; /* 내용이 길어질 경우 스크롤 가능하도록 설정 */
+  padding-bottom: 90px; /* 푸터 공간을 위해 여백 추가 */
 `;
 
 const InputContainer = styled.div`
@@ -118,6 +122,7 @@ const ProPage = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedCourse, setSelectedCourse] = useState("과정 선택");
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const formattedDate = selectedDate.toISOString().split("T")[0];
 
   const handleCourseSelect = (course) => {
     setSelectedCourse(course);
@@ -162,15 +167,19 @@ const ProPage = () => {
           </DropdownContainer>
         </InputContainer>
         <ProPageWithNotice />
-        <AttendancePage />
+        <AttendancePage
+          selectedDate={formattedDate}
+          selectedCourse={selectedCourse}
+        />
         <DailyCheckList />
 
         {/* 버튼을 오른쪽 아래에 배치 */}
+        <Issues />
       </ProPageContainer>
-      <SaveButtonContainer>
+      {/* <SaveButtonContainer>
         {" "}
         <SaveButtonComponent />
-      </SaveButtonContainer>
+      </SaveButtonContainer> */}
     </>
   );
 };
