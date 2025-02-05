@@ -4,7 +4,7 @@ import { FiClock } from "react-icons/fi";
 
 const Container = styled.div`
   width: 886px;
-  height: 394px;
+  height: 450px;
   background: #fff;
   border: 1px solid #dcdcdc;
   border-radius: 10px;
@@ -27,15 +27,14 @@ const Subtitle = styled.div`
 const Label = styled.div`
   width: 10%;
   font-size: 15pt;
-  margin-right: 10px; /* 레이블과 다른 항목 사이에 간격 추가 */
+  margin-right: 10px;
 `;
 
 const TimeInputContainer = styled.div`
   display: flex;
   align-items: center;
-  justify-content: flex-start; /* 항목을 왼쪽 정렬 */
-  gap: 20px; /* 각 항목 간 간격 설정 */
-  width: 100%; /* 전체 너비를 꽉 채우도록 설정 */
+  gap: 20px;
+  width: 100%;
   margin-bottom: 1%;
   margin-top: 1%;
 `;
@@ -83,46 +82,75 @@ const Message = styled.div`
 `;
 
 const AttendanceRecord = () => {
-  const [startTime, setStartTime] = useState("");
-  const [endTime, setEndTime] = useState("");
-  const [message, setMessage] = useState("");
-  const [error, setError] = useState(false);
+  // 주강사 상태
+  const [startTimeMain, setStartTimeMain] = useState("");
+  const [endTimeMain, setEndTimeMain] = useState("");
+  const [messageMain, setMessageMain] = useState("");
+  const [errorMain, setErrorMain] = useState(false);
+
+  // 보조강사 상태
+  const [startTimeSub, setStartTimeSub] = useState("");
+  const [endTimeSub, setEndTimeSub] = useState("");
+  const [messageSub, setMessageSub] = useState("");
+  const [errorSub, setErrorSub] = useState(false);
 
   const handleTimeChange = (setter) => (event) => {
     let value = event.target.value.replace(/[^0-9]/g, ""); // 숫자만 허용
-    if (value.length > 4) value = value.slice(0, 4); // 최대 4자리 제한
-    if (value.length >= 3) value = value.slice(0, 2) + ":" + value.slice(2); // 자동으로 ":" 추가
+    if (value.length > 4) value = value.slice(0, 4);
+    if (value.length >= 3) value = value.slice(0, 2) + ":" + value.slice(2); // ":" 자동 추가
     setter(value);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (role) => {
     const timeFormat = /^([0-1]\d|2[0-3]):([0-5]\d)$/;
-    if (!startTime.match(timeFormat)) {
-      setMessage("출근 시간을 올바른 형식으로 입력해 주세요! (예: 09:00)");
-      setError(true);
-      return;
+
+    if (role === "main") {
+      if (!startTimeMain.match(timeFormat)) {
+        setMessageMain(
+          "출근 시간을 올바른 형식으로 입력해 주세요! (예: 09:00)"
+        );
+        setErrorMain(true);
+        return;
+      }
+      if (!endTimeMain.match(timeFormat)) {
+        setMessageMain(
+          "퇴근 시간을 올바른 형식으로 입력해 주세요! (예: 18:00)"
+        );
+        setErrorMain(true);
+        return;
+      }
+      setMessageMain("주강사 입력이 완료되었습니다.");
+      setErrorMain(false);
+    } else if (role === "sub") {
+      if (!startTimeSub.match(timeFormat)) {
+        setMessageSub("출근 시간을 올바른 형식으로 입력해 주세요! (예: 09:00)");
+        setErrorSub(true);
+        return;
+      }
+      if (!endTimeSub.match(timeFormat)) {
+        setMessageSub("퇴근 시간을 올바른 형식으로 입력해 주세요! (예: 18:00)");
+        setErrorSub(true);
+        return;
+      }
+      setMessageSub("보조강사 입력이 완료되었습니다.");
+      setErrorSub(false);
     }
-    if (!endTime.match(timeFormat)) {
-      setMessage("퇴근 시간을 올바른 형식으로 입력해 주세요! (예: 18:00)");
-      setError(true);
-      return;
-    }
-    setMessage("입력이 완료되었습니다.");
-    setError(false);
   };
 
   return (
     <Container>
       <Title>🕕 강사/보조강사 출퇴근 기록</Title>
       <Subtitle>📌 출/퇴근 기록은 퇴근 후 한 번에 기록해 주세요!</Subtitle>
+
+      {/* 주강사 입력 필드 */}
       <TimeInputContainer>
         <Label>주강사1</Label>
         <TimeInputWrapper>
           <TimeInput
             type="text"
             placeholder="출근 시간"
-            value={startTime}
-            onChange={handleTimeChange(setStartTime)}
+            value={startTimeMain}
+            onChange={handleTimeChange(setStartTimeMain)}
           />
           <ClockIcon />
         </TimeInputWrapper>
@@ -130,22 +158,24 @@ const AttendanceRecord = () => {
           <TimeInput
             type="text"
             placeholder="퇴근 시간"
-            value={endTime}
-            onChange={handleTimeChange(setEndTime)}
+            value={endTimeMain}
+            onChange={handleTimeChange(setEndTimeMain)}
           />
           <ClockIcon />
         </TimeInputWrapper>
-        <SubmitButton onClick={handleSubmit}>입력</SubmitButton>
-        {message && <Message error={error}>{message}</Message>}
+        <SubmitButton onClick={() => handleSubmit("main")}>입력</SubmitButton>
+        {messageMain && <Message error={errorMain}>{messageMain}</Message>}
       </TimeInputContainer>
+
+      {/* 보조강사 입력 필드 */}
       <TimeInputContainer>
         <Label>보조강사1</Label>
         <TimeInputWrapper>
           <TimeInput
             type="text"
             placeholder="출근 시간"
-            value={startTime}
-            onChange={handleTimeChange(setStartTime)}
+            value={startTimeSub}
+            onChange={handleTimeChange(setStartTimeSub)}
           />
           <ClockIcon />
         </TimeInputWrapper>
@@ -153,13 +183,13 @@ const AttendanceRecord = () => {
           <TimeInput
             type="text"
             placeholder="퇴근 시간"
-            value={endTime}
-            onChange={handleTimeChange(setEndTime)}
+            value={endTimeSub}
+            onChange={handleTimeChange(setEndTimeSub)}
           />
           <ClockIcon />
         </TimeInputWrapper>
-        <SubmitButton onClick={handleSubmit}>입력</SubmitButton>
-        {message && <Message error={error}>{message}</Message>}
+        <SubmitButton onClick={() => handleSubmit("sub")}>입력</SubmitButton>
+        {messageSub && <Message error={errorSub}>{messageSub}</Message>}
       </TimeInputContainer>
     </Container>
   );

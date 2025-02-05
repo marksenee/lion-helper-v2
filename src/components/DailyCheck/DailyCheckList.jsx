@@ -42,9 +42,53 @@ const Checkbox = styled.input`
   margin-right: 10px;
 `;
 
+const ReasonInputContainer = styled.div`
+  width: 800px;
+  height: 190px;
+  background-color: #ffffff;
+  border: 1px solid #ecebeb;
+  border-radius: 5px;
+  padding: 10px;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+`;
+
+const ReasonInput = styled.textarea`
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  font-size: 18pt;
+  color: #000000;
+  resize: none;
+  font-family: "Pretandard", sans-serif;
+  &::placeholder {
+    color: #adabab;
+  }
+`;
+
+const SubmitButton = styled.button`
+  width: 50px;
+  height: 24px;
+  background-color: white;
+  border: 1px solid #ff7710;
+  color: #ff7710;
+  font-size: 14px;
+  font-family: "Pretandard", sans-serif;
+  cursor: pointer;
+  align-self: flex-end;
+  margin-top: 10px;
+  &:hover {
+    background-color: #ff7710;
+    color: white;
+  }
+`;
+
 const DailyCheckList = () => {
   const [isChecked1, setIsChecked1] = useState(false);
   const [isChecked2, setIsChecked2] = useState(false);
+  const [reason, setReason] = useState("");
 
   const handleCheckboxChange1 = () => {
     setIsChecked1(!isChecked1);
@@ -54,12 +98,13 @@ const DailyCheckList = () => {
     setIsChecked2(!isChecked2);
   };
 
+  const handleReasonChange = (e) => {
+    setReason(e.target.value);
+  };
+
   return (
     <BoxContainer>
-      {/* 일일 업무 체크리스트 제목 */}
       <Title>✅ 일일 업무 체크리스트</Title>
-
-      {/* 체크리스트 항목 1 */}
       <ChecklistContainer>
         <CheckboxContainer>
           <Checkbox
@@ -70,7 +115,6 @@ const DailyCheckList = () => {
           <CheckboxLabel>교강사 일지 작성 여부</CheckboxLabel>
         </CheckboxContainer>
 
-        {/* 체크리스트 항목 2 */}
         <CheckboxContainer>
           <Checkbox
             type="checkbox"
@@ -80,6 +124,15 @@ const DailyCheckList = () => {
           <CheckboxLabel>교강사 일지 작성 여부</CheckboxLabel>
         </CheckboxContainer>
       </ChecklistContainer>
+
+      <ReasonInputContainer>
+        <ReasonInput
+          placeholder="미체크 된 항목에 대해 사유를 작성해 주세요."
+          value={reason}
+          onChange={handleReasonChange}
+        />
+        <SubmitButton>등록</SubmitButton>
+      </ReasonInputContainer>
     </BoxContainer>
   );
 };
