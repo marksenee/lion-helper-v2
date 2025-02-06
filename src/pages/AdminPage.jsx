@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Header from "../components/header/Header";
 import FooterComponent from "../components/\bfooter/footer";
 import { proPage } from "../apis/api";
+import SubmitButtonComponents from "../components/button/SubmitButton";
 
 const AdminPageContainer = styled.div`
   display: flex;
@@ -159,22 +160,47 @@ const MemoInput = styled.textarea`
 const NoticeItem = styled.li`
   padding: 12px 0;
   border-bottom: 1px solid #ccc;
-  display: flex;
+  /* display: flex; */ // 해당 부분 설정 시, 댓글 박스가 아래가 아닌 옆으로 됨
   justify-content: space-between;
   align-items: center;
   font-size: 14pt;
   position: relative;
-  padding-bottom: ${(props) =>
-    props.hasMemoVisible
-      ? "140px"
-      : "12px"}; /* 댓글 박스가 열리면 패딩을 추가 */
+  padding-bottom: ${(props) => (props.hasMemoVisible ? "140px" : "12px")};
 `;
 
+const CommentBox = styled.div`
+  margin-top: 10px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  background-color: #f9f9f9;
+`;
+
+const TextArea = styled.textarea`
+  width: 100%;
+  height: 50px;
+  margin-top: 5px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  resize: none;
+`;
+
+const notices = [
+  "[클라우드 엔지니어링 1회차] 교강사 일지 미작성",
+  "[클라우드 엔지니어링 1회차] 줌 업로드 2/4 기록 누락",
+  "[데이터분석 1회차] 훈련평가 70점 미만 : 김멋사, 최멋사",
+  "[데이터분석 1회차] 훈련평가 70점 미만 : 김멋사, 최멋사",
+  "[데이터분석 1회차] 훈련평가 70점 미만 : 김멋사, 최멋사",
+];
+
 const AdminPage = () => {
-  const [memoVisible, setMemoVisible] = useState(Array(5).fill(false));
+  const [comments, setComments] = useState(Array(notices.length).fill(""));
+
   const [memoContent, setMemoContent] = useState(Array(5).fill(""));
   const [uncheckedItems, setUncheckedItems] = useState([]); // 미체크 항목 상태
   const [issues, setIssues] = useState([]); // issues 상태 추가
+  const [memoVisible, setMemoVisible] = useState(
+    Array(notices.length).fill(false)
+  ); // uncheckedItems로 변경 필요
 
   // 미체크 항목 데이터를 불러오는 useEffect
   useEffect(() => {
@@ -211,11 +237,19 @@ const AdminPage = () => {
     fetchIssues();
   }, []); // 컴포넌트가 마운트될 때 한 번만 실행
 
+  //   const toggleMemo = (index) => {
+  //     setMemoVisible((prev) => {
+  //       const newMemo = [...prev];
+  //       newMemo[index] = !newMemo[index];
+  //       return newMemo;
+  //     });
+  //   };
+
   const toggleMemo = (index) => {
     setMemoVisible((prev) => {
-      const newMemo = [...prev];
-      newMemo[index] = !newMemo[index];
-      return newMemo;
+      const newMemoVisible = [...prev];
+      newMemoVisible[index] = !newMemoVisible[index]; // 해당 index만 토글
+      return newMemoVisible;
     });
   };
 
@@ -230,6 +264,13 @@ const AdminPage = () => {
     // 댓글을 저장하는 로직을 여기에 추가하면 됩니다.
     // 예: 서버로 데이터를 전송하거나 상태 관리 등을 활용.
     toggleMemo(index); // 댓글 박스 닫기
+  };
+
+  // 댓글 입력값 변경 핸들러
+  const handleCommentChange = (index, event) => {
+    const newComments = [...comments];
+    newComments[index] = event.target.value;
+    setComments(newComments);
   };
 
   const data = [
@@ -263,14 +304,6 @@ const AdminPage = () => {
       urgency: "일반",
       status: "대기",
     },
-  ];
-
-  const notices = [
-    "[클라우드 엔지니어링 1회차] 교강사 일지 미작성",
-    "[클라우드 엔지니어링 1회차] 줌 업로드 2/4 기록 누락",
-    "[데이터분석 1회차] 훈련평가 70점 미만 : 김멋사, 최멋사",
-    "[데이터분석 1회차] 훈련평가 70점 미만 : 김멋사, 최멋사",
-    "[데이터분석 1회차] 훈련평가 70점 미만 : 김멋사, 최멋사",
   ];
 
   return (
@@ -346,6 +379,31 @@ const AdminPage = () => {
               ) : (
                 <NoticeItem>미체크 항목이 없습니다.</NoticeItem>
               )}
+            </NoticeList>
+          </NoticeBox>
+        </Container>
+        <Container>
+          <Title>📌 미체크 항목</Title>
+          <NoticeBox>
+            <NoticeList>
+              {notices.map((item, index) => (
+                <NoticeItem key={index}>
+                  {item}
+                  <CommentButton onClick={() => toggleMemo(index)}>
+                    {memoVisible[index] ? "- 닫기" : "+ 댓글"}
+                  </CommentButton>
+                  {memoVisible[index] && (
+                    <CommentBox>
+                      <TextArea
+                        placeholder="댓글을 입력하세요"
+                        value={comments[index]}
+                        onChange={(event) => handleCommentChange(index, event)}
+                      />
+                      <SubmitButtonComponents />
+                    </CommentBox>
+                  )}
+                </NoticeItem>
+              ))}
             </NoticeList>
           </NoticeBox>
         </Container>

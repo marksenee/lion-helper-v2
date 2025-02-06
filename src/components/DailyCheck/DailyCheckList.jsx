@@ -71,7 +71,7 @@ const ReasonInput = styled.textarea`
 
 const SubmitButton = styled.button`
   width: 50px;
-  height: 24px;
+  height: 30px;
   background-color: white;
   border: 1px solid #ff7710;
   color: #ff7710;
@@ -79,7 +79,8 @@ const SubmitButton = styled.button`
   font-family: "Pretandard", sans-serif;
   cursor: pointer;
   align-self: flex-end;
-  margin-top: 10px;
+  border-radius: 5px;
+  /* margin-top: 10px; */
   &:hover {
     background-color: #ff7710;
     color: white;

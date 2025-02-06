@@ -6,7 +6,7 @@ const NoticeBoxContainer = styled.div`
   width: 886px;
   height: 50px;
   background-color: white;
-  border: 2px solid #dcdcdc;
+  border: 1px solid #dcdcdc;
   border-radius: 10px;
   display: flex;
   justify-content: space-between;
@@ -17,10 +17,13 @@ const NoticeBoxContainer = styled.div`
 
 const NoticeText = styled.div`
   font-family: "Pretandard", sans-serif;
-  font-size: 20pt;
+  font-size: 18pt;
+  font-weight: bold;
   color: #000000;
-  display: flex;
-  align-items: center;
+  font-family: "Pretandard", sans-serif;
+  font-size: 18pt;
+  font-weight: bold;
+  color: #000000;
 `;
 
 const ToggleContainer = styled.div`

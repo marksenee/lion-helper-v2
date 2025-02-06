@@ -58,14 +58,13 @@ const NavItem = styled(NavLink)`
 `;
 
 // 로그인 버튼 스타일
-const LoginButton = styled.button`
+const LoginButton = styled(NavLink)`
   font-family: "Pretandard", sans-serif;
   font-size: 22px;
+  text-decoration: none;
+  margin-right: 20px;
   color: #ff7710;
-  background: none;
-  border: none;
-  cursor: pointer;
-  margin-right: 50px;
+  margin-right: 5%;
 `;
 
 const Header = () => {
@@ -88,7 +87,8 @@ const Header = () => {
       </Nav>
 
       {/* 오른쪽 로그인 버튼 */}
-      <LoginButton>로그인</LoginButton>
+
+      <LoginButton to="/login">로그인</LoginButton>
     </HeaderContainer>
   );
 };
