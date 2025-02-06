@@ -93,7 +93,7 @@ export const proPage = {
 
   postUnCheckedDescriptions: async (data) => {
     try {
-      const response = await api.get("/unchecked_descriptions", data);
+      const response = await api.post("/unchecked_descriptions", data);
       return response;
     } catch (error) {
       return error.response;
