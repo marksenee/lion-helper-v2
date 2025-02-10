@@ -37,7 +37,7 @@ const ReasonInput = styled.textarea`
   height: 100%;
   border: none;
   outline: none;
-  font-size: 18pt;
+  font-size: 15pt;
   color: #000000;
   resize: none;
   font-family: "Pretandard", sans-serif;
@@ -94,7 +94,9 @@ const Issues = () => {
       <Title>📌 이슈 사항</Title>
       <ReasonInputContainer>
         <ReasonInput
-          placeholder="이슈사항에 대해 작성해 주세요."
+          placeholder={
+            "이슈사항에 대해 작성해 주세요. (작성 예시 : [과정명] 이슈 내용)"
+          }
           value={reason}
           onChange={handleReasonChange}
         />
