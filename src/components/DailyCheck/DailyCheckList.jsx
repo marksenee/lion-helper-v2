@@ -62,9 +62,10 @@ const ReasonInput = styled.textarea`
   height: 100%;
   border: none;
   outline: none;
-  font-size: 18pt;
+  font-size: 15pt;
   color: #000000;
   resize: none;
+  white-space: pre-line; /* 줄바꿈 적용 */
   font-family: "Pretandard", sans-serif;
   &::placeholder {
     color: #adabab;
@@ -178,7 +179,7 @@ const DailyCheckList = () => {
 
       <ReasonInputContainer>
         <ReasonInput
-          placeholder="미체크 된 항목에 대해 사유를 작성해 주세요."
+          placeholder={`미체크 된 항목에 대해 미체크 항목과, 사유를 작성해 주세요.\n예 : [강사 일지 작성] 전일자 강사 일지 미작성으로 강사님께 요청`}
           value={reason}
           onChange={handleReasonChange}
         />
