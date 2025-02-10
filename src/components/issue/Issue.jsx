@@ -71,7 +71,6 @@ const Issues = () => {
     setReason(e.target.value);
   };
 
-  // 미체크된 항목들을 필터링하고, 사유와 함께 백엔드로 전송
   const handleSubmit = async () => {
     const issueData = {
       issue: reason,
@@ -82,7 +81,7 @@ const Issues = () => {
       console.log("Response from API:", response);
 
       if (response.status === 201) {
-        alert("저장이 완료되었습니다");
+        alert("저장이 완료되었습니다 \n (어드민페이지에서 내용 확인 가능)");
       }
     } catch (error) {
       console.error("Error posting issue:", error);
