@@ -113,10 +113,11 @@ const IrregularCheckList = () => {
     const fetchChecklist = async () => {
       try {
         const response = await proPage.getIrregularCheck();
-        console.log(response.data);
 
         if (response && response.data && Array.isArray(response.data.data)) {
-          setCheckItems(response.data.data);
+          const limitedCheckItems = response.data.data.slice(0, 3); // 0~6번째 항목만 추출
+
+          setCheckItems(limitedCheckItems);
 
           // API에서 받아온 `is_checked` 값을 반영하여 초기 체크 상태 설정
           const initialCheckedStates = response.data.data.reduce(

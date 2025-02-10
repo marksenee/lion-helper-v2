@@ -113,7 +113,6 @@ const DailyCheckList = () => {
     const fetchChecklist = async () => {
       try {
         const response = await proPage.getDailyCheck();
-        console.log("ㅇㅇㅇㅇㅇ", response.data);
 
         if (response && response.data && Array.isArray(response.data.data)) {
           const limitedCheckItems = response.data.data.slice(0, 6); // 0~6번째 항목만 추출

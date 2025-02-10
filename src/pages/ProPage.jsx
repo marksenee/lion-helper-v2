@@ -7,9 +7,10 @@ import { FiCalendar } from "react-icons/fi"; // 달력 아이콘
 import { IoIosArrowDown } from "react-icons/io"; // 토글 아이콘
 import ProPageWithNotice from "../components/Notice/ProPageWithNotice";
 import AttendancePage from "../components/Attendance/Attendance";
-import DailyCheckList from "../components/DailyCheck/DailyCheckList";
+import DailyCheckList from "../components/checkBox/DailyCheckList";
 import SaveButtonComponent from "../components/button/SaveButton";
 import Issues from "../components/issue/Issue";
+import IrregularCheckList from "../components/checkBox/IrregularCheckList";
 
 const ProPageContainer = styled.div`
   display: flex;
@@ -172,6 +173,7 @@ const ProPage = () => {
           selectedCourse={selectedCourse}
         />
         <DailyCheckList />
+        <IrregularCheckList />
 
         {/* 버튼을 오른쪽 아래에 배치 */}
         <Issues />
