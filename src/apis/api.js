@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export const api = axios.create({
-  baseURL: "http://10.10.162.13:5000",
+  baseURL: "https://mvp-dashboard.onrender.com",
   headers: {
     "content-type": "application/json;charset=UTF-8",
     accept: "application/json,",
@@ -19,6 +19,7 @@ export const proPage = {
     }
   },
 
+  // 출,퇴근 기록 저장
   attendance: async (data) => {
     try {
       const response = await api.post("/attendance", data);
@@ -28,6 +29,7 @@ export const proPage = {
     }
   },
 
+  // 일일 업무 가져오기
   getDailyCheck: async () => {
     try {
       const response = await api.get("/tasks");
@@ -37,15 +39,17 @@ export const proPage = {
     }
   },
 
+  // 일일 업무 전송하기
   postDailyCheck: async (data) => {
     try {
-      const response = await api.post("tasks", data);
+      const response = await api.post("/tasks", data);
       return response;
     } catch (error) {
       return error.response;
     }
   },
 
+  // 이슈 사항 데이터 불러오기
   getIssues: async () => {
     try {
       const response = await api.get("/issues");
@@ -55,6 +59,7 @@ export const proPage = {
     }
   },
 
+  // 이슈 데이터 보내기
   postIssues: async (data) => {
     try {
       const response = await api.post("/issues", data);
@@ -73,15 +78,7 @@ export const proPage = {
     }
   },
 
-  getIssues: async () => {
-    try {
-      const response = await api.get("/issues");
-      return response;
-    } catch (error) {
-      return error.response;
-    }
-  },
-
+  // 미체크 항목 데이터 불러오기
   getUnCheckedDescriptions: async () => {
     try {
       const response = await api.get("/unchecked_descriptions");
@@ -91,6 +88,7 @@ export const proPage = {
     }
   },
 
+  // 미체크 항목 데이터 전송
   postUnCheckedDescriptions: async (data) => {
     try {
       const response = await api.post("/unchecked_descriptions", data);
