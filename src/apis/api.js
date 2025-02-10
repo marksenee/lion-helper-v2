@@ -49,6 +49,16 @@ export const proPage = {
     }
   },
 
+  // 비정기 업무 가져오기
+  getIrregularCheck: async () => {
+    try {
+      const response = await api.get("/irregular_tasks");
+      return response;
+    } catch (error) {
+      return error.response;
+    }
+  },
+
   // 이슈 사항 데이터 불러오기
   getIssues: async () => {
     try {
