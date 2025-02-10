@@ -113,7 +113,7 @@ const DailyCheckList = () => {
     const fetchChecklist = async () => {
       try {
         const response = await proPage.getDailyCheck();
-        console.log(response.data);
+        console.log("ㅇㅇㅇㅇㅇ", response.data);
 
         if (response && response.data && Array.isArray(response.data.data)) {
           setCheckItems(response.data.data);
@@ -149,6 +149,8 @@ const DailyCheckList = () => {
 
   // 미체크된 항목들을 필터링하고, 사유와 함께 백엔드로 전송
   const handleSubmit = async () => {
+    console.log("check", checkItems);
+
     const uncheckedItems = checkItems
       .filter((item) => !checkedStates[item.id]) // 미체크된 항목
       .map((item) => ({
@@ -169,9 +171,32 @@ const DailyCheckList = () => {
 
       if (response.status === 201) {
         alert("저장이 완료되었습니다");
+        setReason("");
       }
     } catch (error) {
       console.error("Error posting issue:", error);
+    }
+  };
+
+  const handleSaveChecklist = async () => {
+    const checkedItems = checkItems
+      .filter((item) => checkedStates[item.id]) // 체크된 항목만 필터링
+      .map((item) => ({
+        is_checked: true,
+        task_name: item.task_name,
+      }));
+
+    const requestData = { updates: checkedItems };
+
+    try {
+      const response = await proPage.postDailyCheck(requestData);
+      console.log("Response from API:", response);
+
+      if (response.status === 201) {
+        alert("체크리스트가 저장되었습니다!");
+      }
+    } catch (error) {
+      console.error("Error saving checklist:", error);
     }
   };
 
@@ -179,7 +204,9 @@ const DailyCheckList = () => {
     <BoxContainer>
       <div style={{ display: "flex", alignItems: "center" }}>
         <Title style={{ marginRight: "10px" }}>✅ 정기 업무 체크리스트</Title>
-        <CheckListSaveButton>체크리스트 저장</CheckListSaveButton>
+        <CheckListSaveButton onClick={handleSaveChecklist}>
+          체크리스트 저장
+        </CheckListSaveButton>
       </div>
       <ChecklistContainer itemCount={checkItems.length}>
         {checkItems.map((item) => (

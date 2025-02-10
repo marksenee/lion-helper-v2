@@ -90,6 +90,20 @@ const SubmitButton = styled.button`
   }
 `;
 
+const CheckListSaveButton = styled.button`
+  font-family: "Pretandard", sans-serif;
+  font-size: 13pt;
+  background-color: transparent;
+  border: 1px solid transparent;
+  color: gray;
+  cursor: pointer;
+  /* transition: color 0.3s ease-in-out; */
+
+  &:active {
+    color: #ff7710;
+  }
+`;
+
 const IrregularCheckList = () => {
   const [checkItems, setCheckItems] = useState([]);
   const [checkedStates, setCheckedStates] = useState({});
@@ -161,9 +175,36 @@ const IrregularCheckList = () => {
     }
   };
 
+  const handleSaveChecklist = async () => {
+    const checkedItems = checkItems
+      .filter((item) => checkedStates[item.id]) // 체크된 항목만 필터링
+      .map((item) => ({
+        is_checked: true,
+        task_name: item.task_name,
+      }));
+
+    const requestData = { updates: checkedItems };
+
+    try {
+      const response = await proPage.postDailyCheck(requestData);
+      console.log("Response from API:", response);
+
+      if (response.status === 201) {
+        alert("체크리스트가 저장되었습니다!");
+      }
+    } catch (error) {
+      console.error("Error saving checklist:", error);
+    }
+  };
+
   return (
     <BoxContainer>
-      <Title>✅ 비정기 업무 체크리스트</Title>
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <Title style={{ marginRight: "10px" }}>✅ 정기 업무 체크리스트</Title>
+        <CheckListSaveButton onClick={handleSaveChecklist}>
+          체크리스트 저장
+        </CheckListSaveButton>
+      </div>
       <ChecklistContainer itemCount={checkItems.length}>
         {checkItems.map((item) => (
           <CheckboxContainer key={item.id}>

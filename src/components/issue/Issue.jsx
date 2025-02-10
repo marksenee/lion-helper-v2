@@ -82,6 +82,7 @@ const Issues = () => {
 
       if (response.status === 201) {
         alert("저장이 완료되었습니다 \n (어드민페이지에서 내용 확인 가능)");
+        setReason("");
       }
     } catch (error) {
       console.error("Error posting issue:", error);
