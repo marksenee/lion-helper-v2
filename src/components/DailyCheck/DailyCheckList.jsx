@@ -40,6 +40,8 @@ const CheckboxLabel = styled.div`
 `;
 
 const Checkbox = styled.input`
+  width: 20px;
+  height: 20px;
   margin-right: 10px;
 `;
 
