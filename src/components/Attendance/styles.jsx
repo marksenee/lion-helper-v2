@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { FiClock } from "react-icons/fi";
+import { FiClock, FiPlusCircle, FiMinusCircle } from "react-icons/fi";
 
 const Container = styled.div`
   width: 886px;
@@ -66,18 +66,39 @@ const ClockIcon = styled(FiClock)`
 const SubmitButton = styled.button`
   width: 56px;
   height: 40px;
-  background: #ff7710;
-  color: white;
   font-size: 12pt;
   border: none;
   cursor: pointer;
   border-radius: 5%;
+
+  &:hover {
+    background-color: #ff7710;
+    color: white;
+  }
 `;
 
 const Message = styled.div`
   font-size: 12pt;
   color: ${(props) => (props.error ? "red" : "#ff7710")};
   margin-left: 10px;
+`;
+
+const PlusIcon = styled(FiPlusCircle)`
+  font-size: 20px;
+  color: #ff7710;
+  cursor: pointer;
+`;
+
+const MinusIcon = styled(FiMinusCircle)`
+  font-size: 20px;
+  color: #ff0000;
+  cursor: pointer;
+`;
+
+const IconContainer = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 5px;
 `;
 
 export {
@@ -91,4 +112,7 @@ export {
   ClockIcon,
   SubmitButton,
   Message,
+  PlusIcon,
+  MinusIcon,
+  IconContainer,
 };
