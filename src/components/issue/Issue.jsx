@@ -64,7 +64,7 @@ const SubmitButton = styled.button`
   }
 `;
 
-const Issues = () => {
+const Issues = ({ formattedDate, selectedCourse }) => {
   const [reason, setReason] = useState("");
 
   const handleReasonChange = (e) => {
@@ -74,6 +74,8 @@ const Issues = () => {
   const handleSubmit = async () => {
     const issueData = {
       issue: reason,
+      date: formattedDate,
+      training_course: selectedCourse,
     };
 
     try {

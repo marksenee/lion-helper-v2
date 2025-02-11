@@ -13,10 +13,19 @@ import {
   CommentButton,
   NoticeList,
   CommentText,
+  DropdownContainer,
+  DropdownIcon,
+  DropdownList,
+  DropdownItem,
+  TitleWrapper,
 } from "./styles";
 
 const GetIssuesComponent = () => {
   const [items, setItems] = useState([]); // API 데이터 상태
+  const [filteredIssues, setFilteredIssues] = useState([]); // 필터링된 이슈
+
+  const [selectedCourse, setSelectedCourse] = useState("과정 선택");
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const [comments, setComments] = useState(Array(items.length).fill(""));
   const [issueComments, setIssueComments] = useState({});
@@ -29,10 +38,11 @@ const GetIssuesComponent = () => {
     const fetchIssuesList = async () => {
       try {
         const response = await proPage.getIssues();
-        if (response && response.data && Array.isArray(response.data.data)) {
+        if (response?.data?.data && Array.isArray(response.data.data)) {
           setItems(response.data.data);
-          setComments(Array(response.data.data.length).fill(""));
-          setMemoVisible(Array(response.data.data.length).fill(false));
+          if (response.data.data.length > 0) {
+            setSelectedCourse(response.data.data[0].training_course); // 기본값 설정
+          }
         } else {
           console.error("데이터 형식 오류: 예상된 데이터가 없습니다.");
         }
@@ -42,6 +52,14 @@ const GetIssuesComponent = () => {
     };
     fetchIssuesList();
   }, []);
+
+  useEffect(() => {
+    // 선택한 과정에 해당하는 이슈 필터링
+    const selectedIssues = items.find(
+      (item) => item.training_course === selectedCourse
+    );
+    setFilteredIssues(selectedIssues ? selectedIssues.issues : []);
+  }, [selectedCourse, items]);
 
   useEffect(() => {
     items.forEach((element, index) => {
@@ -61,27 +79,24 @@ const GetIssuesComponent = () => {
 
   const fetchComments = async (issueId) => {
     try {
+      if (!issueId) {
+        console.error("🚨 오류: issue_id가 제공되지 않음");
+        return;
+      }
+
       const response = await proPage.getComments({
         params: { issue_id: issueId },
-      });
-
-      if (
-        response.status === 200 &&
-        response.data &&
-        Array.isArray(response.data.data)
-      ) {
+      }); // 🔹 query로 issue_id 전달
+      if (response.status === 200) {
         setIssueComments((prev) => ({
           ...prev,
-          [issueId]: response.data.data.map((comment) => ({
-            content: comment.comment,
-            created_at: comment.created_at,
-          })),
+          [issueId]: response.data.data, // 🔹 API 응답 구조 맞게 수정
         }));
       } else {
-        console.error("댓글 데이터 형식 오류:", response.data);
+        console.error("🚨 댓글 조회 실패:", response.data.message);
       }
     } catch (error) {
-      console.error("댓글 조회 실패:", error);
+      console.error("🚨 API 호출 오류:", error);
     }
   };
 
@@ -97,37 +112,49 @@ const GetIssuesComponent = () => {
   };
 
   const handleSubmitComment = async (index, issueId) => {
+    if (!issueId) {
+      alert("이슈 ID가 없습니다. 다시 시도해주세요.");
+      return;
+    }
+
     const newComment = {
-      author: "작성자", // 실제 사용자 이름을 받아올 수 있으면 대체
-      content: comments[index],
+      author: "작성자", // 실제 사용자 정보로 대체 가능
+      comment: comments[index],
+      created_at: new Date().toISOString(),
     };
 
     try {
       const response = await proPage.postComments({
-        comment: comments[index],
         issue_id: issueId,
+        comment: comments[index],
       });
 
       if (response.status === 200 || response.status === 201) {
         alert("댓글이 성공적으로 저장되었습니다.");
 
-        // 1️⃣ 기존 댓글 목록에 새 댓글 추가 (UI 즉시 반영)
+        // ✅ UI에서 즉시 반영: issueComments 상태 업데이트
         setIssueComments((prev) => ({
-          ...prev, // prev == issueComments
+          ...prev,
           [issueId]: prev[issueId]
-            ? [...prev[issueId], newComment] // 기존 댓글이 있으면 추가
-            : [newComment], // 기존 댓글이 없으면 새 배열 생성
+            ? [...prev[issueId], newComment]
+            : [newComment],
         }));
 
-        // 2️⃣ 입력 필드 초기화
+        // ✅ `filteredIssues` 업데이트
+        setFilteredIssues((prev) =>
+          prev.map((issue) =>
+            issue.id === issueId
+              ? { ...issue, comments: [...(issue.comments || []), newComment] }
+              : issue
+          )
+        );
+
+        // ✅ 입력 필드 초기화
         setComments((prev) => {
           const newComments = [...prev];
           newComments[index] = "";
           return newComments;
         });
-
-        // 3️⃣ 서버에서 최신 댓글을 다시 가져와 동기화 (선택적)
-        fetchComments(issueId);
       } else {
         alert("댓글 저장에 실패했습니다.");
       }
@@ -146,24 +173,78 @@ const GetIssuesComponent = () => {
     return date.toISOString().split("T")[0]; // "YYYY-MM-DD" 형식 변환
   };
 
+  const handleResolveIssue = async (issueId) => {
+    try {
+      const response = await proPage.deleteIssues({ issue_id: issueId });
+
+      if (response.status === 200 || response.status === 201) {
+        alert("이슈가 해결되었습니다.");
+
+        // 🔥 UI에서 해당 이슈 제거
+        setItems((prev) => prev.filter((item) => item.id !== issueId));
+
+        // 🔥 댓글도 함께 삭제
+        setIssueComments((prev) => {
+          const updatedComments = { ...prev };
+          delete updatedComments[issueId];
+          return updatedComments;
+        });
+      } else {
+        alert("이슈 해결에 실패했습니다.");
+      }
+    } catch (error) {
+      console.error("이슈 해결 API 오류:", error);
+      alert("네트워크 오류가 발생했습니다.");
+    }
+  };
+
+  const handleCourseSelect = (course) => {
+    setSelectedCourse(course);
+    setDropdownOpen(false);
+  };
+
   return (
     <Container>
-      <Title>📌 이슈 사항</Title>
+      <TitleWrapper>
+        <Title>📌 이슈 사항</Title>
+        <DropdownContainer onClick={() => setDropdownOpen(!dropdownOpen)}>
+          {selectedCourse || "과정 선택"}
+          <DropdownIcon />
+          <DropdownList isOpen={dropdownOpen}>
+            {Array.from(new Set(items.map((item) => item.training_course))).map(
+              (course) => (
+                <DropdownItem
+                  key={course}
+                  onClick={() => handleCourseSelect(course)}
+                >
+                  {course}
+                </DropdownItem>
+              )
+            )}
+          </DropdownList>
+        </DropdownContainer>
+      </TitleWrapper>
       <NoticeBox>
         <NoticeList>
-          {items.map((item, index) => (
-            <NoticeItem key={index}>
+          {filteredIssues.map((item, index) => (
+            <NoticeItem key={`${item}-${index}`}>
               {item.content}
+
+              {/* ✅ 해결 버튼 추가 */}
+              <CommentButton onClick={() => handleResolveIssue(item.id)}>
+                해결
+              </CommentButton>
+
               <CommentButton onClick={() => toggleMemo(index, item.id)}>
                 {memoVisible[index] ? "- 닫기" : "+ 댓글"}
               </CommentButton>
+
               {memoVisible[index] && (
                 <CommentBox>
-                  {/* 기존 댓글 리스트 표시 */}
-                  {issueComments[item.id] &&
-                    issueComments[item.id].map((comment, i) => (
-                      <CommentText key={comment.id}>
-                        작성자 : {comment.content} (
+                  {item.comments &&
+                    item.comments.map((comment, i) => (
+                      <CommentText key={i}>
+                        작성자 : {comment.comment} (
                         {formatDate(comment.created_at)})
                       </CommentText>
                     ))}

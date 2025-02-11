@@ -176,7 +176,7 @@ const ProPage = () => {
         <IrregularCheckList />
 
         {/* 버튼을 오른쪽 아래에 배치 */}
-        <Issues />
+        <Issues selectedDate={formattedDate} selectedCourse={selectedCourse} />
       </ProPageContainer>
       {/* <SaveButtonContainer>
         {" "}

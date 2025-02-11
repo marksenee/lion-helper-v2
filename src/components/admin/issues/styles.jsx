@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { IoIosArrowDown } from "react-icons/io"; // 토글 아이콘
 
 const Container = styled.div`
   width: 886px;
@@ -112,6 +113,57 @@ const CommentText = styled.div`
   padding: 10px;
 `;
 
+const DropdownContainer = styled.div`
+  width: 25%;
+  height: 40px;
+  background-color: white;
+  border: 2px solid #dcdcdc;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  position: relative;
+  cursor: pointer;
+  border-radius: 10px;
+`;
+
+const DropdownIcon = styled(IoIosArrowDown)`
+  width: 24px;
+  height: 24px;
+  color: gray;
+  margin-left: auto;
+`;
+
+const DropdownList = styled.ul`
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: white;
+  border: 1px solid #dcdcdc;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  z-index: 10; /* 댓글보다 위에 배치 */
+  display: ${({ isOpen }) => (isOpen ? "block" : "none")};
+`;
+
+const DropdownItem = styled.li`
+  padding: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  &:hover {
+    background-color: #f5f5f5;
+  }
+`;
+
+const TitleWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 16px; /* 제목과 드롭다운 사이 간격 */
+  justify-content: space-between;
+  width: 100%;
+`;
+
 export {
   Container,
   Title,
@@ -125,4 +177,9 @@ export {
   NoticeList,
   CommentButton,
   CommentText,
+  DropdownContainer,
+  DropdownIcon,
+  DropdownList,
+  DropdownItem,
+  TitleWrapper,
 };

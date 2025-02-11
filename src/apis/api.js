@@ -63,6 +63,7 @@ export const proPage = {
   getIssues: async () => {
     try {
       const response = await api.get("/issues");
+      console.log("DDDDDDD", response);
       return response;
     } catch (error) {
       return error.response;
@@ -71,8 +72,19 @@ export const proPage = {
 
   // 이슈 데이터 보내기
   postIssues: async (data) => {
+    console.log("DDDdddddddd", data);
     try {
       const response = await api.post("/issues", data);
+      return response;
+    } catch (error) {
+      return error.response;
+    }
+  },
+
+  // 이슈 해결
+  deleteIssues: async (data) => {
+    try {
+      const response = await api.post("/issues/resolve", data);
       return response;
     } catch (error) {
       return error.response;
