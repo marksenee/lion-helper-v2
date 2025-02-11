@@ -72,7 +72,6 @@ export const proPage = {
 
   // 이슈 데이터 보내기
   postIssues: async (data) => {
-    console.log("DDDdddddddd", data);
     try {
       const response = await api.post("/issues", data);
       return response;

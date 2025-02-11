@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { proPage } from "../../apis/api";
+import { FiHelpCircle } from "react-icons/fi"; // 물음표 아이콘 추가
+import { Tooltip } from "react-tooltip";
 
 const BoxContainer = styled.div`
   width: 886px;
@@ -215,6 +217,13 @@ const IrregularCheckList = () => {
               onChange={() => handleCheckboxChange(item.id)}
             />
             <CheckboxLabel>{item.task_name}</CheckboxLabel>
+            <FiHelpCircle
+              data-tooltip-id={`tooltip-${item.id}`}
+              style={{ marginLeft: "5px", cursor: "pointer", color: "#888" }}
+            />
+            <Tooltip id={`tooltip-${item.id}`} place="top" effect="solid">
+              가이드 추가 예정
+            </Tooltip>
           </CheckboxContainer>
         ))}
       </ChecklistContainer>
