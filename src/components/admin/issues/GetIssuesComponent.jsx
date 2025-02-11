@@ -137,9 +137,13 @@ const GetIssuesComponent = () => {
     }
   };
 
-  const formatDate = (isoString) => {
-    const date = new Date(isoString);
-    return date.toISOString().split("T")[0]; // "YYYY-MM-DD" 형태로 변환
+  const formatDate = (dateString) => {
+    if (!dateString) return "날짜 없음"; // 빈 값 방지
+
+    const date = new Date(dateString);
+    if (isNaN(date.getTime())) return "유효하지 않은 날짜"; // 유효성 검사
+
+    return date.toISOString().split("T")[0]; // "YYYY-MM-DD" 형식 변환
   };
 
   return (
