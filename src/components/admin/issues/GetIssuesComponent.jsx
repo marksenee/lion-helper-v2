@@ -54,12 +54,12 @@ const GetIssuesComponent = () => {
   }, []);
 
   useEffect(() => {
-    // 선택한 과정에 해당하는 이슈 필터링
-    const selectedIssues = items.find(
+    if (!selectedCourse) return;
+    const selectedIssues = items.filter(
       (item) => item.training_course === selectedCourse
     );
-    setFilteredIssues(selectedIssues ? selectedIssues.issues : []);
-  }, [selectedCourse, items]);
+    setFilteredIssues(selectedIssues.flatMap((item) => item.issues || [])); // ✅ 배열 펼쳐서 반영
+  }, [selectedCourse, items]); // ✅ items 변경 시 자동 업데이트
 
   useEffect(() => {
     items.forEach((element, index) => {
@@ -174,16 +174,31 @@ const GetIssuesComponent = () => {
   };
 
   const handleResolveIssue = async (issueId) => {
+    if (!issueId) {
+      console.error("🚨 오류: issue_id가 제공되지 않음");
+      return;
+    }
+
     try {
       const response = await proPage.deleteIssues({ issue_id: issueId });
 
       if (response.status === 200 || response.status === 201) {
         alert("이슈가 해결되었습니다.");
 
-        // 🔥 UI에서 해당 이슈 제거
-        setItems((prev) => prev.filter((item) => item.id !== issueId));
+        // ✅ `items` 업데이트
+        setItems((prevItems) =>
+          prevItems.map((item) => ({
+            ...item,
+            issues: item.issues.filter((issue) => issue.id !== issueId),
+          }))
+        );
 
-        // 🔥 댓글도 함께 삭제
+        // ✅ `filteredIssues`도 즉시 반영
+        setFilteredIssues((prevIssues) =>
+          prevIssues.filter((issue) => issue.id !== issueId)
+        );
+
+        // ✅ 해당 이슈의 댓글 데이터 삭제
         setIssueComments((prev) => {
           const updatedComments = { ...prev };
           delete updatedComments[issueId];

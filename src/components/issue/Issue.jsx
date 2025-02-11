@@ -65,6 +65,7 @@ const SubmitButton = styled.button`
 `;
 
 const Issues = ({ formattedDate, selectedCourse }) => {
+  console.log("asdfasdf", formattedDate);
   const [reason, setReason] = useState("");
 
   const handleReasonChange = (e) => {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -123,12 +123,20 @@ const ProPage = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedCourse, setSelectedCourse] = useState("과정 선택");
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const formattedDate = selectedDate.toISOString().split("T")[0];
+  // const formattedDate = selectedDate.toISOString().split("T")[0];
 
   const handleCourseSelect = (course) => {
     setSelectedCourse(course);
     setDropdownOpen(false);
   };
+
+  const formattedDate = useMemo(() => {
+    return selectedDate ? selectedDate.toISOString().split("T")[0] : "";
+  }, [selectedDate]);
+
+  useEffect(() => {
+    console.log("formattedDate:", formattedDate);
+  }, [formattedDate]);
 
   return (
     <>
@@ -176,7 +184,7 @@ const ProPage = () => {
         <IrregularCheckList />
 
         {/* 버튼을 오른쪽 아래에 배치 */}
-        <Issues selectedDate={formattedDate} selectedCourse={selectedCourse} />
+        <Issues formattedDate={formattedDate} selectedCourse={selectedCourse} />
       </ProPageContainer>
       {/* <SaveButtonContainer>
         {" "}

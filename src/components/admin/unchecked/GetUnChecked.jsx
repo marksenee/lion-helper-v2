@@ -14,6 +14,7 @@ import { proPage } from "../../../apis/api";
 
 const GetIssueUnCheckData = ({ fetchData, title }) => {
   const [items, setItems] = useState([]); // API 데이터 상태
+  const [selectedCourse, setSelectedCourse] = useState("과정 선택");
   const [comments, setComments] = useState([]); // 댓글 상태
   const [memoVisible, setMemoVisible] = useState([]); // 댓글 입력창 상태
   // uncheckedItems가 업데이트된 후, comments와 memoVisible 초기화
@@ -22,12 +23,14 @@ const GetIssueUnCheckData = ({ fetchData, title }) => {
     const fetchItems = async () => {
       try {
         const response = await fetchData(); // ✅ props로 받은 API 함수 실행
+        console.log("aaa", response);
         if (response && response.data && response.data.data) {
           // uncheckedItems가 업데이트된 후, comments와 memoVisible 초기화
 
           setItems(response.data.data);
           setComments(Array(response.data.data.length).fill(""));
           setMemoVisible(Array(response.data.data.length).fill(false));
+          setSelectedCourse(response.data.data[0].training_course); // 기본값 설정
         } else {
           console.error("데이터 형식 오류: 예상된 데이터가 없습니다.");
         }
