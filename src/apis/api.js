@@ -107,4 +107,24 @@ export const proPage = {
       return error.response;
     }
   },
+
+  // 이슈사항 댓글 조회
+  getComments: async (data) => {
+    try {
+      const response = await api.get("/issues/comments", data);
+      return response;
+    } catch (error) {
+      return error.response;
+    }
+  },
+
+  // 댓글 작성
+  postComments: async (data) => {
+    try {
+      const response = await api.post("/issues/comments", data);
+      return response;
+    } catch (error) {
+      return error.response;
+    }
+  },
 };
