@@ -65,7 +65,6 @@ const SubmitButton = styled.button`
 `;
 
 const Issues = ({ formattedDate, selectedCourse }) => {
-  console.log("asdfasdf", formattedDate);
   const [reason, setReason] = useState("");
 
   const handleReasonChange = (e) => {
@@ -81,8 +80,6 @@ const Issues = ({ formattedDate, selectedCourse }) => {
 
     try {
       const response = await proPage.postIssues(issueData);
-      console.log("Response from API:", response);
-
       if (response.status === 201) {
         alert("저장이 완료되었습니다 \n (어드민페이지에서 내용 확인 가능)");
         setReason("");

@@ -11,6 +11,7 @@ import DailyCheckList from "../components/checkBox/DailyCheckList";
 import SaveButtonComponent from "../components/button/SaveButton";
 import Issues from "../components/issue/Issue";
 import IrregularCheckList from "../components/checkBox/IrregularCheckList";
+import { proPage } from "../apis/api";
 
 const ProPageContainer = styled.div`
   display: flex;
@@ -121,6 +122,7 @@ const SaveButtonContainer = styled.div`
 
 const ProPage = () => {
   const [selectedDate, setSelectedDate] = useState(new Date());
+  const [courseItem, setCourseItem] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState("과정 선택");
   const [dropdownOpen, setDropdownOpen] = useState(false);
   // const formattedDate = selectedDate.toISOString().split("T")[0];
@@ -135,8 +137,21 @@ const ProPage = () => {
   }, [selectedDate]);
 
   useEffect(() => {
-    console.log("formattedDate:", formattedDate);
-  }, [formattedDate]);
+    const fetchItems = async () => {
+      try {
+        const response = await proPage.getCourse(); // ✅ props로 받은 API 함수 실행
+        if (response && response.data && response.data.data) {
+          // uncheckedItems가 업데이트된 후, comments와 memoVisible 초기화
+          setCourseItem(response.data.data);
+        } else {
+          console.error("데이터 형식 오류: 예상된 데이터가 없습니다.");
+        }
+      } catch (error) {
+        console.error("API 호출 오류:", error);
+      }
+    };
+    fetchItems();
+  }, []);
 
   return (
     <>
@@ -160,11 +175,7 @@ const ProPage = () => {
             {selectedCourse}
             <DropdownIcon />
             <DropdownList isOpen={dropdownOpen}>
-              {[
-                "클라우드 엔지니어링 1기",
-                "데이터분석1",
-                "프론트엔드스쿨 1기",
-              ].map((course) => (
+              {courseItem.map((course) => (
                 <DropdownItem
                   key={course}
                   onClick={() => handleCourseSelect(course)}

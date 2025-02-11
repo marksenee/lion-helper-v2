@@ -63,7 +63,6 @@ export const proPage = {
   getIssues: async () => {
     try {
       const response = await api.get("/issues");
-      console.log("DDDDDDD", response);
       return response;
     } catch (error) {
       return error.response;
@@ -133,6 +132,16 @@ export const proPage = {
   postComments: async (data) => {
     try {
       const response = await api.post("/issues/comments", data);
+      return response;
+    } catch (error) {
+      return error.response;
+    }
+  },
+
+  // 과정 데이터 API
+  getCourse: async () => {
+    try {
+      const response = await api.get("/training_courses");
       return response;
     } catch (error) {
       return error.response;
