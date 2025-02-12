@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { MdContentCopy } from "react-icons/md";
+
 import { FaSearch, FaChevronDown, FaChevronUp } from "react-icons/fa";
 import {
   Wrapper,
@@ -23,6 +25,47 @@ const Search = () => {
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
   const [openAnswers, setOpenAnswers] = useState([]); // 열린 답변의 인덱스 배열
   const [isSearched, setIsSearched] = useState(false);
+  const [copiedIndex, setCopiedIndex] = useState(null); // 복사된 항목 추적
+
+  const [openVersions, setOpenVersions] = useState({}); // 각 질문의 버전 열림 여부
+  const versionHistory = {
+    0: [
+      {
+        date: "1월 23일 오후 00:00",
+        user: "박세은",
+        text: "답변을 작성해 주세요",
+      },
+      {
+        date: "1월 22일 오후 00:00",
+        user: "박세은",
+        text: "답변을 작성해 주세요",
+      },
+      {
+        date: "1월 21일 오후 00:00",
+        user: "박세은",
+        text: "답변을 작성해 주세요",
+      },
+    ],
+    1: [
+      {
+        date: "1월 20일 오후 00:00",
+        user: "박세은",
+        text: "답변을 작성해 주세요",
+      },
+      {
+        date: "1월 19일 오후 00:00",
+        user: "박세은",
+        text: "답변을 작성해 주세요",
+      },
+    ],
+  };
+
+  const toggleVersionHistory = (index) => {
+    setOpenVersions((prev) => ({
+      ...prev,
+      [index]: !prev[index],
+    }));
+  };
 
   const handleSearch = () => {
     // 예시 데이터 생성 (실제 API 연동 시 fetch로 대체)
@@ -61,6 +104,16 @@ const Search = () => {
     if (e.key === "Enter") {
       handleSearch();
     }
+  };
+
+  const handleCopy = (text, index) => {
+    navigator.clipboard
+      .writeText(text)
+      .then(() => {
+        setCopiedIndex(index);
+        setTimeout(() => setCopiedIndex(null), 2000);
+      })
+      .catch((err) => console.error("복사 실패:", err));
   };
 
   return (
@@ -107,7 +160,87 @@ const Search = () => {
                 </ToggleIcon>
               </QuestionBox>
               {openAnswers.includes(index) && (
-                <AnswerBox>{item.answer}</AnswerBox>
+                <>
+                  <AnswerBox>
+                    {item.answer}
+                    <MdContentCopy
+                      style={{
+                        marginLeft: "10px",
+                        cursor: "pointer",
+                        color: "#666",
+                      }}
+                      onClick={() => handleCopy(item.answer, index)}
+                    />
+                    {copiedIndex === index && (
+                      <div style={{ color: "green", marginTop: "5px" }}>
+                        복사가 되었습니다!
+                      </div>
+                    )}
+                  </AnswerBox>
+
+                  {/* 버전 기록 버튼 */}
+                  <div
+                    onClick={() => toggleVersionHistory(index)}
+                    style={{
+                      cursor: "pointer",
+                      color: "orange",
+                      marginTop: "5px",
+                      fontSize: "14px",
+                    }}
+                  >
+                    버전 기록
+                  </div>
+
+                  {/* 버전 기록 리스트 */}
+                  {openVersions[index] && versionHistory[index] && (
+                    <div
+                      style={{
+                        background: "#f8f8f8",
+                        padding: "10px",
+                        borderRadius: "5px",
+                        marginTop: "5px",
+                      }}
+                    >
+                      {versionHistory[index].map((history, vIndex) => (
+                        <div
+                          key={vIndex}
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            marginBottom: "5px",
+                          }}
+                        >
+                          {/* 원형 프로필 아이콘 */}
+                          <div
+                            style={{
+                              width: "30px",
+                              height: "30px",
+                              borderRadius: "50%",
+                              backgroundColor: "#555",
+                              color: "#fff",
+                              display: "flex",
+                              justifyContent: "center",
+                              alignItems: "center",
+                              fontSize: "12px",
+                              fontWeight: "bold",
+                              marginRight: "10px",
+                            }}
+                          >
+                            {history.user.charAt(0)}
+                          </div>
+
+                          {/* 버전 히스토리 텍스트 */}
+                          <div>
+                            <div style={{ fontSize: "12px", color: "#666" }}>
+                              {history.date} ({history.user})
+                            </div>
+                            <div>{history.text}</div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </>
               )}
             </div>
           ))}
