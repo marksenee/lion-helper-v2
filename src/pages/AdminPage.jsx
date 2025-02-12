@@ -5,6 +5,7 @@ import { proPage } from "../apis/api";
 import GetIssueUnCheckData from "../components/admin/unchecked/GetUnChecked";
 import TableComponents from "../components/admin/table/Table";
 import GetIssuesComponent from "../components/admin/issues/GetIssuesComponent";
+import GetUnCheckedComponent from "../components/admin/unchecked/GetUnChecked";
 
 const AdminPageContainer = styled.div`
   display: flex;
@@ -25,10 +26,10 @@ const AdminPage = () => {
       <Header />
       <AdminPageContainer>
         <TableComponents />
-        {/* <GetIssueUnCheckData
+        <GetUnCheckedComponent
           fetchData={proPage.getUnCheckedDescriptions}
           title="📌 미체크 항목"
-        /> */}
+        />
         <GetIssuesComponent />
       </AdminPageContainer>
     </>

@@ -203,7 +203,7 @@ const IrregularCheckList = () => {
   return (
     <BoxContainer>
       <div style={{ display: "flex", alignItems: "center" }}>
-        <Title style={{ marginRight: "10px" }}>✅ 정기 업무 체크리스트</Title>
+        <Title style={{ marginRight: "10px" }}>✅ 비정기 업무 체크리스트</Title>
         <CheckListSaveButton onClick={handleSaveChecklist}>
           체크리스트 저장
         </CheckListSaveButton>
@@ -222,7 +222,8 @@ const IrregularCheckList = () => {
               style={{ marginLeft: "5px", cursor: "pointer", color: "#888" }}
             />
             <Tooltip id={`tooltip-${item.id}`} place="top" effect="solid">
-              가이드 추가 예정
+              - 강사 계약시점 검토 목차 <br />
+              ㄴ 텍스트, 이미지 활용 여부 <br />ㄴ 보조교재 활용여부
             </Tooltip>
           </CheckboxContainer>
         ))}

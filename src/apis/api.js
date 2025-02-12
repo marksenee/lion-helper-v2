@@ -110,8 +110,31 @@ export const proPage = {
 
   // 미체크 항목 데이터 전송
   postUnCheckedDescriptions: async (data) => {
+    console.log("uncheck", data);
     try {
       const response = await api.post("/unchecked_descriptions", data);
+      return response;
+    } catch (error) {
+      return error.response;
+    }
+  },
+
+  // 미체크 항목 데이터 전송
+  postUnCheckedDescriptionsComment: async (data) => {
+    try {
+      const response = await api.post("/unchecked_comments", data);
+      return response;
+    } catch (error) {
+      return error.response;
+    }
+  },
+
+  // 미체크 항목 해결
+  deleteUnCheckedDescriptions: async (id) => {
+    try {
+      const response = await api.post("/unchecked_descriptions/resolve", {
+        unchecked_id: id,
+      });
       return response;
     } catch (error) {
       return error.response;

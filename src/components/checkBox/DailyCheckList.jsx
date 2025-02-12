@@ -106,7 +106,7 @@ const SubmitButton = styled.button`
   }
 `;
 
-const DailyCheckList = () => {
+const DailyCheckList = (selectedCourse) => {
   const [checkItems, setCheckItems] = useState([]);
   const [checkedStates, setCheckedStates] = useState({});
   const [reason, setReason] = useState("");
@@ -163,7 +163,8 @@ const DailyCheckList = () => {
 
     const unCheckedDescriptionData = {
       description: reason,
-      unchecked_items: uncheckedItems,
+      // unchecked_items: uncheckedItems,
+      training_course: selectedCourse,
     };
 
     try {
