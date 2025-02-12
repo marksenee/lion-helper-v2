@@ -77,7 +77,7 @@ const QuestionBox = styled.div`
 
 const QuestionText = styled.div`
   font-size: 22px;
-  font-family: "Pretandard", sans-serif;
+  font-family: "Suite", sans-serif;
   color: #000;
 `;
 

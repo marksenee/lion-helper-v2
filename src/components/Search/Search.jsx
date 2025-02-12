@@ -71,7 +71,13 @@ const Search = () => {
   };
 
   const handleSearch = () => {
-    // 예시 데이터 생성 (실제 API 연동 시 fetch로 대체)
+    // 기존 UI 상태 초기화 (새로고침 효과)
+    setOpenAnswers([]);
+    setOpenVersions({});
+    setEditingIndex(null);
+    setCopiedIndex(null);
+
+    // 검색 실행 (예제 데이터)
     const dummyResults = Array(30)
       .fill(null)
       .map((_, index) => ({
@@ -81,7 +87,7 @@ const Search = () => {
 
     setResults(dummyResults);
     setCurrentPage(1);
-    setIsSearched(true); // 검색 버튼을 눌렀으면 상태값 변경
+    setIsSearched(true);
   };
 
   const toggleAnswer = (index) => {
@@ -105,7 +111,7 @@ const Search = () => {
 
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
-      handleSearch();
+      handleSearch(); // 엔터 키를 누르면 검색 실행 + UI 초기화
     }
   };
 
@@ -131,6 +137,17 @@ const Search = () => {
       )
     );
     setEditingIndex(null); // 수정 모드 해제
+  };
+
+  const handlePageChange = (newPage) => {
+    // 페이지 이동 시 UI 상태 초기화
+    setOpenAnswers([]);
+    setOpenVersions({});
+    setEditingIndex(null);
+    setCopiedIndex(null);
+
+    // 페이지 업데이트
+    setCurrentPage(newPage);
   };
 
   return (
@@ -226,6 +243,9 @@ const Search = () => {
                         onClick={() => handleEditClick(index, item.answer)}
                       />
                     )}
+                    {copiedIndex === index && (
+                      <div style={{ color: "green" }}>복사가 되었습니다!</div>
+                    )}
                   </AnswerBox>
 
                   {/* 버전 기록 버튼 */}
@@ -301,13 +321,13 @@ const Search = () => {
         <PaginationContainer>
           <PageButton
             disabled={currentPage === 1}
-            onClick={() => setCurrentPage((prev) => prev - 1)}
+            onClick={() => handlePageChange(currentPage - 1)}
           >
             이전
           </PageButton>
           <PageButton
             disabled={currentPage * resultsPerPage >= results.length}
-            onClick={() => setCurrentPage((prev) => prev + 1)}
+            onClick={() => handlePageChange(currentPage + 1)}
           >
             다음
           </PageButton>
