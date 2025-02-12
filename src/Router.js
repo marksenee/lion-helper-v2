@@ -4,7 +4,7 @@ import LoginPage from "./pages/LoginPage";
 import ProPage from "./pages/ProPage";
 import AdminPage from "./pages/AdminPage";
 import MainPage from "./pages/MainPage";
-// import Notice from "./components/notice/notice";
+import NoticePage from "./pages/NoticePage";
 
 const Router = () => {
   return (
@@ -14,7 +14,7 @@ const Router = () => {
         <Route path="/pro" element={<ProPage />} />
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/login" element={<LoginPage />} />
-        {/* <Route path="/notice" element={<Notice />} /> */}
+        <Route path="/notice" element={<NoticePage />} />
       </Routes>
     </BrowserRouter>
   );
