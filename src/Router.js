@@ -3,16 +3,18 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import ProPage from "./pages/ProPage";
 import AdminPage from "./pages/AdminPage";
-import App from "./pages/test";
+import MainPage from "./pages/MainPage";
+// import Notice from "./components/notice/notice";
 
 const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<App />} />
+        <Route path="/" element={<MainPage />} />
         <Route path="/pro" element={<ProPage />} />
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/login" element={<LoginPage />} />
+        {/* <Route path="/notice" element={<Notice />} /> */}
       </Routes>
     </BrowserRouter>
   );

@@ -67,7 +67,7 @@ const LoginButton = styled(NavLink)`
   margin-right: 5%;
 `;
 
-const Header = () => {
+const Header = ({ children }) => {
   return (
     <HeaderContainer>
       {/* 왼쪽 로고 */}
@@ -78,6 +78,7 @@ const Header = () => {
         <NavItem to="/" exact activeClassName="active">
           홈
         </NavItem>
+        {children} {/* ✅ children을 추가해야 Search가 렌더링됨 */}
         <NavItem to="/pro" activeClassName="active">
           프로
         </NavItem>

@@ -5,7 +5,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import Header from "../components/header/Header";
 import { FiCalendar } from "react-icons/fi"; // 달력 아이콘
 import { IoIosArrowDown } from "react-icons/io"; // 토글 아이콘
-import ProPageWithNotice from "../components/Notice/ProPageWithNotice";
 import AttendancePage from "../components/Attendance/Attendance";
 import DailyCheckList from "../components/checkBox/DailyCheckList";
 import SaveButtonComponent from "../components/button/SaveButton";
@@ -186,7 +185,7 @@ const ProPage = () => {
             </DropdownList>
           </DropdownContainer>
         </InputContainer>
-        <ProPageWithNotice />
+        {/* <ProPageWithNotice /> */}
         <AttendancePage
           selectedDate={formattedDate}
           selectedCourse={selectedCourse}
