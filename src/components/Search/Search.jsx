@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { MdContentCopy } from "react-icons/md";
+import { MdContentCopy, MdEdit, MdCheck } from "react-icons/md";
 
 import { FaSearch, FaChevronDown, FaChevronUp } from "react-icons/fa";
 import {
@@ -28,6 +28,9 @@ const Search = () => {
   const [copiedIndex, setCopiedIndex] = useState(null); // 복사된 항목 추적
 
   const [openVersions, setOpenVersions] = useState({}); // 각 질문의 버전 열림 여부
+  const [editingIndex, setEditingIndex] = useState(null); // 현재 수정 중인 답변 인덱스
+  const [editedText, setEditedText] = useState(""); // 수정 중인 답변 내용
+
   const versionHistory = {
     0: [
       {
@@ -116,6 +119,20 @@ const Search = () => {
       .catch((err) => console.error("복사 실패:", err));
   };
 
+  const handleEditClick = (index, currentText) => {
+    setEditingIndex(index); // 수정 모드로 변경
+    setEditedText(currentText); // 기존 답변을 입력창에 미리 입력
+  };
+
+  const handleSaveEdit = (index) => {
+    setResults((prevResults) =>
+      prevResults.map((item, i) =>
+        i === index ? { ...item, answer: editedText } : item
+      )
+    );
+    setEditingIndex(null); // 수정 모드 해제
+  };
+
   return (
     <Wrapper>
       <Title>라이언 헬퍼</Title>
@@ -162,7 +179,24 @@ const Search = () => {
               {openAnswers.includes(index) && (
                 <>
                   <AnswerBox>
-                    {item.answer}
+                    {editingIndex === index ? (
+                      <input
+                        type="text"
+                        value={editedText}
+                        onChange={(e) => setEditedText(e.target.value)}
+                        style={{
+                          width: "600px",
+                          height: "50px",
+                          fontSize: "16px",
+                          padding: "5px",
+                        }}
+                        placeholder="수정 내용을 입력해주세요"
+                      />
+                    ) : (
+                      item.answer
+                    )}
+
+                    {/* 복사 아이콘 */}
                     <MdContentCopy
                       style={{
                         marginLeft: "10px",
@@ -171,10 +205,26 @@ const Search = () => {
                       }}
                       onClick={() => handleCopy(item.answer, index)}
                     />
-                    {copiedIndex === index && (
-                      <div style={{ color: "green", marginTop: "5px" }}>
-                        복사가 되었습니다!
-                      </div>
+
+                    {/* 수정/체크 아이콘 */}
+                    {editingIndex === index ? (
+                      <MdCheck
+                        style={{
+                          marginLeft: "10px",
+                          cursor: "pointer",
+                          color: "green",
+                        }}
+                        onClick={() => handleSaveEdit(index)}
+                      />
+                    ) : (
+                      <MdEdit
+                        style={{
+                          marginLeft: "10px",
+                          cursor: "pointer",
+                          color: "#666",
+                        }}
+                        onClick={() => handleEditClick(index, item.answer)}
+                      />
                     )}
                   </AnswerBox>
 
