@@ -203,16 +203,20 @@ const Search = () => {
                         onChange={(e) => setEditedText(e.target.value)}
                         style={{
                           width: "600px",
-                          height: "50px",
+                          height: "30px",
                           fontSize: "16px",
-                          padding: "5px",
+                          borderColor: "#ddd", // 연한 회색 (#ddd 또는 #ccc)
+                          borderWidth: "1px", // 두께 얇게 (1px)
+                          borderStyle: "solid", // 선 스타일 추가
+                          borderRadius: "5px", // 모서리를 부드럽게
+                          padding: "10px", // 내부 여백 추가
+                          outline: "none", // 포커스 시 기본 테두리 제거
                         }}
                         placeholder="수정 내용을 입력해주세요"
                       />
                     ) : (
                       item.answer
                     )}
-
                     {/* 복사 아이콘 */}
                     <MdContentCopy
                       style={{
@@ -244,17 +248,19 @@ const Search = () => {
                       />
                     )}
                     {copiedIndex === index && (
-                      <div style={{ color: "green" }}>복사가 되었습니다!</div>
+                      <div style={{ color: "green" }}>복사 되었습니다!</div>
                     )}
                   </AnswerBox>
-
                   {/* 버전 기록 버튼 */}
                   <div
                     onClick={() => toggleVersionHistory(index)}
                     style={{
                       cursor: "pointer",
                       color: "orange",
-                      marginTop: "5px",
+                      // marginBottom: "5%",
+                      marginLeft: "auto", // 오른쪽 정렬
+                      display: "flex", // flex로 설정
+                      alignItems: "center", // 수직 중앙 정렬
                       fontSize: "14px",
                     }}
                   >
@@ -269,6 +275,8 @@ const Search = () => {
                         padding: "10px",
                         borderRadius: "5px",
                         marginTop: "5px",
+                        marginBottom: "3%",
+                        borderRadius: "3%",
                       }}
                     >
                       {versionHistory[index].map((history, vIndex) => (
@@ -283,8 +291,8 @@ const Search = () => {
                           {/* 원형 프로필 아이콘 */}
                           <div
                             style={{
-                              width: "30px",
-                              height: "30px",
+                              width: "37px",
+                              height: "37px",
                               borderRadius: "50%",
                               backgroundColor: "#555",
                               color: "#fff",
@@ -293,7 +301,8 @@ const Search = () => {
                               alignItems: "center",
                               fontSize: "12px",
                               fontWeight: "bold",
-                              marginRight: "10px",
+                              marginRight: "2%",
+                              marginLeft: "1%",
                             }}
                           >
                             {history.user.charAt(0)}
@@ -301,10 +310,19 @@ const Search = () => {
 
                           {/* 버전 히스토리 텍스트 */}
                           <div>
-                            <div style={{ fontSize: "12px", color: "#666" }}>
+                            <div
+                              style={{
+                                fontSize: "12px",
+                                color: "#666",
+                                marginTop: "7%",
+                                marginBottom: "2%",
+                              }}
+                            >
                               {history.date} ({history.user})
                             </div>
-                            <div>{history.text}</div>
+                            <div style={{ marginBottom: "5%" }}>
+                              {history.text}
+                            </div>
                           </div>
                         </div>
                       ))}

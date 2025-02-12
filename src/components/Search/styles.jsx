@@ -92,8 +92,8 @@ const ToggleIcon = styled.div`
 const AnswerBox = styled.div`
   width: 715px;
   height: 100%;
-  border-radius: 10px;
-  background-color: #f6f6f6;
+  border-radius: 5px;
+  background-color: #f8f8f8;
   margin: 10px 0 20px;
   padding: 15px;
   font-size: 16px;
