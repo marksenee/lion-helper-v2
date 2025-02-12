@@ -1,6 +1,4 @@
-import React, { useState } from "react";
 import styled from "styled-components";
-import { FaSearch, FaChevronDown, FaChevronUp } from "react-icons/fa";
 
 const Wrapper = styled.div`
   display: flex;
@@ -64,6 +62,12 @@ const ResultsContainer = styled.div`
   @media (max-width: 768px) {
     width: 100%;
   }
+`;
+
+const NotiText = styled.div`
+  font-size: 25px;
+  font-family: "Pretandard", sans-serif;
+  color: #000;
 `;
 
 const QuestionBox = styled.div`
@@ -130,29 +134,6 @@ const PageButton = styled.button`
   }
 `;
 
-const KeywordsWrapper = styled.div`
-  display: flex;
-  gap: 10px;
-  font-size: 22px;
-
-  @media (max-width: 768px) {
-    font-size: 20px; /* 태블릿에서 글씨 크기 조정 */
-  }
-
-  @media (max-width: 480px) {
-    font-size: 18px; /* 모바일에서 글씨 크기 조정 */
-  }
-`;
-
-const Keyword = styled.span`
-  color: ${(props) => (props.highlight ? "#ff7710" : "#676767")};
-  cursor: pointer;
-
-  &:hover {
-    text-decoration: underline; /* 마우스 오버 시 강조 */
-  }
-`;
-
 export {
   Wrapper,
   Title,
@@ -166,6 +147,5 @@ export {
   AnswerBox,
   PaginationContainer,
   PageButton,
-  KeywordsWrapper,
-  Keyword,
+  NotiText,
 };

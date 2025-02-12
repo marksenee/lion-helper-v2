@@ -18,7 +18,6 @@ import {
 } from "./styles";
 
 const Search = () => {
-  console.log("asdfasdfadfs");
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]); // 검색 결과 데이터
   const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
@@ -58,11 +57,22 @@ const Search = () => {
     alert(`${keyword} 키워드를 검색합니다.`);
   };
 
+  const handleKeyPress = (e) => {
+    if (e.key === "Enter") {
+      handleSearch();
+    }
+  };
+
   return (
     <Wrapper>
       <Title>라이언 헬퍼</Title>
       <SearchBox>
-        <SearchInput placeholder="라이언 헬퍼에게 무엇이든 물어보세요" />
+        <SearchInput
+          placeholder="라이언 헬퍼에게 무엇이든 물어보세요"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          onKeyDown={handleKeyPress} // 엔터 키 이벤트 추가
+        />
         <SearchIcon onClick={handleSearch}>
           <FaSearch />
         </SearchIcon>
