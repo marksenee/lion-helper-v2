@@ -59,6 +59,16 @@ export const proPage = {
     }
   },
 
+  postIrregularCheck: async (data) => {
+    try {
+      console.log("data", data);
+      const response = await api.post("/irregular_tasks", data);
+      return response;
+    } catch (error) {
+      return error.response;
+    }
+  },
+
   // 이슈 사항 데이터 불러오기
   getIssues: async () => {
     try {

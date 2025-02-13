@@ -27,6 +27,7 @@ const AttendanceRecord = ({ selectedDate, selectedCourse }) => {
   ]);
   const [mainMessages, setMainMessages] = useState([]);
   const [mainErrors, setMainErrors] = useState([]);
+  const [mainInstructorNames, setMainInstructorNames] = useState([""]);
 
   // 보조강사 상태
   const [subInstructors, setSubInstructors] = useState([
@@ -34,6 +35,7 @@ const AttendanceRecord = ({ selectedDate, selectedCourse }) => {
   ]);
   const [subMessages, setSubMessages] = useState([]);
   const [subErrors, setSubErrors] = useState([]);
+  const [subInstructorNames, setSubInstructorNames] = useState([""]);
 
   const handleTimeChange = (index, role, field, value) => {
     const updateList =
@@ -66,30 +68,37 @@ const AttendanceRecord = ({ selectedDate, selectedCourse }) => {
 
   const removeInstructor = (role, index) => {
     if (role === "main") {
+      if (mainInstructors.length <= 1) return; // 주강사가 1명 이하라면 삭제 불가
       setMainInstructors(mainInstructors.filter((_, i) => i !== index));
       setMainMessages(mainMessages.filter((_, i) => i !== index));
       setMainErrors(mainErrors.filter((_, i) => i !== index));
+      setMainInstructorNames(mainInstructorNames.filter((_, i) => i !== index));
     } else {
+      if (subInstructors.length <= 1) return; // 보조강사가 1명 이하라면 삭제 불가
       setSubInstructors(subInstructors.filter((_, i) => i !== index));
       setSubMessages(subMessages.filter((_, i) => i !== index));
       setSubErrors(subErrors.filter((_, i) => i !== index));
+      setSubInstructorNames(subInstructorNames.filter((_, i) => i !== index));
     }
   };
 
   // 초기 상태를 빈 배열로 명확히 설정
 
   const handleSubmit = async (role, index) => {
+    console.log("index", index);
     const timeFormat = /^([0-1]\d|2[0-3]):([0-5]\d)$/;
-    let instructors, setMessages, setErrors, messages, errors;
+    let instructors, instructorNames, setMessages, setErrors, messages, errors;
 
     if (role === "main") {
       instructors = mainInstructors;
+      instructorNames = mainInstructorNames;
       setMessages = setMainMessages;
       setErrors = setMainErrors;
       messages = [...(mainMessages ?? [])]; // null 또는 undefined 방지
       errors = [...(mainErrors ?? [])]; // null 또는 undefined 방지
     } else {
       instructors = subInstructors;
+      instructorNames = subInstructorNames;
       setMessages = setSubMessages;
       setErrors = setSubErrors;
       messages = [...(subMessages ?? [])];
@@ -98,6 +107,16 @@ const AttendanceRecord = ({ selectedDate, selectedCourse }) => {
 
     if (selectedCourse === "과정 선택") {
       messages[index] = "과정을 선택해 주세요.";
+      errors[index] = true;
+      setMessages([...messages]);
+      setErrors([...errors]);
+      return;
+    }
+
+    // 주강사/보조강사명이 입력되지 않은 경우 추가
+    if (!instructorNames[index] || instructorNames[index].trim() === "") {
+      messages[index] =
+        role === "main" ? "주강사명을 입력하세요!" : "보조강사명을 입력하세요!";
       errors[index] = true;
       setMessages([...messages]);
       setErrors([...errors]);
@@ -123,17 +142,17 @@ const AttendanceRecord = ({ selectedDate, selectedCourse }) => {
     }
 
     const requestData = {
-      check_in: checkIn,
-      check_out: checkOut,
-      daily_log: false,
+      check_in: instructors[index].startTime,
+      check_out: instructors[index].endTime,
+      daily_log: true,
       date: selectedDate,
       instructor: role === "main" ? "1" : "2",
+      instructor_name: instructorNames[index] || "", // 보조강사도 입력할 수 있도록 추가
       training_course: selectedCourse,
     };
 
     try {
       const response = await proPage.attendance(requestData);
-      console.log("ddd", requestData);
       if (response.status === 201) {
         messages[index] = "출퇴근 기록이 제출되었습니다.";
         errors[index] = false;
@@ -150,6 +169,22 @@ const AttendanceRecord = ({ selectedDate, selectedCourse }) => {
     setErrors([...errors]);
   };
 
+  const handleInstructorNameChange = (role, index, value) => {
+    if (role === "main") {
+      setMainInstructorNames((prev) => {
+        const updatedNames = [...prev];
+        updatedNames[index] = value;
+        return updatedNames;
+      });
+    } else {
+      setSubInstructorNames((prev) => {
+        const updatedNames = [...prev];
+        updatedNames[index] = value;
+        return updatedNames;
+      });
+    }
+  };
+
   return (
     <Container>
       <Title>🕕 강사/보조강사 출퇴근 기록</Title>
@@ -161,6 +196,16 @@ const AttendanceRecord = ({ selectedDate, selectedCourse }) => {
           <PlusIcon onClick={() => addInstructor("main")} />
 
           <Label>주강사 {index + 1}</Label>
+          <TimeInputWrapper>
+            <TimeInput
+              type="text"
+              placeholder="주강사명"
+              value={mainInstructorNames[index]}
+              onChange={(e) =>
+                handleInstructorNameChange("main", index, e.target.value)
+              }
+            />
+          </TimeInputWrapper>
           <TimeInputWrapper>
             <TimeInput
               type="text"
@@ -200,6 +245,16 @@ const AttendanceRecord = ({ selectedDate, selectedCourse }) => {
         <TimeInputContainer key={`sub-${index}`}>
           <PlusIcon onClick={() => addInstructor("sub")} />
           <Label>보조강사 {index + 1}</Label>
+          <TimeInputWrapper>
+            <TimeInput
+              type="text"
+              placeholder="보조강사명"
+              value={subInstructorNames[index]}
+              onChange={(e) =>
+                handleInstructorNameChange("sub", index, e.target.value)
+              }
+            />
+          </TimeInputWrapper>
           <TimeInputWrapper>
             <TimeInput
               type="text"

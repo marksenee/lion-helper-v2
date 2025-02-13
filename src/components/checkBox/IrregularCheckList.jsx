@@ -189,7 +189,7 @@ const IrregularCheckList = () => {
     const requestData = { updates: checkedItems };
 
     try {
-      const response = await proPage.postDailyCheck(requestData);
+      const response = await proPage.postIrregularCheck(requestData);
       console.log("Response from API:", response);
 
       if (response.status === 201) {

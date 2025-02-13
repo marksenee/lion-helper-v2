@@ -164,7 +164,7 @@ const DailyCheckList = (selectedCourse) => {
     fetchChecklist();
   }, []);
 
-  const handleCheckboxChange = async (id) => {
+  const handleCheckboxChange = async (id, checkedItem) => {
     // 새로운 체크 상태 반영
     setCheckedStates((prev) => ({
       ...prev,
@@ -176,8 +176,10 @@ const DailyCheckList = (selectedCourse) => {
 
     // 서버로 체크 상태 업데이트 요청
     try {
-      await proPage.postDailyCheck({ updates: [{ is_checked: true, id }] });
-      console.log(`체크리스트 업데이트: ${id} 체크됨`);
+      await proPage.postDailyCheck({
+        updates: [{ is_checked: true, task_name: checkedItem.task_name }],
+      });
+      console.log(`체크리스트 업데이트: ${checkedItem.task_name} 체크됨`);
     } catch (error) {
       console.error("체크 상태 업데이트 실패:", error);
     }

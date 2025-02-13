@@ -25,14 +25,13 @@ const Subtitle = styled.div`
 
 const Label = styled.div`
   width: 10%;
-  font-size: 15pt;
-  margin-right: 10px;
+  font-size: 13pt;
 `;
 
 const TimeInputContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: 20px;
+  gap: 10px;
   width: 100%;
   margin-bottom: 1%;
   margin-top: 1%;
@@ -45,11 +44,11 @@ const TimeInputWrapper = styled.div`
 `;
 
 const TimeInput = styled.input`
-  width: 100px;
+  width: 65px;
   height: 30px;
   border: 1px solid #dcdcdc;
-  padding: 5px 10px;
-  font-size: 18px;
+  padding: 5px 20px;
+  font-size: 15px;
   background: white;
   text-align: center;
   padding-right: 30px;
