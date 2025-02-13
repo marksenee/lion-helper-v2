@@ -1,5 +1,4 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { FaSearch, FaChevronDown, FaChevronUp } from "react-icons/fa";
 import {
   AnswerBox,
@@ -19,29 +18,12 @@ import {
 import { helper } from "../../apis/helper";
 
 const Notification = () => {
-  // // 클릭했을 때 결과 기대값
-  // const handleSearch = () => {
-  //   // 예시 데이터 생성 (실제 API 연동 시 fetch로 대체)
-  //   const dummyResults = Array(30)
-  //     .fill(null)
-  //     .map((_, index) => ({
-  //       question: `Q. 관련질문 ${index + 1}`,
-  //       answer: `A. 이 질문에 대한 답변 내용 ${index + 1}`,
-  //     }));
-
-  //   setResults(dummyResults);
-  //   setCurrentPage(1);
-  //   setIsSearched(true); // 검색 버튼을 눌렀으면 상태값 변경
-  // };
-
   useEffect(() => {
     const getNoticeData = async () => {
       try {
         const response = await helper.getNotice();
         if (response?.data?.data && Array.isArray(response.data.data)) {
           console.log(response.data.data);
-          if (response.data.data.length > 0) {
-          }
         } else {
           console.error("데이터 형식 오류: 예상된 데이터가 없습니다.");
         }
@@ -54,61 +36,50 @@ const Notification = () => {
 
   const [notiDatas, setNotiDatas] = useState([]);
   const [searchDatas, setSearchDatas] = useState([]);
-  const [currentPage, setCurrentPage] = useState(1); // 현재 페이지
-  const [openAnswers, setOpenAnswers] = useState([]); // 열린 답변의 인덱스 배열
+  const [currentPage, setCurrentPage] = useState(1);
+  const [openAnswers, setOpenAnswers] = useState([]);
   const [isSearched, setIsSearched] = useState(false);
 
-  // 공지사항 더미데이터 생성
-  const handleNotiDatas = () => {
-    // 예시 데이터 생성 (실제 API 연동 시 fetch로 대체)
-    const notiDatasResults = Array(30)
+  const noticeData = [
+    "(행정 지침 변경건) 훈련생 외출,조퇴 시 줌캡쳐 증빙 요청건",
+  ];
+  const noticeDetail = [
+    "앞으로 훈련생들이 외출 또는 조퇴 시에도 해당 시간까지 훈련에 참여하고 있었다는 증빙으로 줌캡쳐본도 남겨주시길 부탁드립니다! \n 훈련생들에게 큐알 제공 전 꼭 줌캡쳐본을 남겨야 한다고 말씀해주시고, 줌캡쳐 후 큐알을 찍을 수 있도록 해주세요. \n 금일부터 꼭 지켜야 하는 필수 사항 입니다! \n 보조강사님들에게도 해당 내용 필수적으로 공유 부탁드립니다! 특히 본인이 급하다고 줌캡쳐(필수, 훈련생이 캡쳐해도 됩니다)도 안하고 큐알도 안찍고 그냥 퇴실한다면 앞으로는 무조건 결석 처리 진행될 예정입니다.자료 없으면 출석입력요청 불가하오니 이점 꼭 주의바랍니다.",
+  ];
+
+  useEffect(() => {
+    setNotiDatas(
+      noticeData.map((item, index) => ({
+        question: item,
+        answer: noticeDetail[index] || "",
+      }))
+    );
+  }, []);
+
+  const handleSearchDatas = () => {
+    const searchDataResults = Array(5)
       .fill(null)
       .map((_, index) => ({
         question: `${index + 1}. 관련질문 ${index + 1}`,
         answer: `A. 이 질문에 대한 답변 내용 ${index + 1}`,
       }));
 
-    setNotiDatas(notiDatasResults);
-    setCurrentPage(1);
-    setIsSearched(false);
-  };
-
-  const handleSearchDatas = () => {
-    const searchDataResults = Array(30)
-      .fill(null)
-      .map((_, index) => ({
-        question: `${index + 1}. 관련질문dd ${index + 1}`,
-        answer: `A. 이 질문에 대한 답변 내용 ${index + 1}`,
-      }));
-
     setSearchDatas(searchDataResults);
     setCurrentPage(1);
     setIsSearched(true);
-    console.log(isSearched);
   };
 
   const toggleAnswer = (index) => {
-    if (openAnswers.includes(index)) {
-      setOpenAnswers(openAnswers.filter((i) => i !== index)); // 닫기
-    } else {
-      setOpenAnswers([...openAnswers, index]); // 열기
-    }
+    setOpenAnswers((prev) =>
+      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
+    );
   };
 
-  // 컴포넌트가 처음 렌더링될 때 데이터 설정
-  useEffect(() => {
-    handleNotiDatas();
-    console.log("hello");
-  }, []); // 빈 배열: 컴포넌트가 마운트될 때 한 번만 실행
-
-  // 페이지네이션 데이터
-  // 페이지네이션 데이터
   const resultsPerPage = 10;
   const paginatedSearchData = searchDatas.slice(
     (currentPage - 1) * resultsPerPage,
     currentPage * resultsPerPage
   );
-
   const paginatedNotiData = notiDatas.slice(
     (currentPage - 1) * resultsPerPage,
     currentPage * resultsPerPage
@@ -126,41 +97,28 @@ const Notification = () => {
 
       <ResultsContainer>
         <NotiText>공지사항</NotiText>
-        {isSearched
-          ? paginatedSearchData.map((data, index) => (
-              <div key={index}>
-                <QuestionBox onClick={() => toggleAnswer(index)}>
-                  <QuestionText>{data.question}</QuestionText>
-                  <ToggleIcon>
-                    {openAnswers.includes(index) ? (
-                      <FaChevronUp />
-                    ) : (
-                      <FaChevronDown />
-                    )}
-                  </ToggleIcon>
-                </QuestionBox>
-                {openAnswers.includes(index) && (
-                  <AnswerBox>{data.answer}</AnswerBox>
-                )}
-              </div>
-            ))
-          : paginatedNotiData.map((data, index) => (
-              <div key={index}>
-                <QuestionBox onClick={() => toggleAnswer(index)}>
-                  <QuestionText>{data.question}</QuestionText>
-                  <ToggleIcon>
-                    {openAnswers.includes(index) ? (
-                      <FaChevronUp />
-                    ) : (
-                      <FaChevronDown />
-                    )}
-                  </ToggleIcon>
-                </QuestionBox>
-                {openAnswers.includes(index) && (
-                  <AnswerBox>{data.answer}</AnswerBox>
-                )}
-              </div>
-            ))}
+        {(isSearched ? paginatedSearchData : paginatedNotiData).map(
+          (data, index) => (
+            <div key={index}>
+              <QuestionBox onClick={() => toggleAnswer(index)}>
+                <QuestionText>
+                  {index + 1}. {""}
+                  {data.question}
+                </QuestionText>
+                <ToggleIcon>
+                  {openAnswers.includes(index) ? (
+                    <FaChevronUp />
+                  ) : (
+                    <FaChevronDown />
+                  )}
+                </ToggleIcon>
+              </QuestionBox>
+              {openAnswers.includes(index) && (
+                <AnswerBox>{data.answer}</AnswerBox>
+              )}
+            </div>
+          )
+        )}
       </ResultsContainer>
       <PaginationContainer>
         <PageButton

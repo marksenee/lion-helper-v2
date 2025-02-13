@@ -8,7 +8,7 @@ export const api = axios.create({
   },
   //   withCredentials: true,
 });
-
+//api/v1/faqs/search?
 export const helper = {
   getNotice: async () => {
     try {
@@ -19,4 +19,14 @@ export const helper = {
       return error.response;
     }
   },
+
+  // const getSearchData = async (query) => {
+  //   try {
+  //     const response = await api.get(`https://llfaq.onrender.com/api/v1/faqs/search?query=${query}`);
+  //     return response;
+  //   } catch (error) {
+  //     console.error("API 호출 오류:", error);
+  //     return { data: [] }; // 오류 발생 시 빈 배열 반환
+  //   }
+  // };
 };

@@ -67,6 +67,7 @@ const ResultsContainer = styled.div`
 const NotiText = styled.div`
   font-size: 25px;
   font-family: "Pretandard", sans-serif;
+  font-weight: 500;
   color: #000;
 `;
 
@@ -76,6 +77,7 @@ const QuestionBox = styled.div`
   align-items: center;
   padding: 20px;
   border-bottom: 1px solid #d9d9d9;
+  margin-top: 3%;
   cursor: pointer;
 `;
 
@@ -95,7 +97,7 @@ const ToggleIcon = styled.div`
 
 const AnswerBox = styled.div`
   width: 715px;
-  height: 301px;
+  height: 30%;
   border-radius: 10px;
   background-color: #f6f6f6;
   margin: 10px 0 20px;

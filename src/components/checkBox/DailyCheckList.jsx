@@ -50,9 +50,19 @@ const CheckboxContainer = styled.div`
 
 const CheckboxLabel = styled.div`
   font-family: "Pretandard", sans-serif;
-  font-size: 18pt;
+  /* font-size: 18pt; */
   color: #000000;
   margin-left: 10px;
+  font-size: large;
+`;
+
+const unCheckedBox = styled.div`
+  font-family: "Pretandard", sans-serif;
+  color: #000000;
+  margin-left: 10px;
+  font-size: large;
+  margin-bottom: 5%;
+  margin-left: 5%;
 `;
 
 const Checkbox = styled.input`
@@ -78,9 +88,10 @@ const ReasonInput = styled.textarea`
   height: 100%;
   border: none;
   outline: none;
-  font-size: 15pt;
+  font-size: 13pt;
   color: #000000;
   resize: none;
+  margin-left: 5%;
   white-space: pre-line; /* 줄바꿈 적용 */
   font-family: "Pretandard", sans-serif;
   &::placeholder {
@@ -106,8 +117,17 @@ const SubmitButton = styled.button`
   }
 `;
 
+const UncheckedListContainer = styled.div`
+  max-height: 250px; /* 최대 높이 지정 */
+  overflow-y: auto; /* 내용이 많을 경우 스크롤 */
+  padding-right: 5px; /* 스크롤바가 내용 가리는 문제 방지 */
+`;
+
 const DailyCheckList = (selectedCourse) => {
   const [checkItems, setCheckItems] = useState([]);
+  const [uncheckedItems, setUncheckedItems] = useState([]);
+  const [commentsState, setCommentsState] = useState({}); // 각 항목별 코멘트 상태
+
   const [checkedStates, setCheckedStates] = useState({});
   const [reason, setReason] = useState("");
 
@@ -118,8 +138,13 @@ const DailyCheckList = (selectedCourse) => {
 
         if (response && response.data && Array.isArray(response.data.data)) {
           const limitedCheckItems = response.data.data.slice(0, 6); // 0~6번째 항목만 추출
-
           setCheckItems(limitedCheckItems);
+
+          // unchecked가 false인 데이터만 불러오기
+          const unresolvedItems = response.data.data.filter(
+            (item) => !item.is_checked
+          );
+          setUncheckedItems(unresolvedItems);
 
           // API에서 받아온 `is_checked` 값을 반영하여 초기 체크 상태 설정
           const initialCheckedStates = response.data.data.reduce(
@@ -139,11 +164,23 @@ const DailyCheckList = (selectedCourse) => {
     fetchChecklist();
   }, []);
 
-  const handleCheckboxChange = (id) => {
+  const handleCheckboxChange = async (id) => {
+    // 새로운 체크 상태 반영
     setCheckedStates((prev) => ({
       ...prev,
       [id]: !prev[id],
     }));
+
+    // 체크 시 uncheckedItems에서 즉시 제거
+    setUncheckedItems((prev) => prev.filter((item) => item.id !== id));
+
+    // 서버로 체크 상태 업데이트 요청
+    try {
+      await proPage.postDailyCheck({ updates: [{ is_checked: true, id }] });
+      console.log(`체크리스트 업데이트: ${id} 체크됨`);
+    } catch (error) {
+      console.error("체크 상태 업데이트 실패:", error);
+    }
   };
 
   const handleReasonChange = (e) => {
@@ -204,6 +241,52 @@ const DailyCheckList = (selectedCourse) => {
     }
   };
 
+  // 코멘트 입력값 변경 핸들러
+  const handleCommentChange = (id, value) => {
+    setCommentsState((prev) => ({
+      ...prev,
+      [id]: value, // 댓글을 해당 unchecked_id에 저장
+    }));
+  };
+
+  // 코멘트 전송 핸들러
+  const handleCommentSubmit = async (id) => {
+    if (!commentsState[id]) {
+      alert("댓글을 입력해주세요!");
+      return;
+    }
+
+    const commentData = {
+      comment: commentsState[id], // 입력한 코멘트 그대로 유지
+      unchecked_id: id, // 해당 unchecked 항목의 ID
+    };
+
+    try {
+      const response = await proPage.postUncheckedComments(commentData);
+
+      // response 객체가 정상적인지 확인
+      console.log("서버 응답:", response);
+
+      if (response && response.status === 201) {
+        alert("댓글이 저장되었습니다!");
+        // ✅ 기존 코멘트 상태 유지 (초기화하지 않음)
+        setCommentsState((prev) => ({
+          ...prev,
+          [id]: commentsState[id], // 입력값 유지
+        }));
+      } else {
+        console.error("댓글 저장 실패: 응답이 올바르지 않음", response);
+      }
+    } catch (error) {
+      console.error("Error posting comment:", error);
+
+      // 서버 에러 응답이 있는 경우 출력
+      if (error.response) {
+        console.error("서버 에러 응답:", error.response);
+      }
+    }
+  };
+
   return (
     <BoxContainer>
       <div style={{ display: "flex", alignItems: "center" }}>
@@ -220,6 +303,7 @@ const DailyCheckList = (selectedCourse) => {
               checked={checkedStates[item.id] || false}
               onChange={() => handleCheckboxChange(item.id)}
             />
+
             <CheckboxLabel>{item.task_name}</CheckboxLabel>
             <FiHelpCircle
               data-tooltip-id={`tooltip-${item.id}`}
@@ -233,12 +317,53 @@ const DailyCheckList = (selectedCourse) => {
       </ChecklistContainer>
 
       <ReasonInputContainer>
-        <ReasonInput
-          placeholder={`미체크 된 항목에 대해 미체크 항목과, 사유를 작성해 주세요.\n예 : [강사 일지 작성] 전일자 강사 일지 미작성으로 강사님께 요청`}
-          value={reason}
-          onChange={handleReasonChange}
-        />
-        <SubmitButton onClick={handleSubmit}>등록</SubmitButton>
+        {uncheckedItems.length > 0 ? (
+          <UncheckedListContainer>
+            {uncheckedItems.map((item) => (
+              <div
+                key={item.id}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginBottom: "10px",
+                  borderBottom: "1px solid #dcdcdc",
+                }}
+              >
+                <text
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    marginBottom: "10px",
+                    fontSize: "13pt",
+                    padding: "1%",
+                  }}
+                >
+                  {item.task_name}
+                </text>
+                <ReasonInput
+                  placeholder="코멘트를 입력하세요"
+                  value={commentsState[item.id] || ""}
+                  onChange={(e) => handleCommentChange(item.id, e.target.value)}
+                />
+                <button
+                  onClick={() => handleCommentSubmit(item.id)}
+                  style={{
+                    marginLeft: "10px",
+                    border: "none",
+                    background: "none",
+                    cursor: "pointer",
+                    color: "#ff7710",
+                    fontSize: "16px",
+                  }}
+                >
+                  ✔️
+                </button>
+              </div>
+            ))}
+          </UncheckedListContainer>
+        ) : (
+          <p>미체크된 항목이 없습니다.</p>
+        )}
       </ReasonInputContainer>
     </BoxContainer>
   );

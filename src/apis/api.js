@@ -170,4 +170,14 @@ export const proPage = {
       return error.response;
     }
   },
+
+  // 미체크 항목 내용 입력
+  postUncheckedComments: async (data) => {
+    try {
+      const response = await api.post("/unchecked_comments", data);
+      return response;
+    } catch (error) {
+      return error.response;
+    }
+  },
 };
