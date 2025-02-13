@@ -100,6 +100,26 @@ const IconContainer = styled.div`
   gap: 5px;
 `;
 
+const TitleContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+`;
+
+const DownloadButton = styled.button`
+  background: none;
+  border: none;
+  color: #333;
+  font-size: 14px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+
+  &:hover {
+    color: #ff7710;
+  }
+`;
+
 export {
   Container,
   Title,
@@ -114,4 +134,6 @@ export {
   PlusIcon,
   MinusIcon,
   IconContainer,
+  TitleContainer,
+  DownloadButton,
 };

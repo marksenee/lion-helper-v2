@@ -14,6 +14,8 @@ import {
   IconContainer,
   PlusIcon,
   MinusIcon,
+  TitleContainer,
+  DownloadButton,
 } from "./styles";
 
 const AttendanceRecord = ({ selectedDate, selectedCourse }) => {
@@ -185,11 +187,68 @@ const AttendanceRecord = ({ selectedDate, selectedCourse }) => {
     }
   };
 
+  const convertToCSV = (data) => {
+    if (!data || data.length === 0) return "";
+
+    const headers = Object.keys(data[0]); // 첫 번째 객체의 키를 CSV 헤더로 사용
+    const csvRows = [];
+
+    csvRows.push(headers.join(",")); // 헤더 추가
+
+    for (const row of data) {
+      const values = headers.map((header) => {
+        const value = row[header];
+        return typeof value === "string" ? `"${value}"` : value; // 문자열이면 따옴표 추가
+      });
+      csvRows.push(values.join(","));
+    }
+
+    return csvRows.join("\n"); // 줄바꿈으로 합치기
+  };
+
+  const handleDownload = async () => {
+    try {
+      const response = await proPage.getAttendance();
+
+      // 1️⃣ 응답 객체가 정상인지 확인
+      if (!response || !response.data) {
+        alert("출퇴근 기록이 없습니다.");
+        return;
+      }
+
+      // 2️⃣ 응답 데이터가 배열인지 확인 (객체라면 배열로 변환)
+      const attendanceData = Array.isArray(response.data)
+        ? response.data
+        : [response.data];
+
+      // 3️⃣ 데이터가 비어있다면 처리
+      if (attendanceData.length === 0) {
+        alert("출퇴근 기록이 없습니다.");
+        return;
+      }
+
+      // 4️⃣ JSON 데이터를 CSV로 변환
+      const csvData = convertToCSV(attendanceData);
+      const blob = new Blob([csvData], { type: "text/csv" });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "attendance_records.csv";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    } catch (error) {
+      alert("오류 발생: " + error.message);
+    }
+  };
+
   return (
     <Container>
-      <Title>🕕 강사/보조강사 출퇴근 기록</Title>
+      <TitleContainer>
+        <Title>🕕 강사/보조강사 출퇴근 기록</Title>
+        <DownloadButton onClick={handleDownload}>기록 다운로드</DownloadButton>
+      </TitleContainer>{" "}
       <Subtitle>📌 출/퇴근 기록은 퇴근 후 한 번에 기록해 주세요!</Subtitle>
-
       {/* 주강사 입력 필드 */}
       {mainInstructors.map((instructor, index) => (
         <TimeInputContainer key={`main-${index}`}>
@@ -239,7 +298,6 @@ const AttendanceRecord = ({ selectedDate, selectedCourse }) => {
           )}
         </TimeInputContainer>
       ))}
-
       {/* 보조강사 입력 필드 */}
       {subInstructors.map((instructor, index) => (
         <TimeInputContainer key={`sub-${index}`}>

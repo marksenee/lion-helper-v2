@@ -29,6 +29,16 @@ export const proPage = {
     }
   },
 
+  // 출,퇴근 기록 다운로드
+  getAttendance: async () => {
+    try {
+      const response = await api.get("/attendance");
+      return response;
+    } catch (error) {
+      return error.response;
+    }
+  },
+
   // 일일 업무 가져오기
   getDailyCheck: async () => {
     try {
