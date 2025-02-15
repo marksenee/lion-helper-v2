@@ -21,6 +21,7 @@ const DailyCheckList = ({ selectedCourse }) => {
   const [commentsState, setCommentsState] = useState({});
   const [checkedStates, setCheckedStates] = useState({});
   const [reason, setReason] = useState("");
+  const [alertVisible, setAlertVisible] = useState(false);
 
   useEffect(() => {
     const fetchChecklist = async () => {
@@ -88,7 +89,9 @@ const DailyCheckList = ({ selectedCourse }) => {
         unCheckedDescriptionData
       );
       if (response.status === 201) {
-        alert("저장이 완료되었습니다");
+        // alert("저장이 완료되었습니다");
+        setAlertVisible(true); // 알람 표시
+
         setReason("");
       }
     } catch (error) {
@@ -196,7 +199,7 @@ const DailyCheckList = ({ selectedCourse }) => {
                 <button
                   onClick={() => handleCommentSubmit(item.id)}
                   style={{
-                    marginLeft: "10px",
+                    marginLeft: "10%",
                     border: "none",
                     background: "none",
                     cursor: "pointer",

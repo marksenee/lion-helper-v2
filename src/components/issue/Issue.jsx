@@ -1,68 +1,12 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
 import { proPage } from "../../apis/api";
-
-const BoxContainer = styled.div`
-  width: 886px;
-  background-color: white;
-  border: 1px solid #dcdcdc;
-  border-radius: 10px;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  margin-top: 1%;
-`;
-
-const Title = styled.div`
-  font-family: "Pretandard", sans-serif;
-  font-size: 18pt;
-  font-weight: bold;
-  color: #000000;
-`;
-
-const ReasonInputContainer = styled.div`
-  width: 800px;
-  height: 190px;
-  background-color: #ffffff;
-  border: 1px solid #ecebeb;
-  border-radius: 5px;
-  padding: 10px;
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-`;
-
-const ReasonInput = styled.textarea`
-  width: 100%;
-  height: 100%;
-  border: none;
-  outline: none;
-  font-size: 15pt;
-  color: #000000;
-  resize: none;
-  font-family: "Pretandard", sans-serif;
-  &::placeholder {
-    color: #adabab;
-  }
-`;
-
-const SubmitButton = styled.button`
-  width: 50px;
-  height: 30px;
-  background-color: white;
-  border: 1px solid #ff7710;
-  color: #ff7710;
-  font-size: 14px;
-  font-family: "Pretandard", sans-serif;
-  cursor: pointer;
-  align-self: flex-end;
-  border-radius: 5px;
-  margin-top: 10px;
-  &:hover {
-    background-color: #ff7710;
-    color: white;
-  }
-`;
+import {
+  BoxContainer,
+  Title,
+  ReasonInputContainer,
+  ReasonInput,
+  SubmitButton,
+} from "./styles";
 
 const Issues = ({ formattedDate, selectedCourse }) => {
   const [reason, setReason] = useState("");
@@ -83,6 +27,8 @@ const Issues = ({ formattedDate, selectedCourse }) => {
       if (response.status === 201) {
         alert("저장이 완료되었습니다 \n (어드민페이지에서 내용 확인 가능)");
         setReason("");
+      } else if (response.status === 400) {
+        alert("이슈 사항을 입력해주세요!");
       }
     } catch (error) {
       console.error("Error posting issue:", error);

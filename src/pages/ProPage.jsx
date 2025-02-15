@@ -29,8 +29,9 @@ const InputContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 886px;
+  width: 80%;
   margin-top: 5%;
+  margin-bottom: 2%;
   gap: 30px; /* 간격을 30px로 설정 */
 `;
 
@@ -38,18 +39,18 @@ const Label = styled.label`
   font-family: "Pretandard", sans-serif;
   font-size: 15pt;
   color: #000000;
-  width: 30%;
-  margin-right: 20px; /* 레이블과 입력 상자 사이의 간격 추가 */
+  width: 15%;
+  margin-right: 15px; /* 레이블과 입력 상자 사이의 간격 추가 */
 `;
 
 const InputBox = styled.div`
-  width: 60%;
+  width: 25%;
   height: 50px;
   background-color: white;
   border: 2px solid #dcdcdc;
   display: flex;
   align-items: center;
-  padding: 0 10px;
+  /* padding: 0 10px; */
   position: relative;
   border-radius: 10px;
 `;
@@ -59,17 +60,18 @@ const DateInput = styled(DatePicker)`
   border: none;
   outline: none;
   font-size: 16px;
+  margin-left: 7%;
 `;
 
 const CalendarIcon = styled(FiCalendar)`
   width: 24px;
   height: 24px;
   color: gray;
-  cursor: pointer;
+  /* cursor: pointer; */
 `;
 
 const DropdownContainer = styled.div`
-  width: 60%;
+  width: 25%;
   height: 50px;
   background-color: white;
   border: 2px solid #dcdcdc;

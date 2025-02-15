@@ -54,7 +54,7 @@ const Checkbox = styled.input`
 `;
 
 const ReasonInputContainer = styled.div`
-  width: 800px;
+  width: 95%;
   height: 190px;
   background-color: #ffffff;
   border: 1px solid #ecebeb;
