@@ -58,16 +58,17 @@ const SubmitButton = styled.button`
 const CommentBox = styled.div`
   margin-top: 10px;
   padding: 10px;
-  border: 1px solid #ddd;
+  border: 1px solid #f9f9f9;
   background-color: #f9f9f9;
+  border-radius: 5px;
 `;
 
 const TextArea = styled.textarea`
-  width: 100%;
+  width: 98%;
   height: 50px;
   margin-top: 5px;
   padding: 5px;
-  border: 1px solid #ccc;
+  border: 1px solid #f9f9f9;
   resize: none;
 `;
 
@@ -99,8 +100,9 @@ const MemoInput = styled.textarea`
 
 const NoticeItem = styled.li`
   padding: 12px 0;
+  margin-left: 2%;
   border-bottom: 1px solid #ccc;
-  /* display: flex; */ // 해당 부분 설정 시, 댓글 박스가 아래가 아닌 옆으로 됨
+  /* display: flex; // 해당 부분 설정 시, 댓글 박스가 아래가 아닌 옆으로 됨 */
   justify-content: space-between;
   align-items: center;
   font-size: 14pt;
@@ -114,8 +116,8 @@ const CommentText = styled.div`
 `;
 
 const DropdownContainer = styled.div`
-  width: 25%;
-  height: 40px;
+  width: 20%;
+  height: 30px;
   background-color: white;
   border: 2px solid #dcdcdc;
   display: flex;
@@ -124,6 +126,7 @@ const DropdownContainer = styled.div`
   position: relative;
   cursor: pointer;
   border-radius: 10px;
+  margin-top: 1%;
 `;
 
 const DropdownIcon = styled(IoIosArrowDown)`
@@ -137,12 +140,13 @@ const DropdownList = styled.ul`
   position: absolute;
   top: 100%;
   left: 0;
-  width: 100%;
+  width: 95%;
   background: white;
   border: 1px solid #dcdcdc;
   list-style: none;
   padding: 0;
   margin: 0;
+  margin-left: 1%;
   z-index: 10; /* 댓글보다 위에 배치 */
   display: ${({ isOpen }) => (isOpen ? "block" : "none")};
 `;
@@ -164,6 +168,12 @@ const TitleWrapper = styled.div`
   width: 100%;
 `;
 
+const ButtonContainer = styled.div`
+  /* display: flex; */
+  gap: 10px; /* 버튼 간격 */
+  margin-left: auto; /* 오른쪽 정렬 */
+`;
+
 export {
   Container,
   Title,
@@ -182,4 +192,5 @@ export {
   DropdownList,
   DropdownItem,
   TitleWrapper,
+  ButtonContainer,
 };

@@ -83,12 +83,18 @@ const MemoInput = styled.textarea`
 const NoticeItem = styled.li`
   padding: 12px 0;
   border-bottom: 1px solid #ccc;
-  /* display: flex; */ // 해당 부분 설정 시, 댓글 박스가 아래가 아닌 옆으로 됨
+  display: flex; // 해당 부분 설정 시, 댓글 박스가 아래가 아닌 옆으로 됨
   justify-content: space-between;
   align-items: center;
   font-size: 14pt;
   position: relative;
   padding-bottom: ${(props) => (props.hasMemoVisible ? "140px" : "12px")};
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  gap: 10px; /* 버튼 간격 */
+  margin-left: auto; /* 오른쪽 정렬 */
 `;
 
 const CommentBox = styled.div`
@@ -116,4 +122,5 @@ export {
   CommentButton,
   TextArea,
   CommentBox,
+  ButtonContainer,
 };

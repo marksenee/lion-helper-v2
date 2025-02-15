@@ -8,6 +8,7 @@ const Container = styled.div`
   /* padding: 20px; */
   font-family: Pretendard, sans-serif;
   margin-top: 1%;
+  margin-bottom: 2%;
   flex-grow: 1; //데이터가 많을 때 자동으로 공간을 차지하도록 함
 `;
 

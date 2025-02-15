@@ -253,7 +253,9 @@ const GetUnCheckedComponent = () => {
         <NoticeList>
           {filteredIssues.map((item, index) => (
             <NoticeItem key={item.id}>
-              {item.content} {/* ✅ unchecked_items의 `content` 출력 */}
+              {index + 1} {". "}
+              {item.content}
+              {/* ✅ unchecked_items의 `content` 출력 */}
               {/* ✅ 해결 버튼 */}
               <CommentButton onClick={() => handleResolveIssue(item.id)}>
                 해결
