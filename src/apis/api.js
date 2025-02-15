@@ -211,4 +211,14 @@ export const proPage = {
       return error.response;
     }
   },
+
+  //로그인
+  postLogin: async (data) => {
+    try {
+      const response = await api.post("/login", data);
+      return response;
+    } catch (error) {
+      return error.response;
+    }
+  },
 };

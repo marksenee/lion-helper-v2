@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
+import { proPage } from "../apis/api";
 
 // 전체 화면 중앙 정렬
 const Container = styled.div`
@@ -78,6 +79,35 @@ const LoginButton = styled.button`
 `;
 
 const Login = () => {
+  const [id, setId] = useState("");
+  const [pw, setPw] = useState("");
+
+  const handleLogin = async () => {
+    const loginData = {
+      password: pw,
+      username: id,
+    };
+
+    try {
+      const response = await proPage.postLogin(loginData);
+      if (response?.status === 201) {
+        alert("로그인 완료!");
+      } else {
+        console.error(response);
+      }
+    } catch (error) {
+      console.error("Error posting comment:", error);
+    }
+  };
+
+  const handleIdData = (e) => {
+    setId(e.target.value);
+  };
+
+  const handlePwData = (e) => {
+    setPw(e.target.value);
+  };
+
   return (
     <Container>
       {/* 로고 (박스 밖) */}
@@ -87,13 +117,23 @@ const Login = () => {
         <LoginTitle>로그인</LoginTitle>
 
         {/* ID 입력창 */}
-        <Input type="text" placeholder="ID를 입력해주세요(사번)" />
+        <Input
+          type="text"
+          placeholder="ID를 입력해주세요(사번)"
+          value={id}
+          onChange={handleIdData}
+        />
 
         {/* 비밀번호 입력창 */}
-        <Input type="password" placeholder="비밀번호를 입력해주세요" />
+        <Input
+          type="password"
+          placeholder="비밀번호를 입력해주세요"
+          value={pw}
+          onChange={handlePwData}
+        />
 
         {/* 로그인 버튼 */}
-        <LoginButton>로그인</LoginButton>
+        <LoginButton onClick={() => handleLogin(id, pw)}>로그인</LoginButton>
       </LoginBox>
     </Container>
   );
