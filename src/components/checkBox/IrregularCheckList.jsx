@@ -3,113 +3,26 @@ import styled from "styled-components";
 import { proPage } from "../../apis/api";
 import { FiHelpCircle } from "react-icons/fi"; // 물음표 아이콘 추가
 import { Tooltip } from "react-tooltip";
-
-const BoxContainer = styled.div`
-  width: 886px;
-  background-color: white;
-  border: 1px solid #dcdcdc;
-  border-radius: 10px;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  margin-top: 1%;
-`;
-
-const Title = styled.div`
-  font-family: "Pretandard", sans-serif;
-  font-size: 18pt;
-  font-weight: bold;
-  color: #000000;
-`;
-
-const ChecklistContainer = styled.div`
-  margin-top: 20px;
-  max-height: ${(props) => (props.itemCount > 5 ? "250px" : "auto")};
-  overflow-y: ${(props) => (props.itemCount > 5 ? "auto" : "visible")};
-`;
-
-const CheckboxContainer = styled.div`
-  display: flex;
-  align-items: center;
-  margin-bottom: 15px;
-`;
-
-const CheckboxLabel = styled.div`
-  font-family: "Pretandard", sans-serif;
-  font-size: 18pt;
-  color: #000000;
-  margin-left: 10px;
-`;
-
-const Checkbox = styled.input`
-  width: 20px;
-  height: 20px;
-  margin-right: 10px;
-`;
-
-const ReasonInputContainer = styled.div`
-  width: 800px;
-  height: 190px;
-  background-color: #ffffff;
-  border: 1px solid #ecebeb;
-  border-radius: 5px;
-  padding: 10px;
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-`;
-
-const ReasonInput = styled.textarea`
-  width: 100%;
-  height: 100%;
-  border: none;
-  outline: none;
-  font-size: 15pt;
-  color: #000000;
-  resize: none;
-  white-space: pre-line; /* 줄바꿈 적용 */
-  font-family: "Pretandard", sans-serif;
-  &::placeholder {
-    color: #adabab;
-  }
-`;
-
-const SubmitButton = styled.button`
-  width: 50px;
-  height: 30px;
-  background-color: white;
-  border: 1px solid #ff7710;
-  color: #ff7710;
-  font-size: 14px;
-  font-family: "Pretandard", sans-serif;
-  cursor: pointer;
-  align-self: flex-end;
-  border-radius: 5px;
-  /* margin-top: 10px; */
-  &:hover {
-    background-color: #ff7710;
-    color: white;
-  }
-`;
-
-const CheckListSaveButton = styled.button`
-  font-family: "Pretandard", sans-serif;
-  font-size: 13pt;
-  background-color: transparent;
-  border: 1px solid transparent;
-  color: gray;
-  cursor: pointer;
-  /* transition: color 0.3s ease-in-out; */
-
-  &:active {
-    color: #ff7710;
-  }
-`;
+import {
+  BoxContainer,
+  Title,
+  CheckListSaveButton,
+  ChecklistContainer,
+  CheckboxContainer,
+  CheckboxLabel,
+  Checkbox,
+  ReasonInputContainer,
+  ReasonInput,
+  UncheckedListContainer,
+  SubmitButton,
+} from "./styles";
 
 const IrregularCheckList = () => {
   const [checkItems, setCheckItems] = useState([]);
   const [checkedStates, setCheckedStates] = useState({});
   const [reason, setReason] = useState("");
+  const [uncheckedItems, setUncheckedItems] = useState([]);
+  const [commentsState, setCommentsState] = useState({});
 
   useEffect(() => {
     const fetchChecklist = async () => {
@@ -200,6 +113,30 @@ const IrregularCheckList = () => {
     }
   };
 
+  const handleCommentChange = (id, value) => {
+    setCommentsState((prev) => ({ ...prev, [id]: value }));
+  };
+
+  const handleCommentSubmit = async (id) => {
+    if (!commentsState[id]) {
+      alert("댓글을 입력해주세요!");
+      return;
+    }
+
+    const commentData = { comment: commentsState[id], unchecked_id: id };
+
+    try {
+      const response = await proPage.postUncheckedComments(commentData);
+      if (response?.status === 201) {
+        alert("댓글이 저장되었습니다!");
+      } else {
+        console.error("댓글 저장 실패");
+      }
+    } catch (error) {
+      console.error("Error posting comment:", error);
+    }
+  };
+
   return (
     <BoxContainer>
       <div style={{ display: "flex", alignItems: "center" }}>
@@ -230,12 +167,51 @@ const IrregularCheckList = () => {
       </ChecklistContainer>
 
       <ReasonInputContainer>
-        <ReasonInput
-          placeholder={`미체크 된 항목에 대해 미체크 항목과, 사유를 작성해 주세요.\n예 : [강사 일지 작성] 전일자 강사 일지 미작성으로 강사님께 요청`}
-          value={reason}
-          onChange={handleReasonChange}
-        />
-        <SubmitButton onClick={handleSubmit}>등록</SubmitButton>
+        {uncheckedItems.length > 0 ? (
+          <UncheckedListContainer>
+            {uncheckedItems.map((item) => (
+              <div
+                key={item.id}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginBottom: "10px",
+                  borderBottom: "1px solid #dcdcdc",
+                }}
+              >
+                <text
+                  style={{
+                    marginBottom: "10px",
+                    fontSize: "13pt",
+                    padding: "1%",
+                  }}
+                >
+                  {item.task_name}
+                </text>
+                <ReasonInput
+                  placeholder="코멘트를 입력하세요"
+                  value={commentsState[item.id] || ""}
+                  onChange={(e) => handleCommentChange(item.id, e.target.value)}
+                />
+                <button
+                  onClick={() => handleCommentSubmit(item.id)}
+                  style={{
+                    marginLeft: "10px",
+                    border: "none",
+                    background: "none",
+                    cursor: "pointer",
+                    color: "#ff7710",
+                    fontSize: "16px",
+                  }}
+                >
+                  ✔️
+                </button>
+              </div>
+            ))}
+          </UncheckedListContainer>
+        ) : (
+          <p>미체크된 항목이 없습니다.</p>
+        )}
       </ReasonInputContainer>
     </BoxContainer>
   );
