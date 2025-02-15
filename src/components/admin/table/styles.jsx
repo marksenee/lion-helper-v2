@@ -74,7 +74,7 @@ const UrgencyBadge = styled.span`
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: ${(props) => (props.urgent ? "#FF6767" : "#8BD96C")};
+  background-color: ${({ urgent }) => (urgent ? "#8BD96C" : "#FF6767")};
 `;
 
 export {

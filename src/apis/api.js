@@ -51,6 +51,7 @@ export const proPage = {
 
   // 일일 업무 전송하기
   postDailyCheck: async (data) => {
+    console.log("dadfasdfasf", data);
     try {
       const response = await api.post("/tasks", data);
       return response;
@@ -195,6 +196,16 @@ export const proPage = {
   postUncheckedComments: async (data) => {
     try {
       const response = await api.post("/unchecked_comments", data);
+      return response;
+    } catch (error) {
+      return error.response;
+    }
+  },
+
+  //체크율 조회 기능
+  getCheckPercent: async () => {
+    try {
+      const response = await api.get("/admin/task_status");
       return response;
     } catch (error) {
       return error.response;

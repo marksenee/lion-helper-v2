@@ -11,35 +11,28 @@ import {
   TableUrgencyCell,
   UrgencyBadge,
 } from "./styles";
+import { proPage } from "../../../apis/api";
 
 const TableComponents = () => {
-  const data = [
-    {
-      course: "데이터분석 1회차",
-      completion: "100%",
-      urgency: "완수",
-    },
-    {
-      course: "클라우드 엔지니어링 1회차",
-      completion: "80%",
-      urgency: "미완수",
-    },
-    {
-      course: "프론트엔드 개발 1회차",
-      completion: "90%",
-      urgency: "미완수",
-    },
-    {
-      course: "백엔드 개발 1회차",
-      completion: "85%",
-      urgency: "미완수",
-    },
-    {
-      course: "AI 모델링 1회차",
-      completion: "100%",
-      urgency: "완수",
-    },
-  ];
+  const [taskData, setTaskData] = useState([]);
+
+  useEffect(() => {
+    const fetchTaskData = async () => {
+      try {
+        const response = await proPage.getCheckPercent();
+
+        if (response && response.data) {
+          console.log("asdf", response.data.data[0].check_rate);
+
+          const data = response.data.data;
+          setTaskData(data);
+        }
+      } catch (error) {
+        console.error("Error fetching checklist:", error);
+      }
+    };
+    fetchTaskData();
+  }, []);
 
   return (
     <Container>
@@ -54,16 +47,15 @@ const TableComponents = () => {
             </TableRow>
           </TableHead>
           <tbody>
-            {data.map((row, index) => (
+            {taskData.map((item, index) => (
               <TableRow key={index}>
-                <TableCell>{row.course}</TableCell>
-                <TableCell>{row.completion}</TableCell>
+                <TableCell>{item.training_course}</TableCell>
+                <TableCell>{item.check_rate}</TableCell>
                 <TableUrgencyCell>
-                  <UrgencyBadge urgent={row.urgency === "미완수"}>
-                    {row.urgency}
+                  <UrgencyBadge urgent={item.check_rate === "100.0%"}>
+                    {item.check_rate === "100.0%" ? "완수" : "미완수"}
                   </UrgencyBadge>
                 </TableUrgencyCell>
-                <TableCell>{row.status}</TableCell>
               </TableRow>
             ))}
           </tbody>
