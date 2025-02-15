@@ -19,12 +19,13 @@ const Title = styled.div`
 
 const CheckListSaveButton = styled.button`
   font-size: 13pt;
+  margin-left: 1%;
   background-color: transparent;
   border: 1px solid transparent;
   color: gray;
   cursor: pointer;
-
-  &:active {
+  transition: color 0.3s ease;
+  &:hover {
     color: #ff7710;
   }
 `;
