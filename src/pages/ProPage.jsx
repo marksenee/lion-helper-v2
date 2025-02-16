@@ -29,7 +29,7 @@ const InputContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 80%;
+  width: 900px;
   margin-top: 5%;
   margin-bottom: 2%;
   gap: 30px; /* 간격을 30px로 설정 */
