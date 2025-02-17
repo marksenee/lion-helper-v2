@@ -22,7 +22,7 @@ const TableComponents = () => {
         const response = await proPage.getCheckPercent();
 
         if (response && response.data) {
-          console.log("asdf", response.data.data[0].check_rate);
+          // console.log("asdf", response.data.data[0].check_rate);
 
           const data = response.data.data;
           setTaskData(data);

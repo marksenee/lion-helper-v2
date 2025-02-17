@@ -3,10 +3,10 @@ import axios from "axios";
 export const api = axios.create({
   baseURL: "https://mvp-dashboard.onrender.com",
   headers: {
-    "content-type": "application/json;charset=UTF-8",
+    "content-type": "application/json",
     accept: "application/json,",
   },
-  //   withCredentials: true,
+  // withCredentials: true,
 });
 
 export const proPage = {
@@ -49,11 +49,21 @@ export const proPage = {
     }
   },
 
+  // 주간 업무 가져오기
+  getWeeklyCheck: async () => {
+    try {
+      const response = await api.get("/tasks");
+      return response;
+    } catch (error) {
+      return error.response;
+    }
+  },
+
   // 일일 업무 전송하기
   postDailyCheck: async (data) => {
-    console.log("dadfasdfasf", data);
     try {
-      const response = await api.post("/tasks", data);
+      const response = await api.post("/tasks", JSON.stringify(data));
+      console.log("data", response);
       return response;
     } catch (error) {
       return error.response;
@@ -72,7 +82,6 @@ export const proPage = {
 
   postIrregularCheck: async (data) => {
     try {
-      console.log("data", data);
       const response = await api.post("/irregular_tasks", data);
       return response;
     } catch (error) {
@@ -131,7 +140,6 @@ export const proPage = {
 
   // 미체크 항목 데이터 전송
   postUnCheckedDescriptions: async (data) => {
-    console.log("uncheck", data);
     try {
       const response = await api.post("/unchecked_descriptions", data);
       return response;
@@ -151,11 +159,9 @@ export const proPage = {
   },
 
   // 미체크 항목 해결
-  deleteUnCheckedDescriptions: async (id) => {
+  deleteUnCheckedDescriptions: async (data) => {
     try {
-      const response = await api.post("/unchecked_descriptions/resolve", {
-        unchecked_id: id,
-      });
+      const response = await api.post("/unchecked_descriptions/resolve", data);
       return response;
     } catch (error) {
       return error.response;
@@ -215,9 +221,15 @@ export const proPage = {
   //로그인
   postLogin: async (data) => {
     try {
-      const response = await api.post("/login", data);
+      const response = await api.post("/login", JSON.stringify(data), {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log("로그인 응답:", response);
       return response;
     } catch (error) {
+      console.error("로그인 오류:", error.response || error);
       return error.response;
     }
   },

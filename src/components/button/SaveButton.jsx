@@ -1,25 +1,15 @@
 import React from "react";
 import styled from "styled-components";
 
-// 스타일 정의
-
-// const SaveButtonContainer = styled.div`
-//   position: relative;
-//   display: flex;
-//   justify-content: flex-end;
-//   margin-top: 20px; /* 일일 업무 체크리스트 아래에 간격 추가 */
-// `;
-
 const SaveButton = styled.button`
-  width: 158px;
-  height: 48px;
-  background-color: white;
-  border: 2px solid #ff7710;
+  width: 100px;
+  height: 45px;
+  background-color: #f5f5f5;
   border-radius: 5px;
   font-family: "Pretandard", sans-serif;
   font-weight: semibold;
-  font-size: 18pt;
-  color: #ff7710;
+  font-size: 15pt;
+  color: #000000;
   cursor: pointer;
   transition: background-color 0.3s ease;
 

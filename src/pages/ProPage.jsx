@@ -193,7 +193,7 @@ const ProPage = () => {
           selectedCourse={selectedCourse}
         />
         <DailyCheckList selectedCourse={selectedCourse} />
-        <IrregularCheckList selectedCourse={selectedCourse} />
+        {/* <IrregularCheckList selectedCourse={selectedCourse} /> */}
 
         {/* 버튼을 오른쪽 아래에 배치 */}
         <Issues formattedDate={formattedDate} selectedCourse={selectedCourse} />
