@@ -19,6 +19,7 @@ import {
   DropdownItem,
   TitleWrapper,
 } from "../issues/styles";
+import TaskList from "./TaskList";
 
 const GetUnCheckedComponent = () => {
   const [items, setItems] = useState([]); // API 데이터 상태
@@ -231,7 +232,7 @@ const GetUnCheckedComponent = () => {
   return (
     <Container>
       <TitleWrapper>
-        <Title>📌 미체크 항목</Title>
+        <Title>✍🏻 미체크 항목</Title>
         <DropdownContainer onClick={() => setDropdownOpen(!dropdownOpen)}>
           {selectedCourse || "과정 선택"}
           <DropdownIcon />
@@ -249,22 +250,19 @@ const GetUnCheckedComponent = () => {
           </DropdownList>
         </DropdownContainer>
       </TitleWrapper>
-      <NoticeBox>
+      <TaskList />
+      {/* <NoticeBox>
         <NoticeList>
           {filteredIssues.map((item, index) => (
             <NoticeItem key={item.id}>
               {index + 1} {". "}
               {item.content}
-              {/* ✅ unchecked_items의 `content` 출력 */}
-              {/* ✅ 해결 버튼 */}
               <CommentButton onClick={() => handleResolveIssue(item.id)}>
                 해결
               </CommentButton>
-              {/* ✅ 댓글 토글 */}
               <CommentButton onClick={() => toggleMemo(index)}>
                 {memoVisible[index] ? "- 닫기" : "+ 댓글"}
               </CommentButton>
-              {/* ✅ 댓글 영역 */}
               {memoVisible[index] && (
                 <CommentBox>
                   {item.comments &&
@@ -288,7 +286,7 @@ const GetUnCheckedComponent = () => {
             </NoticeItem>
           ))}
         </NoticeList>
-      </NoticeBox>
+      </NoticeBox> */}
     </Container>
   );
 };
