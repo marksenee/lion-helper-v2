@@ -85,9 +85,9 @@ const Header = ({ children }) => {
         <NavItem to="/admin" activeClassName="active">
           어드민
         </NavItem>
-        <NavItem to="/notice" activeClassName="active">
+        {/* <NavItem to="/notice" activeClassName="active">
           공지사항
-        </NavItem>
+        </NavItem> */}
         {children} {/* ✅ children을 추가해야 Search가 렌더링됨 */}
       </Nav>
 

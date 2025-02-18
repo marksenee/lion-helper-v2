@@ -72,14 +72,14 @@ const Search = () => {
     }));
   };
 
-  const handleSearch = async () => {
+  const handleSearch = async (searchQuery = query) => {
     setOpenAnswers([]);
     setOpenVersions({});
     setEditingIndex(null);
     setCopiedIndex(null);
 
     try {
-      const response = await helper.gerSearchData(query);
+      const response = await helper.gerSearchData(searchQuery);
 
       if (!response || response.length === 0) {
         // ✅ 결과가 없을 경우 처리
@@ -117,7 +117,8 @@ const Search = () => {
   );
 
   const handleKeywordClick = (keyword) => {
-    alert(`${keyword} 키워드를 검색합니다.`);
+    setQuery(keyword); // 검색어 업데이트
+    handleSearch(keyword); // 검색 실행
   };
 
   const handleKeyPress = (e) => {
@@ -179,15 +180,13 @@ const Search = () => {
       {!isSearched && (
         <KeywordsWrapper>
           <Keyword highlight>많이 찾는 키워드</Keyword>
-          <Keyword onClick={() => handleKeywordClick("키워드 1")}>
-            | 키워드 1
+          <Keyword onClick={() => handleKeywordClick("공결신청")}>
+            | 공결신청
           </Keyword>
-          <Keyword onClick={() => handleKeywordClick("키워드 2")}>
-            | 키워드 2
+          <Keyword onClick={() => handleKeywordClick("훈련장려금")}>
+            | 훈련장려금
           </Keyword>
-          <Keyword onClick={() => handleKeywordClick("키워드 3")}>
-            | 키워드 3
-          </Keyword>
+          <Keyword onClick={() => handleKeywordClick("출결")}>| 출결</Keyword>
         </KeywordsWrapper>
       )}
 
