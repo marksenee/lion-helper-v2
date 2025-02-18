@@ -4,6 +4,7 @@ import { proPage } from "../../../apis/api";
 
 const Container = styled.div`
   max-width: 886px;
+  /* min-height: 50%; */
   padding: 24px;
   border: 1px solid #dcdcdc;
   border-radius: 10px;
@@ -25,12 +26,13 @@ const TaskHeader = styled.div`
 `;
 
 const StatusButton = styled.button`
-  background: ${(props) => (props.resolved ? "#4CAF50" : "#FFA500")};
+  background: ${(props) => (props.resolved ? "#4CAF50" : "#ff7710")};
   color: white;
   font-weight: bold;
   border: none;
-  padding: 6px 12px;
+  padding: 6px 15px;
   border-radius: 4px;
+  margin-right: 1%;
   cursor: pointer;
 `;
 
@@ -41,7 +43,7 @@ const TaskContent = styled.div`
 `;
 
 const TaskField = styled.div`
-  background: #f3f3f3;
+  background: #f5f5f5;
   padding: 12px;
   border-radius: 6px;
   display: flex;
@@ -57,11 +59,16 @@ const InputField = styled.input`
 `;
 
 const RegisterButton = styled.button`
-  background: #d1d1d1;
-  padding: 4px 12px;
+  background: #ffffff;
+  padding: 6px 12px;
   border-radius: 4px;
   border: none;
   cursor: pointer;
+
+  &:hover {
+    background-color: #565656;
+    color: white;
+  }
 `;
 
 const Title = styled.h1`

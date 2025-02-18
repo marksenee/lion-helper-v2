@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import styled from "styled-components";
 import Header from "../components/header/Header";
 import { proPage } from "../apis/api";
-import GetIssueUnCheckData from "../components/admin/unchecked/GetUnChecked";
 import TableComponents from "../components/admin/table/Table";
 import GetIssuesComponent from "../components/admin/issues/GetIssuesComponent";
 import GetUnCheckedComponent from "../components/admin/unchecked/GetUnChecked";

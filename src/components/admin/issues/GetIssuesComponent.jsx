@@ -19,6 +19,8 @@ import {
   DropdownList,
   DropdownItem,
   TitleWrapper,
+  TextAreaContainer,
+  ButtonWrapper,
 } from "./styles";
 
 const GetIssuesComponent = () => {
@@ -111,7 +113,7 @@ const GetIssuesComponent = () => {
   };
 
   const SubmitButtonComponents = ({ onClick }) => {
-    return <CommentButton onClick={onClick}>제출</CommentButton>;
+    return <SubmitButton onClick={onClick}>제출</SubmitButton>;
   };
 
   const handleSubmitComment = async (index, issueId) => {
@@ -247,14 +249,15 @@ const GetIssuesComponent = () => {
               <NoticeItem key={`${item.id}-${index}`}>
                 {item.content}
 
-                {/* ✅ 해결 버튼 추가 */}
-                <CommentButton onClick={() => handleResolveIssue(item.id)}>
-                  해결
-                </CommentButton>
-
-                <CommentButton onClick={() => toggleMemo(index, item.id)}>
-                  {memoVisible[index] ? "- 닫기" : "+ 댓글"}
-                </CommentButton>
+                {/* ✅ 버튼을 감싸는 div 추가 */}
+                <ButtonWrapper>
+                  <CommentButton onClick={() => handleResolveIssue(item.id)}>
+                    해결
+                  </CommentButton>
+                  <CommentButton onClick={() => toggleMemo(index, item.id)}>
+                    {memoVisible[index] ? "- 닫기" : "+ 댓글"}
+                  </CommentButton>
+                </ButtonWrapper>
 
                 {memoVisible[index] && (
                   <CommentBox>
@@ -265,15 +268,18 @@ const GetIssuesComponent = () => {
                           {formatDate(comment.created_at)})
                         </CommentText>
                       ))}
-
-                    <TextArea
-                      placeholder="댓글을 입력하세요"
-                      value={comments[index] || ""}
-                      onChange={(event) => handleCommentChange(index, event)}
-                    />
-                    <SubmitButtonComponents
-                      onClick={() => handleSubmitComment(index, item.id)}
-                    />
+                    <TextAreaContainer>
+                      <TextArea
+                        placeholder="댓글을 입력하세요"
+                        value={comments[index] || ""}
+                        onChange={(event) => handleCommentChange(index, event)}
+                      />
+                      <SubmitButton
+                        onClick={() => handleSubmitComment(index, item.id)}
+                      >
+                        제출
+                      </SubmitButton>
+                    </TextAreaContainer>
                   </CommentBox>
                 )}
               </NoticeItem>

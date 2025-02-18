@@ -43,16 +43,29 @@ const NoticeList = styled.ul`
 const CommentButton = styled.span`
   color: #ff914d;
   cursor: pointer;
+  padding: 5px;
+  /* align-self: flex-end; */
+  /* display: flex; */
+  /* justify-content: end; */
+  /* align-items: center; */
 `;
 
 const SubmitButton = styled.button`
-  padding: 8px 12px;
-  background-color: #ff7f50;
+  padding: 8px 10px;
+  background-color: #adabab;
   color: white;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  font-size: 14pt;
+  font-size: 12pt;
+  position: absolute; /* Position button absolutely within the container */
+  right: 0; /* Align to the right */
+  margin: 10px;
+
+  &:hover {
+    background-color: #ff7710;
+    color: white;
+  }
 `;
 
 const CommentBox = styled.div`
@@ -64,12 +77,13 @@ const CommentBox = styled.div`
 `;
 
 const TextArea = styled.textarea`
-  width: 98%;
+  width: 90%; /* Adjust width to make space for the button */
   height: 50px;
   margin-top: 5px;
   padding: 5px;
   border: 1px solid #f9f9f9;
   resize: none;
+  flex-grow: 1; /* Allow the textarea to take up available space */
 `;
 
 const MemoBox = styled.div`
@@ -99,13 +113,15 @@ const MemoInput = styled.textarea`
 `;
 
 const NoticeItem = styled.li`
-  padding: 12px 0;
+  /* padding: 12px 0; */
   margin-left: 2%;
+  margin-bottom: 1%;
   border-bottom: 1px solid #ccc;
   /* display: flex; // 해당 부분 설정 시, 댓글 박스가 아래가 아닌 옆으로 됨 */
-  justify-content: space-between;
-  align-items: center;
+  /* justify-content: space-between; */
+  /* align-items: center; */
   font-size: 14pt;
+
   position: relative;
   padding-bottom: ${(props) => (props.hasMemoVisible ? "140px" : "12px")};
 `;
@@ -116,7 +132,7 @@ const CommentText = styled.div`
 `;
 
 const DropdownContainer = styled.div`
-  width: 20%;
+  width: 23%;
   height: 30px;
   background-color: white;
   border: 2px solid #dcdcdc;
@@ -174,6 +190,23 @@ const ButtonContainer = styled.div`
   margin-left: auto; /* 오른쪽 정렬 */
 `;
 
+const ButtonWrapper = styled.div`
+  position: absolute;
+  /* padding-top: -30px; */
+  right: 0; /* 오른쪽 끝 정렬 */
+  top: 0; /* 상단 정렬 */
+
+  display: flex;
+  /* gap: 10px; 버튼 간격 */
+`;
+
+const TextAreaContainer = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  position: relative;
+`;
+
 export {
   Container,
   Title,
@@ -193,4 +226,6 @@ export {
   DropdownItem,
   TitleWrapper,
   ButtonContainer,
+  ButtonWrapper,
+  TextAreaContainer,
 };
