@@ -33,7 +33,6 @@ const DailyCheckList = ({ selectedCourse }) => {
     const fetchChecklist = async () => {
       try {
         const response = await proPage.getDailyCheck();
-        console.log("data", response.data);
         if (response?.data?.data) {
           const limitedCheckItems = response.data.data;
           setCheckItems(limitedCheckItems);
@@ -153,7 +152,10 @@ const DailyCheckList = ({ selectedCourse }) => {
       }));
 
     try {
-      const response = await proPage.postDailyCheck({ updates: checkedItems });
+      const response = await proPage.postDailyCheck({
+        updates: checkedItems,
+        training_course: selectedCourse,
+      });
       if (response.status === 201) {
         alert("체크리스트가 저장되었습니다!");
       }
