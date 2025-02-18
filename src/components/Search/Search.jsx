@@ -18,6 +18,8 @@ import {
   KeywordsWrapper,
   Keyword,
 } from "./styles";
+import { proPage } from "../../apis/api";
+import { helper } from "../../apis/helper";
 
 const Search = () => {
   const [query, setQuery] = useState("");
@@ -70,24 +72,26 @@ const Search = () => {
     }));
   };
 
-  const handleSearch = () => {
-    // 기존 UI 상태 초기화 (새로고침 효과)
+  const handleSearch = async () => {
     setOpenAnswers([]);
     setOpenVersions({});
     setEditingIndex(null);
     setCopiedIndex(null);
 
-    // 검색 실행 (예제 데이터)
-    const dummyResults = Array(30)
-      .fill(null)
-      .map((_, index) => ({
-        question: `Q. 관련질문 ${index + 1}`,
-        answer: `A. 이 질문에 대한 답변 내용 ${index + 1}`,
+    try {
+      const response = await helper.gerSearchData(query);
+
+      const formattedResults = response.map((item) => ({
+        question: `Q. ${item.question}`,
+        answer: `A. ${item.answer}`,
       }));
 
-    setResults(dummyResults);
-    setCurrentPage(1);
-    setIsSearched(true);
+      setResults(formattedResults);
+      setCurrentPage(1);
+      setIsSearched(true);
+    } catch (error) {
+      console.error("검색 요청 실패:", error);
+    }
   };
 
   const toggleAnswer = (index) => {
@@ -155,11 +159,12 @@ const Search = () => {
       <Title>라이언 헬퍼</Title>
       <SearchBox>
         <SearchInput
-          placeholder="라이언 헬퍼에게 무엇이든 물어보세요"
+          placeholder="검색어를 입력하세요"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          onKeyDown={handleKeyPress} // 엔터 키 이벤트 추가
+          onKeyDown={(e) => e.key === "Enter" && handleSearch()} // Enter 키 입력 처리
         />
+
         <SearchIcon onClick={handleSearch}>
           <FaSearch />
         </SearchIcon>

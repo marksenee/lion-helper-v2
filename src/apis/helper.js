@@ -20,13 +20,23 @@ export const helper = {
     }
   },
 
-  // const getSearchData = async (query) => {
-  //   try {
-  //     const response = await api.get(`https://llfaq.onrender.com/api/v1/faqs/search?query=${query}`);
-  //     return response;
-  //   } catch (error) {
-  //     console.error("API 호출 오류:", error);
-  //     return { data: [] }; // 오류 발생 시 빈 배열 반환
-  //   }
-  // };
+  gerSearchData: async (query) => {
+    try {
+      const response = await api.get("/api/v1/faqs/search", {
+        params: { query }, // ✅ params로 전달
+      });
+      return response.data;
+    } catch (error) {
+      return error.response;
+    }
+  },
+
+  //  getSearchData : async (query) => {
+  //     try {
+  //       const response = await api.get(`/api/v1/faqs/search?query=${query}`);
+  //       return response;
+  //     } catch (error) {
+  //       return error.response;
+  //     }
+  //   };
 };
