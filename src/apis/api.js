@@ -133,6 +133,7 @@ export const proPage = {
   getUnCheckedDescriptions: async () => {
     try {
       const response = await api.get("/unchecked_descriptions");
+      console.log("dataaa", response);
       return response;
     } catch (error) {
       return error.response;

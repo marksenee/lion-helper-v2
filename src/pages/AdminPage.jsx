@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import Header from "../components/header/Header";
 import { proPage } from "../apis/api";
@@ -6,6 +6,7 @@ import GetIssueUnCheckData from "../components/admin/unchecked/GetUnChecked";
 import TableComponents from "../components/admin/table/Table";
 import GetIssuesComponent from "../components/admin/issues/GetIssuesComponent";
 import GetUnCheckedComponent from "../components/admin/unchecked/GetUnChecked";
+import useCourseStore from "../\bstore/useCourseStore";
 
 const AdminPageContainer = styled.div`
   display: flex;
@@ -21,6 +22,12 @@ const AdminPageContainer = styled.div`
 `;
 
 const AdminPage = () => {
+  const { fetchCourseItems } = useCourseStore();
+
+  useEffect(() => {
+    fetchCourseItems(); // 페이지가 로드될 때 과정 데이터 가져오기
+  }, []); // Zustand에서 상태 가져오기
+
   return (
     <>
       <Header />

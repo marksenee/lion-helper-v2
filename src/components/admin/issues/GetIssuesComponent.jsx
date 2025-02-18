@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { proPage } from "../../../apis/api";
+import useCourseStore from "../../../\bstore/useCourseStore";
 import {
   Container,
   Title,
@@ -21,6 +22,8 @@ import {
 } from "./styles";
 
 const GetIssuesComponent = () => {
+  const { courseItems } = useCourseStore();
+
   const [items, setItems] = useState([]); // API 데이터 상태
   const [filteredIssues, setFilteredIssues] = useState([]); // 필터링된 이슈
 
@@ -226,56 +229,59 @@ const GetIssuesComponent = () => {
           {selectedCourse || "과정 선택"}
           <DropdownIcon />
           <DropdownList isOpen={dropdownOpen}>
-            {Array.from(new Set(items.map((item) => item.training_course))).map(
-              (course) => (
-                <DropdownItem
-                  key={course}
-                  onClick={() => handleCourseSelect(course)}
-                >
-                  {course}
-                </DropdownItem>
-              )
-            )}
+            {courseItems.map((course) => (
+              <DropdownItem
+                key={course}
+                onClick={() => handleCourseSelect(course)}
+              >
+                {course}
+              </DropdownItem>
+            ))}
           </DropdownList>
         </DropdownContainer>
       </TitleWrapper>
       <NoticeBox>
         <NoticeList>
-          {filteredIssues.map((item, index) => (
-            <NoticeItem key={`${item}-${index}`}>
-              {item.content}
+          {filteredIssues.length > 0 ? (
+            filteredIssues.map((item, index) => (
+              <NoticeItem key={`${item.id}-${index}`}>
+                {item.content}
 
-              {/* ✅ 해결 버튼 추가 */}
-              <CommentButton onClick={() => handleResolveIssue(item.id)}>
-                해결
-              </CommentButton>
+                {/* ✅ 해결 버튼 추가 */}
+                <CommentButton onClick={() => handleResolveIssue(item.id)}>
+                  해결
+                </CommentButton>
 
-              <CommentButton onClick={() => toggleMemo(index, item.id)}>
-                {memoVisible[index] ? "- 닫기" : "+ 댓글"}
-              </CommentButton>
+                <CommentButton onClick={() => toggleMemo(index, item.id)}>
+                  {memoVisible[index] ? "- 닫기" : "+ 댓글"}
+                </CommentButton>
 
-              {memoVisible[index] && (
-                <CommentBox>
-                  {item.comments &&
-                    item.comments.map((comment, i) => (
-                      <CommentText key={i}>
-                        작성자 : {comment.comment} (
-                        {formatDate(comment.created_at)})
-                      </CommentText>
-                    ))}
+                {memoVisible[index] && (
+                  <CommentBox>
+                    {item.comments &&
+                      item.comments.map((comment, i) => (
+                        <CommentText key={i}>
+                          작성자 : {comment.comment} (
+                          {formatDate(comment.created_at)})
+                        </CommentText>
+                      ))}
 
-                  <TextArea
-                    placeholder="댓글을 입력하세요"
-                    value={comments[index] || ""}
-                    onChange={(event) => handleCommentChange(index, event)}
-                  />
-                  <SubmitButtonComponents
-                    onClick={() => handleSubmitComment(index, item.id)}
-                  />
-                </CommentBox>
-              )}
-            </NoticeItem>
-          ))}
+                    <TextArea
+                      placeholder="댓글을 입력하세요"
+                      value={comments[index] || ""}
+                      onChange={(event) => handleCommentChange(index, event)}
+                    />
+                    <SubmitButtonComponents
+                      onClick={() => handleSubmitComment(index, item.id)}
+                    />
+                  </CommentBox>
+                )}
+              </NoticeItem>
+            ))
+          ) : (
+            // 🔹 이슈가 없을 때 메시지 출력
+            <NoticeItem>이슈 사항이 없습니다.</NoticeItem>
+          )}
         </NoticeList>
       </NoticeBox>
     </Container>

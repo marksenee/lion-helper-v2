@@ -20,12 +20,15 @@ import {
   TitleWrapper,
 } from "../issues/styles";
 import TaskList from "./TaskList";
+import useCourseStore from "../../../\bstore/useCourseStore";
 
 const GetUnCheckedComponent = () => {
+  const { courseItems, selectedCourse, setSelectedCourse } = useCourseStore();
+
   const [items, setItems] = useState([]); // API 데이터 상태
   const [filteredIssues, setFilteredIssues] = useState([]); // 필터링된 이슈
 
-  const [selectedCourse, setSelectedCourse] = useState("과정 선택");
+  // const [selectedCourse, setSelectedCourse] = useState("과정 선택");
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const [comments, setComments] = useState(Array(items.length).fill(""));
@@ -40,7 +43,6 @@ const GetUnCheckedComponent = () => {
       try {
         const response = await proPage.getUnCheckedDescriptions();
         if (response?.data?.data && Array.isArray(response.data.data)) {
-          // console.log("check", response.data.data);
           setItems(response.data.data);
           if (response.data.data.length > 0) {
             setSelectedCourse(response.data.data[0].training_course); // 기본 과정 선택
@@ -55,20 +57,20 @@ const GetUnCheckedComponent = () => {
     fetchIssuesList();
   }, []);
 
-  useEffect(() => {
-    if (!selectedCourse) return;
+  // useEffect(() => {
+  //   if (!selectedCourse) return;
 
-    // 과정별로 `unchecked_items`를 가져옴
-    const selectedData = items.find(
-      (item) => item.training_course === selectedCourse
-    );
+  //   // 과정별로 `unchecked_items`를 가져옴
+  //   const selectedData = items.find(
+  //     (item) => item.training_course === selectedCourse
+  //   );
 
-    if (selectedData) {
-      setFilteredIssues(selectedData.unchecked_items || []);
-    } else {
-      setFilteredIssues([]);
-    }
-  }, [selectedCourse, items]);
+  //   if (selectedData) {
+  //     setFilteredIssues(selectedData.unchecked_items || []);
+  //   } else {
+  //     setFilteredIssues([]);
+  //   }
+  // }, [selectedCourse, items]);
 
   useEffect(() => {
     items.forEach((element, index) => {
@@ -237,16 +239,14 @@ const GetUnCheckedComponent = () => {
           {selectedCourse || "과정 선택"}
           <DropdownIcon />
           <DropdownList isOpen={dropdownOpen}>
-            {Array.from(new Set(items.map((item) => item.training_course))).map(
-              (course) => (
-                <DropdownItem
-                  key={course}
-                  onClick={() => handleCourseSelect(course)}
-                >
-                  {course}
-                </DropdownItem>
-              )
-            )}
+            {courseItems.map((course) => (
+              <DropdownItem
+                key={course}
+                onClick={() => handleCourseSelect(course)}
+              >
+                {course}
+              </DropdownItem>
+            ))}
           </DropdownList>
         </DropdownContainer>
       </TitleWrapper>
