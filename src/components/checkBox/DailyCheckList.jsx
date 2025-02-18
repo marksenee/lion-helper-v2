@@ -27,6 +27,7 @@ const DailyCheckList = ({ selectedCourse }) => {
   const [reason, setReason] = useState("");
   const [alertVisible, setAlertVisible] = useState(false);
   const [activeTab, setActiveTab] = useState("daily");
+  const [reasonState, setReasonState] = useState({}); // 각 항목의 액션 플랜을 저장
 
   useEffect(() => {
     const fetchChecklist = async () => {
@@ -90,8 +91,16 @@ const DailyCheckList = ({ selectedCourse }) => {
     }
   };
 
-  const handleReasonChange = (e) => {
-    setReason(e.target.value);
+  // const handleReasonChange = (e) => {
+  //   setReason(e.target.value);
+  // };
+
+  // 입력값 변경 시 즉시 상태 업데이트
+  const handleReasonChange = (id, value) => {
+    setReasonState((prev) => ({
+      ...prev,
+      [id]: value, // 해당 id에 대한 액션 플랜 저장
+    }));
   };
 
   const groupedTasks = checkItems
@@ -151,23 +160,39 @@ const DailyCheckList = ({ selectedCourse }) => {
   };
 
   const handleCommentChange = (id, value) => {
-    setCommentsState((prev) => ({ ...prev, [id]: value }));
+    setReasonState((prev) => ({
+      ...prev,
+      [id]: value, // ✅ reasonState 업데이트 유지
+    }));
   };
 
   const handleCommentSubmit = async (id) => {
-    if (!commentsState[id]) {
-      alert("댓글을 입력해주세요!");
+    console.log("selectedCourse:", selectedCourse);
+    console.log("reasonState:", reasonState);
+    console.log("reasonState[id]:", reasonState[id]); // 값
+    if (!selectedCourse || selectedCourse === "과정 선택") {
+      alert("과정을 선택해 주세요!");
       return;
     }
 
-    const commentData = { comment: commentsState[id], unchecked_id: id };
+    if (!reasonState[id] || reasonState[id].trim() === "") {
+      alert("액션 플랜을 입력해주세요!");
+      return;
+    }
+
+    // if (!commentsState[id] || commentsState[id].trim() === "") {
+    //   alert("액션 플랜을 입력해주세요!");
+    //   return;
+    // }
+
+    const commentData = { comment: reasonState[id], unchecked_id: id };
 
     try {
       const response = await proPage.postUncheckedComments(commentData);
       if (response?.status === 201) {
-        alert("댓글이 저장되었습니다!");
+        alert("입력되었습니다!");
       } else {
-        console.error("댓글 저장 실패");
+        console.error("입력 실패");
       }
     } catch (error) {
       console.error("Error posting comment:", error);
@@ -267,8 +292,8 @@ const DailyCheckList = ({ selectedCourse }) => {
                   </div>
 
                   <ReasonInput
-                    placeholder="코멘트를 입력하세요"
-                    value={commentsState[item.id] || ""}
+                    placeholder="액션플랜을 입력하세요"
+                    value={reasonState[item.id] || ""} // ✅ reasonState를 바라보도록 수정
                     onChange={(e) =>
                       handleCommentChange(item.id, e.target.value)
                     }
