@@ -98,7 +98,7 @@ const SubmitButton = styled.button`
   background-color: white;
   border: 1px solid #ff7710;
   color: #ff7710;
-  font-size: 14px;
+  font-size: 13px;
   cursor: pointer;
   align-self: flex-end;
   border-radius: 5px;
@@ -167,7 +167,7 @@ const SaveButton = styled.button`
   border-radius: 5px;
   font-family: "Pretandard", sans-serif;
   font-weight: semibold;
-  font-size: 13pt;
+  font-size: 12pt;
   /* color: #000000; */
   cursor: pointer;
   /* transition: background-color 0.3s ease; */

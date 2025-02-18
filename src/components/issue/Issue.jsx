@@ -40,9 +40,7 @@ const Issues = ({ formattedDate, selectedCourse }) => {
       <Title>📌 이슈 사항</Title>
       <ReasonInputContainer>
         <ReasonInput
-          placeholder={
-            "이슈사항에 대해 작성해 주세요. (작성 예시 : [과정명] 이슈 내용)"
-          }
+          placeholder={"이슈 사항이 있을 경우 작성해 주세요"}
           value={reason}
           onChange={handleReasonChange}
         />

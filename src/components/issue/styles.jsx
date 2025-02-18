@@ -45,11 +45,10 @@ const ReasonInput = styled.textarea`
 `;
 
 const SubmitButton = styled.button`
-  width: 50px;
-  height: 30px;
-  background-color: white;
-  border: 1px solid #ff7710;
-  color: #ff7710;
+  width: 70px;
+  height: 52px;
+  background-color: #f5f5f5;
+  border-color: transparent;
   font-size: 14px;
   font-family: "Pretandard", sans-serif;
   cursor: pointer;

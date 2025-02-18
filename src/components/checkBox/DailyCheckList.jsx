@@ -90,10 +90,6 @@ const DailyCheckList = ({ selectedCourse }) => {
     }
   };
 
-  // const handleReasonChange = (e) => {
-  //   setReason(e.target.value);
-  // };
-
   // 입력값 변경 시 즉시 상태 업데이트
   const handleReasonChange = (id, value) => {
     setReasonState((prev) => ({
@@ -150,6 +146,11 @@ const DailyCheckList = ({ selectedCourse }) => {
         is_checked: true,
         task_name: item.task_name,
       }));
+
+    if (!selectedCourse || selectedCourse === "과정 선택") {
+      alert("과정을 선택해 주세요");
+      return;
+    }
 
     try {
       const response = await proPage.postDailyCheck({

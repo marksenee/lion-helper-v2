@@ -3,7 +3,7 @@ import { FiClock, FiPlusCircle, FiMinusCircle } from "react-icons/fi";
 
 const Container = styled.div`
   width: 886px;
-  height: 450px;
+  /* height: 450px; */
   background: #fff;
   border: 1px solid #dcdcdc;
   border-radius: 10px;
@@ -48,7 +48,7 @@ const TimeInput = styled.input`
   height: 30px;
   border: 1px solid #dcdcdc;
   padding: 5px 20px;
-  font-size: 15px;
+  font-size: 13px;
   background: white;
   text-align: center;
   padding-right: 30px;
