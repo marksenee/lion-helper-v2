@@ -29,14 +29,12 @@ const DailyCheckList = ({ selectedCourse }) => {
   const [activeTab, setActiveTab] = useState("daily");
 
   useEffect(() => {
-    console.log("checkedStates 업데이트됨:", checkedStates);
-
     const fetchChecklist = async () => {
       try {
         const response = await proPage.getDailyCheck();
-        console.log("data", response.data);
+        // console.log("data", response.data);
         if (response?.data?.data) {
-          const limitedCheckItems = response.data.data.slice(0, 6);
+          const limitedCheckItems = response.data.data;
           setCheckItems(limitedCheckItems);
 
           const unresolvedItems = response.data.data.filter(
@@ -95,6 +93,16 @@ const DailyCheckList = ({ selectedCourse }) => {
   const handleReasonChange = (e) => {
     setReason(e.target.value);
   };
+
+  const groupedTasks = checkItems
+    .filter((item) => item.task_period === activeTab)
+    .reduce((acc, item) => {
+      if (!acc[item.task_category]) {
+        acc[item.task_category] = [];
+      }
+      acc[item.task_category].push(item);
+      return acc;
+    }, {});
 
   const handleSubmit = async () => {
     const uncheckedItemsData = checkItems
@@ -169,7 +177,7 @@ const DailyCheckList = ({ selectedCourse }) => {
   return (
     <div>
       <div style={{ display: "flex", marginTop: "3%" }}>
-        <Title>✅ 정기 업무 체크리스트</Title>
+        <Title>✅ 업무 체크리스트</Title>
         <CheckListSaveButton onClick={handleSaveChecklist}>
           체크리스트 저장
         </CheckListSaveButton>
@@ -192,27 +200,36 @@ const DailyCheckList = ({ selectedCourse }) => {
           </TabContainer>
         </TabWrapper>
         <div>
-          <ChecklistContainer itemCount={checkItems.length}>
-            {checkItems.map((item) => (
-              <CheckboxContainer key={item.id}>
-                <Checkbox
-                  type="checkbox"
-                  checked={!!checkedStates[item.id]} // undefined 방지
-                  onChange={() => handleCheckboxChange(item.id, item)}
-                />
-                <CheckboxLabel>{item.task_name}</CheckboxLabel>
-                <FiHelpCircle
-                  data-tooltip-id={`tooltip-${item.id}`}
-                  style={{
-                    marginLeft: "5px",
-                    cursor: "pointer",
-                    color: "#888",
-                  }}
-                />
-                <Tooltip id={`tooltip-${item.id}`} place="top" effect="solid">
-                  가이드 추가 예정
-                </Tooltip>
-              </CheckboxContainer>
+          <ChecklistContainer>
+            {Object.entries(groupedTasks).map(([category, tasks]) => (
+              <div key={category} style={{ marginBottom: "15px" }}>
+                <h3>{category}</h3>
+                {tasks.map((item) => (
+                  <CheckboxContainer key={item.id}>
+                    <Checkbox
+                      type="checkbox"
+                      checked={!!checkedStates[item.id]}
+                      onChange={() => handleCheckboxChange(item.id, item)}
+                    />
+                    <CheckboxLabel>{item.task_name}</CheckboxLabel>
+                    <FiHelpCircle
+                      data-tooltip-id={`tooltip-${item.id}`}
+                      style={{
+                        marginLeft: "5px",
+                        cursor: "pointer",
+                        color: "#888",
+                      }}
+                    />
+                    <Tooltip
+                      id={`tooltip-${item.id}`}
+                      place="top"
+                      effect="solid"
+                    >
+                      가이드 추가 예정
+                    </Tooltip>
+                  </CheckboxContainer>
+                ))}
+              </div>
             ))}
           </ChecklistContainer>
         </div>

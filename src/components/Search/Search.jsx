@@ -81,12 +81,19 @@ const Search = () => {
     try {
       const response = await helper.gerSearchData(query);
 
-      const formattedResults = response.map((item) => ({
-        question: `Q. ${item.question}`,
-        answer: `A. ${item.answer}`,
-      }));
+      if (!response || response.length === 0) {
+        // ✅ 결과가 없을 경우 처리
+        setResults([{ question: "관련된 내용이 없습니다", answer: "" }]);
+      } else {
+        // ✅ 결과가 있을 경우 정상적으로 데이터 반영
+        const formattedResults = response.map((item) => ({
+          question: `Q. ${item.question}`,
+          answer: `A. ${item.answer}`,
+        }));
 
-      setResults(formattedResults);
+        setResults(formattedResults);
+      }
+
       setCurrentPage(1);
       setIsSearched(true);
     } catch (error) {
@@ -186,157 +193,160 @@ const Search = () => {
 
       {isSearched && (
         <ResultsContainer>
-          {paginatedResults.map((item, index) => (
-            <div key={index}>
-              <QuestionBox onClick={() => toggleAnswer(index)}>
-                <QuestionText>{item.question}</QuestionText>
-                <ToggleIcon>
-                  {openAnswers.includes(index) ? (
-                    <FaChevronUp />
-                  ) : (
-                    <FaChevronDown />
-                  )}
-                </ToggleIcon>
-              </QuestionBox>
-              {openAnswers.includes(index) && (
-                <>
-                  <AnswerBox>
-                    {editingIndex === index ? (
-                      <input
-                        type="text"
-                        value={editedText}
-                        onChange={(e) => setEditedText(e.target.value)}
-                        style={{
-                          width: "600px",
-                          height: "30px",
-                          fontSize: "16px",
-                          borderColor: "#ddd", // 연한 회색 (#ddd 또는 #ccc)
-                          borderWidth: "1px", // 두께 얇게 (1px)
-                          borderStyle: "solid", // 선 스타일 추가
-                          borderRadius: "5px", // 모서리를 부드럽게
-                          padding: "10px", // 내부 여백 추가
-                          outline: "none", // 포커스 시 기본 테두리 제거
-                        }}
-                        placeholder="수정 내용을 입력해주세요"
-                      />
+          {paginatedResults.length > 0 ? (
+            paginatedResults.map((item, index) => (
+              <div key={index}>
+                <QuestionBox onClick={() => toggleAnswer(index)}>
+                  <QuestionText>{item.question}</QuestionText>
+                  <ToggleIcon>
+                    {openAnswers.includes(index) ? (
+                      <FaChevronUp />
                     ) : (
-                      item.answer
+                      <FaChevronDown />
                     )}
-                    {/* 복사 아이콘 */}
-                    <MdContentCopy
-                      style={{
-                        marginLeft: "10px",
-                        cursor: "pointer",
-                        color: "#666",
-                      }}
-                      onClick={() => handleCopy(item.answer, index)}
-                    />
-
-                    {/* 수정/체크 아이콘 */}
-                    {editingIndex === index ? (
-                      <MdCheck
-                        style={{
-                          marginLeft: "10px",
-                          cursor: "pointer",
-                          color: "green",
-                        }}
-                        onClick={() => handleSaveEdit(index)}
-                      />
-                    ) : (
-                      <MdEdit
+                  </ToggleIcon>
+                </QuestionBox>
+                {openAnswers.includes(index) && (
+                  <>
+                    <AnswerBox>
+                      {editingIndex === index ? (
+                        <input
+                          type="text"
+                          value={editedText}
+                          onChange={(e) => setEditedText(e.target.value)}
+                          style={{
+                            width: "600px",
+                            height: "30px",
+                            fontSize: "16px",
+                            borderColor: "#ddd",
+                            borderWidth: "1px",
+                            borderStyle: "solid",
+                            borderRadius: "5px",
+                            padding: "10px",
+                            outline: "none",
+                          }}
+                          placeholder="수정 내용을 입력해주세요"
+                        />
+                      ) : (
+                        item.answer
+                      )}
+                      <MdContentCopy
                         style={{
                           marginLeft: "10px",
                           cursor: "pointer",
                           color: "#666",
                         }}
-                        onClick={() => handleEditClick(index, item.answer)}
+                        onClick={() => handleCopy(item.answer, index)}
                       />
-                    )}
-                    {copiedIndex === index && (
-                      <div style={{ color: "green" }}>복사 되었습니다!</div>
-                    )}
-                  </AnswerBox>
-                  {/* 버전 기록 버튼 */}
-                  <div
-                    onClick={() => toggleVersionHistory(index)}
-                    style={{
-                      cursor: "pointer",
-                      color: "orange",
-                      // marginBottom: "5%",
-                      marginLeft: "auto", // 오른쪽 정렬
-                      display: "flex", // flex로 설정
-                      alignItems: "center", // 수직 중앙 정렬
-                      fontSize: "14px",
-                    }}
-                  >
-                    버전 기록
-                  </div>
-
-                  {/* 버전 기록 리스트 */}
-                  {openVersions[index] && versionHistory[index] && (
+                      {editingIndex === index ? (
+                        <MdCheck
+                          style={{
+                            marginLeft: "10px",
+                            cursor: "pointer",
+                            color: "green",
+                          }}
+                          onClick={() => handleSaveEdit(index)}
+                        />
+                      ) : (
+                        <MdEdit
+                          style={{
+                            marginLeft: "10px",
+                            cursor: "pointer",
+                            color: "#666",
+                          }}
+                          onClick={() => handleEditClick(index, item.answer)}
+                        />
+                      )}
+                      {copiedIndex === index && (
+                        <div style={{ color: "green" }}>복사 되었습니다!</div>
+                      )}
+                    </AnswerBox>
                     <div
+                      onClick={() => toggleVersionHistory(index)}
                       style={{
-                        background: "#f8f8f8",
-                        padding: "10px",
-                        borderRadius: "5px",
-                        marginTop: "5px",
-                        marginBottom: "3%",
-                        borderRadius: "3%",
+                        cursor: "pointer",
+                        color: "orange",
+                        marginLeft: "auto",
+                        display: "flex",
+                        alignItems: "center",
+                        fontSize: "14px",
                       }}
                     >
-                      {versionHistory[index].map((history, vIndex) => (
-                        <div
-                          key={vIndex}
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            marginBottom: "5px",
-                          }}
-                        >
-                          {/* 원형 프로필 아이콘 */}
+                      버전 기록
+                    </div>
+                    {openVersions[index] && versionHistory[index] && (
+                      <div
+                        style={{
+                          background: "#f8f8f8",
+                          padding: "10px",
+                          borderRadius: "5px",
+                          marginTop: "5px",
+                          marginBottom: "3%",
+                        }}
+                      >
+                        {versionHistory[index].map((history, vIndex) => (
                           <div
+                            key={vIndex}
                             style={{
-                              width: "37px",
-                              height: "37px",
-                              borderRadius: "50%",
-                              backgroundColor: "#555",
-                              color: "#fff",
                               display: "flex",
-                              justifyContent: "center",
                               alignItems: "center",
-                              fontSize: "12px",
-                              fontWeight: "bold",
-                              marginRight: "2%",
-                              marginLeft: "1%",
+                              marginBottom: "5px",
                             }}
                           >
-                            {history.user.charAt(0)}
-                          </div>
-
-                          {/* 버전 히스토리 텍스트 */}
-                          <div>
                             <div
                               style={{
+                                width: "37px",
+                                height: "37px",
+                                borderRadius: "50%",
+                                backgroundColor: "#555",
+                                color: "#fff",
+                                display: "flex",
+                                justifyContent: "center",
+                                alignItems: "center",
                                 fontSize: "12px",
-                                color: "#666",
-                                marginTop: "7%",
-                                marginBottom: "2%",
+                                fontWeight: "bold",
+                                marginRight: "2%",
+                                marginLeft: "1%",
                               }}
                             >
-                              {history.date} ({history.user})
+                              {history.user.charAt(0)}
                             </div>
-                            <div style={{ marginBottom: "5%" }}>
-                              {history.text}
+                            <div>
+                              <div
+                                style={{
+                                  fontSize: "12px",
+                                  color: "#666",
+                                  marginTop: "7%",
+                                  marginBottom: "2%",
+                                }}
+                              >
+                                {history.date} ({history.user})
+                              </div>
+                              <div style={{ marginBottom: "5%" }}>
+                                {history.text}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </>
-              )}
-            </div>
-          ))}
+                        ))}
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
+            ))
+          ) : (
+            // ✅ 검색 결과가 없을 때 "관련된 내용이 없습니다." 텍스트 표시
+            <text
+              style={{
+                textAlign: "center",
+                fontSize: "16px",
+                color: "#666",
+                padding: "20px",
+              }}
+            >
+              관련된 내용이 없습니다.
+            </text>
+          )}
         </ResultsContainer>
       )}
 
