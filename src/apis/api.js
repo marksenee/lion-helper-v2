@@ -61,8 +61,6 @@ export const proPage = {
 
   // 일일 업무 전송하기
   postDailyCheck: async (data) => {
-    console.log("data", data);
-
     try {
       const response = await api.post("/tasks", data);
       return response;
@@ -133,7 +131,6 @@ export const proPage = {
   getUnCheckedDescriptions: async () => {
     try {
       const response = await api.get("/unchecked_descriptions");
-      console.log("dataaa", response);
       return response;
     } catch (error) {
       return error.response;
@@ -152,8 +149,11 @@ export const proPage = {
 
   // 미체크 항목 데이터 전송
   postUnCheckedDescriptionsComment: async (data) => {
+    console.log("data", data);
     try {
       const response = await api.post("/unchecked_comments", data);
+      console.log("data2", response);
+
       return response;
     } catch (error) {
       return error.response;
@@ -164,6 +164,16 @@ export const proPage = {
   deleteUnCheckedDescriptions: async (data) => {
     try {
       const response = await api.post("/unchecked_descriptions/resolve", data);
+      return response;
+    } catch (error) {
+      return error.response;
+    }
+  },
+
+  // 미체크 항목 대응현황, 대응 결과 작성
+  postUnCheckedComment: async (data) => {
+    try {
+      const response = await api.post("/unchecked_comments", data);
       return response;
     } catch (error) {
       return error.response;

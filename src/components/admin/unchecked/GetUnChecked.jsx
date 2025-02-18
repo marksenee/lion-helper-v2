@@ -23,12 +23,12 @@ import TaskList from "./TaskList";
 import useCourseStore from "../../../\bstore/useCourseStore";
 
 const GetUnCheckedComponent = () => {
-  const { courseItems, selectedCourse, setSelectedCourse } = useCourseStore();
+  const { courseItems } = useCourseStore();
 
   const [items, setItems] = useState([]); // API 데이터 상태
   const [filteredIssues, setFilteredIssues] = useState([]); // 필터링된 이슈
 
-  // const [selectedCourse, setSelectedCourse] = useState("과정 선택");
+  const [selectedCourse, setSelectedCourse] = useState("과정 선택");
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const [comments, setComments] = useState(Array(items.length).fill(""));
@@ -56,6 +56,15 @@ const GetUnCheckedComponent = () => {
     };
     fetchIssuesList();
   }, []);
+
+  useEffect(() => {
+    if (!selectedCourse) return;
+
+    const selectedData = items.find(
+      (item) => item.training_course === selectedCourse
+    );
+    setFilteredIssues(selectedData ? selectedData.unchecked_items || [] : []);
+  }, [selectedCourse, items]);
 
   // useEffect(() => {
   //   if (!selectedCourse) return;
@@ -250,7 +259,7 @@ const GetUnCheckedComponent = () => {
           </DropdownList>
         </DropdownContainer>
       </TitleWrapper>
-      <TaskList />
+      <TaskList items={items} selectedCourse={selectedCourse} />
       {/* <NoticeBox>
         <NoticeList>
           {filteredIssues.map((item, index) => (

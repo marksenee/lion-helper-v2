@@ -182,15 +182,20 @@ const DailyCheckList = ({ selectedCourse }) => {
       return;
     }
 
-    // if (!commentsState[id] || commentsState[id].trim() === "") {
-    //   alert("액션 플랜을 입력해주세요!");
-    //   return;
-    // }
+    // `description` 필드 설정 (예: task_name을 기반으로 설명 추가)
+    const uncheckedTask = uncheckedItems.find((item) => item.id === id);
+    const description = uncheckedTask
+      ? `${uncheckedTask.task_name}에 대한 미체크 사유`
+      : "미체크 항목 관련 액션 플랜";
 
-    const commentData = { comment: reasonState[id], unchecked_id: id };
+    const commentData = {
+      action_plan: reasonState[id],
+      description: description, // description 추가
+      training_course: selectedCourse,
+    };
 
     try {
-      const response = await proPage.postUncheckedComments(commentData);
+      const response = await proPage.postUnCheckedDescriptions(commentData);
       if (response?.status === 201) {
         alert("입력되었습니다!");
       } else {
