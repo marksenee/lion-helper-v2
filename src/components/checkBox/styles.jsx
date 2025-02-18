@@ -19,6 +19,7 @@ const Title = styled.div`
   font-weight: bold;
   color: #000000;
   margin-top: 2%;
+  margin-left: 1%;
 `;
 
 const CheckListSaveButton = styled.button`

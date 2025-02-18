@@ -33,7 +33,7 @@ const DailyCheckList = ({ selectedCourse }) => {
     const fetchChecklist = async () => {
       try {
         const response = await proPage.getDailyCheck();
-        // console.log("data", response.data);
+        console.log("data", response.data);
         if (response?.data?.data) {
           const limitedCheckItems = response.data.data;
           setCheckItems(limitedCheckItems);
@@ -102,14 +102,17 @@ const DailyCheckList = ({ selectedCourse }) => {
       [id]: value, // 해당 id에 대한 액션 플랜 저장
     }));
   };
-
   const groupedTasks = checkItems
     .filter((item) => item.task_period === activeTab)
     .reduce((acc, item) => {
       if (!acc[item.task_category]) {
         acc[item.task_category] = [];
       }
-      acc[item.task_category].push(item);
+      acc[item.task_category].push({
+        id: item.id,
+        task_name: item.task_name,
+        guide: item.guide, // ✅ guide 정보 추가
+      });
       return acc;
     }, {});
 
@@ -167,9 +170,6 @@ const DailyCheckList = ({ selectedCourse }) => {
   };
 
   const handleCommentSubmit = async (id) => {
-    console.log("selectedCourse:", selectedCourse);
-    console.log("reasonState:", reasonState);
-    console.log("reasonState[id]:", reasonState[id]); // 값
     if (!selectedCourse || selectedCourse === "과정 선택") {
       alert("과정을 선택해 주세요!");
       return;
@@ -198,6 +198,10 @@ const DailyCheckList = ({ selectedCourse }) => {
       console.error("Error posting comment:", error);
     }
   };
+
+  const filteredUncheckedItems = uncheckedItems.filter(
+    (item) => item.task_period === activeTab
+  );
 
   return (
     <div>
@@ -250,7 +254,9 @@ const DailyCheckList = ({ selectedCourse }) => {
                       place="top"
                       effect="solid"
                     >
-                      가이드 추가 예정
+                      {item.guide && item.guide !== "업무 가이드 없음"
+                        ? item.guide
+                        : "가이드 정보 없음"}
                     </Tooltip>
                   </CheckboxContainer>
                 ))}
@@ -258,42 +264,51 @@ const DailyCheckList = ({ selectedCourse }) => {
             ))}
           </ChecklistContainer>
         </div>
-      </BoxContainer>
-      <div style={{ marginTop: "3%", marginBottom: "3%" }}>
-        <BoxContainer>
+        <div
+          style={{
+            marginTop: "3%",
+            marginBottom: "3%",
+            border: "1px solid #ecebeb",
+            borderRadius: "5px",
+            padding: "10px",
+          }}
+        >
           <Title>💡미체크 항목 액션 플랜</Title>
-          {/* <ReasonInputContainer> */}
-          {uncheckedItems.length > 0 ? (
+          {filteredUncheckedItems.length > 0 ? (
             <UncheckedListContainer>
-              {uncheckedItems.map((item) => (
+              {filteredUncheckedItems.map((item) => (
                 <div
                   key={item.id}
                   style={{
                     display: "flex",
-                    alignItems: "center",
+                    alignItems: "flex-start", // 여러 줄일 때도 균형 잡힌 정렬
+                    gap: "10px", // 요소 간 간격 추가
                     marginBottom: "10px",
-                    // borderBottom: "1px solid #dcdcdc",
                   }}
                 >
                   <div
                     style={{
                       width: "500px",
+                      minHeight: "40px", // 최소 높이 지정 (줄바꿈 시 UI 안정성 확보)
+                      display: "flex",
+                      alignItems: "center",
                     }}
                   >
-                    <text
+                    <div
                       style={{
-                        marginBottom: "10px",
                         fontSize: "13pt",
-                        padding: "1%",
+                        marginLeft: "10%",
+                        whiteSpace: "normal",
+                        wordBreak: "break-word", // 긴 텍스트 줄바꿈 처리
+                        lineHeight: "1.5", // 줄 간격 조절
                       }}
                     >
                       {item.task_name}
-                    </text>
+                    </div>
                   </div>
-
                   <ReasonInput
                     placeholder="액션플랜을 입력하세요"
-                    value={reasonState[item.id] || ""} // ✅ reasonState를 바라보도록 수정
+                    value={reasonState[item.id] || ""}
                     onChange={(e) =>
                       handleCommentChange(item.id, e.target.value)
                     }
@@ -307,9 +322,51 @@ const DailyCheckList = ({ selectedCourse }) => {
           ) : (
             <p>미체크된 항목이 없습니다.</p>
           )}
-          {/* </ReasonInputContainer> */}
+        </div>
+      </BoxContainer>
+      {/* <div style={{ marginTop: "3%", marginBottom: "3%" }}>
+        <BoxContainer>
+          <Title>💡미체크 항목 액션 플랜</Title>
+          {filteredUncheckedItems.length > 0 ? (
+            <UncheckedListContainer>
+              {filteredUncheckedItems.map((item) => (
+                <div
+                  key={item.id}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    marginBottom: "10px",
+                  }}
+                >
+                  <div style={{ width: "500px" }}>
+                    <text
+                      style={{
+                        marginBottom: "10px",
+                        fontSize: "13pt",
+                        padding: "1%",
+                      }}
+                    >
+                      {item.task_name}
+                    </text>
+                  </div>
+                  <ReasonInput
+                    placeholder="액션플랜을 입력하세요"
+                    value={reasonState[item.id] || ""}
+                    onChange={(e) =>
+                      handleCommentChange(item.id, e.target.value)
+                    }
+                  />
+                  <SaveButton onClick={() => handleCommentSubmit(item.id)}>
+                    등록
+                  </SaveButton>
+                </div>
+              ))}
+            </UncheckedListContainer>
+          ) : (
+            <p>미체크된 항목이 없습니다.</p>
+          )}
         </BoxContainer>
-      </div>
+      </div> */}
     </div>
   );
 };
