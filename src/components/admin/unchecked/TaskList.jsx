@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { proPage } from "../../../apis/api";
 
@@ -79,22 +79,80 @@ const Title = styled.h1`
   margin-bottom: 16px;
 `;
 
+const CommentItem = styled.div`
+  background: #ffffff;
+  padding: 10px;
+  border-radius: 6px;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+const CommentText = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const CommentInfo = styled.span`
+  font-size: 12px;
+  color: gray;
+  margin-top: 4px;
+`;
+
+// 날짜 포맷 변환 함수
+const formatDate = (dateString) => {
+  if (!dateString) return "N/A"; // 값이 없으면 "N/A" 표시
+  const date = new Date(dateString);
+  return isNaN(date.getTime()) ? "N/A" : date.toISOString().split("T")[0]; // 유효한 날짜인지 확인
+};
+
 const TaskItem = ({ id, content, actionPlan }) => {
   const [resolved, setResolved] = useState(false);
   const [statusComment, setStatusComment] = useState(""); // 대응 현황
   const [resultComment, setResultComment] = useState(""); // 대응 결과
+  const [statusList, setStatusList] = useState([]); // ✅ 반드시 빈 배열로 초기화
+
+  // ✅ 대응 현황 데이터 불러오는 함수
+  const fetchStatusList = async () => {
+    try {
+      const response = await proPage.getUnCheckComment({
+        params: { unchecked_id: id },
+      });
+      if (response.status === 200) {
+        const data = response.data;
+        setStatusList(response.data.data || []); // 서버에서 받아온 데이터를 상태에 저장
+      }
+    } catch (error) {
+      console.error("대응 현황 불러오기 실패:", error);
+    }
+  };
+
+  // ✅ 컴포넌트가 처음 마운트될 때와 ID가 변경될 때 대응 현황 데이터 로드
+  useEffect(() => {
+    fetchStatusList();
+  }, [id]); // id가 변경될 때마다 새 데이터 로드
 
   // ✅ 대응 현황 API 호출
   const handleStatusSubmit = async () => {
     if (!statusComment) return alert("대응 현황을 입력해주세요.");
 
-    const data = { comment: statusComment, unchecked_id: id };
+    const newComment = {
+      comment: statusComment,
+      id: Date.now(),
+      user: "작성자", // API에 실제 작성자 정보가 있다면 여기에 넣어줘!
+      created_at: new Date().toISOString(),
+    };
 
     try {
-      const response = await proPage.postUnCheckedDescriptionsComment(data);
+      const response = await proPage.postUnCheckedDescriptionsComment({
+        comment: statusComment,
+        unchecked_id: id,
+      });
       if (response.status === 201) {
         alert("대응 현황이 등록되었습니다!");
-        setStatusComment(""); // 입력값 초기화
+        setStatusList([newComment, ...statusList]); // 최신 댓글이 위쪽으로 가도록 설정
+        setStatusComment("");
       }
     } catch (error) {
       alert("등록 실패: " + error.message);
@@ -144,6 +202,18 @@ const TaskItem = ({ id, content, actionPlan }) => {
       </TaskHeader>
       <TaskContent>
         {/* 대응 현황 입력 */}
+        {/* 대응 현황 목록 */}
+        {statusList.length > 0 &&
+          statusList.map((item) => (
+            <CommentItem key={item.id}>
+              <CommentText>
+                <span>{item.comment}</span>
+                <CommentInfo>
+                  {item.user || "익명"} · {formatDate(item.created_at)}
+                </CommentInfo>
+              </CommentText>
+            </CommentItem>
+          ))}
         <TaskField>
           <InputField
             type="text"
@@ -155,7 +225,7 @@ const TaskItem = ({ id, content, actionPlan }) => {
         </TaskField>
 
         {/* 대응 결과 입력 */}
-        <TaskField>
+        {/* <TaskField>
           <InputField
             type="text"
             value={resultComment}
@@ -163,7 +233,7 @@ const TaskItem = ({ id, content, actionPlan }) => {
             placeholder="대응 결과 입력..."
           />
           <RegisterButton onClick={handleResultSubmit}>등록</RegisterButton>
-        </TaskField>
+        </TaskField> */}
       </TaskContent>
     </TaskCard>
   );

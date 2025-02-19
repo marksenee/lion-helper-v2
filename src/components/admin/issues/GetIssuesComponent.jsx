@@ -60,11 +60,14 @@ const GetIssuesComponent = () => {
 
   useEffect(() => {
     if (!selectedCourse) return;
-    const selectedIssues = items.filter(
-      (item) => item.training_course === selectedCourse
-    );
-    setFilteredIssues(selectedIssues.flatMap((item) => item.issues || [])); // ✅ 배열 펼쳐서 반영
-  }, [selectedCourse, items]); // ✅ items 변경 시 자동 업데이트
+
+    // 기존 filteredIssues 업데이트 로직 수정
+    const selectedIssues = items
+      .filter((item) => item.training_course === selectedCourse)
+      .flatMap((item) => item.issues || []);
+
+    setFilteredIssues(selectedIssues);
+  }, [selectedCourse, items]); // ✅ `items` 변경 시 자동 반영
 
   useEffect(() => {
     items.forEach((element, index) => {
@@ -227,6 +230,12 @@ const GetIssuesComponent = () => {
 
   const handleCourseSelect = (course) => {
     setSelectedCourse(course);
+
+    const selectedIssues = items
+      .filter((item) => item.training_course === course)
+      .flatMap((item) => item.issues || []);
+
+    setFilteredIssues(selectedIssues); // ✅ 직접 업데이트
     setDropdownOpen(false);
   };
 

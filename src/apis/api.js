@@ -149,11 +149,8 @@ export const proPage = {
 
   // 미체크 항목 데이터 전송
   postUnCheckedDescriptionsComment: async (data) => {
-    console.log("data", data);
     try {
       const response = await api.post("/unchecked_comments", data);
-      console.log("data2", response);
-
       return response;
     } catch (error) {
       return error.response;
@@ -180,10 +177,10 @@ export const proPage = {
     }
   },
 
-  // 미체크 항목 대응현황, 결과 조회
-  getUnCheckedDescriptions: async () => {
+  // 미체크 항목 대응현황 댓글 조회
+  getUnCheckComment: async (query) => {
     try {
-      const response = await api.get("/unchecked_descriptions");
+      const response = await api.get("/unchecked_comments", query);
       return response;
     } catch (error) {
       return error.response;
