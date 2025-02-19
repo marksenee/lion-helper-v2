@@ -180,6 +180,16 @@ export const proPage = {
     }
   },
 
+  // 미체크 항목 대응현황, 결과 조회
+  getUnCheckedDescriptions: async () => {
+    try {
+      const response = await api.get("/unchecked_descriptions");
+      return response;
+    } catch (error) {
+      return error.response;
+    }
+  },
+
   // 이슈사항 댓글 조회
   getComments: async (data) => {
     try {

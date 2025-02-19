@@ -123,7 +123,7 @@ const GetIssuesComponent = () => {
     }
 
     const newComment = {
-      author: "작성자", // 실제 사용자 정보로 대체 가능
+      author: "작성자", // 실제 사용자 정보로 변경 가능
       comment: comments[index],
       created_at: new Date().toISOString(),
     };
@@ -137,17 +137,24 @@ const GetIssuesComponent = () => {
       if (response.status === 200 || response.status === 201) {
         alert("댓글이 성공적으로 저장되었습니다.");
 
-        // ✅ UI에서 즉시 반영: issueComments 상태 업데이트
-        setIssueComments((prev) => ({
-          ...prev,
-          [issueId]: prev[issueId]
-            ? [...prev[issueId], newComment]
-            : [newComment],
-        }));
+        // ✅ `items` 상태 업데이트 (새 댓글 반영)
+        setItems((prevItems) =>
+          prevItems.map((item) => ({
+            ...item,
+            issues: item.issues.map((issue) =>
+              issue.id === issueId
+                ? {
+                    ...issue,
+                    comments: [...(issue.comments || []), newComment],
+                  }
+                : issue
+            ),
+          }))
+        );
 
-        // ✅ `filteredIssues` 업데이트
-        setFilteredIssues((prev) =>
-          prev.map((issue) =>
+        // ✅ `filteredIssues`도 즉시 반영
+        setFilteredIssues((prevIssues) =>
+          prevIssues.map((issue) =>
             issue.id === issueId
               ? { ...issue, comments: [...(issue.comments || []), newComment] }
               : issue
