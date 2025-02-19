@@ -22,6 +22,11 @@ const Issues = ({ formattedDate, selectedCourse }) => {
       training_course: selectedCourse,
     };
 
+    if (!selectedCourse || selectedCourse === "과정 선택") {
+      alert("과정을 선택해주세요!");
+      return;
+    }
+
     try {
       const response = await proPage.postIssues(issueData);
       if (response.status === 201) {
