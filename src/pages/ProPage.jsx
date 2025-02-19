@@ -7,9 +7,7 @@ import { FiCalendar } from "react-icons/fi"; // 달력 아이콘
 import { IoIosArrowDown } from "react-icons/io"; // 토글 아이콘
 import AttendancePage from "../components/Attendance/Attendance";
 import DailyCheckList from "../components/checkBox/DailyCheckList";
-import SaveButtonComponent from "../components/button/SaveButton";
 import Issues from "../components/issue/Issue";
-import IrregularCheckList from "../components/checkBox/IrregularCheckList";
 import { proPage } from "../apis/api";
 
 const ProPageContainer = styled.div`
