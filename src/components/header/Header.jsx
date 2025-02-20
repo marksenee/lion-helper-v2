@@ -93,10 +93,9 @@ const Header = ({ children }) => {
     <HeaderContainer>
       {/* 왼쪽 로고 */}
       <Logo src={process.env.PUBLIC_URL + "/likelion_logo.png"} alt="Logo" />
-
       {/* 중앙 메뉴 */}
       <Nav>
-        <NavItem to="/home" exact activeClassName="active">
+        <NavItem to="/" exact activeClassName="active">
           홈
         </NavItem>
         {children} {/* ✅ children을 추가해야 Search가 렌더링됨 */}
@@ -111,13 +110,11 @@ const Header = ({ children }) => {
         </NavItem> */}
         {children} {/* ✅ children을 추가해야 Search가 렌더링됨 */}
       </Nav>
-
-      {/* 오른쪽 로그인 버튼
       {username ? (
         <NavLogin>로그아웃</NavLogin>
       ) : (
         <NavLogin onClick={() => navigate("/login")}>로그인</NavLogin>
-      )} */}
+      )}
     </HeaderContainer>
   );
 };

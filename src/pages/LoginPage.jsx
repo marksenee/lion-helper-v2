@@ -94,6 +94,7 @@ const Login = () => {
     };
 
     try {
+      console.log("loginData", loginData);
       const response = await proPage.postLogin(loginData);
       if (response?.status === 200 && response.data?.success) {
         setUsername(response.data.user.username); // Zustand 상태 업데이트

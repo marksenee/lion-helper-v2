@@ -10,11 +10,11 @@ const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<LoginPage />} />
-        <Route path="/home" element={<MainPage />} />
+        {/* <Route path="/" element={<LoginPage />} /> */}
+        <Route path="/" element={<MainPage />} />
         <Route path="/pro" element={<ProPage />} />
         <Route path="/admin" element={<AdminPage />} />
-        <Route path="/login" element={<LoginPage />} />
+        {/* <Route path="/login" element={<LoginPage />} /> */}
         {/* <Route path="/notice" element={<NoticePage />} /> */}
       </Routes>
     </BrowserRouter>
