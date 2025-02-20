@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { proPage } from "../apis/api";
 import { useNavigate } from "react-router-dom";
+import useAuthStore from "../\bstore/useAuthStore";
 
 // 전체 화면 중앙 정렬
 const Container = styled.div`
@@ -82,6 +83,7 @@ const LoginButton = styled.button`
 const Login = () => {
   const [id, setId] = useState("");
   const [pw, setPw] = useState("");
+  const setUsername = useAuthStore((state) => state.setUsername);
 
   const navigate = useNavigate();
 
@@ -94,6 +96,7 @@ const Login = () => {
     try {
       const response = await proPage.postLogin(loginData);
       if (response?.status === 200 && response.data?.success) {
+        setUsername(response.data.user.username); // Zustand 상태 업데이트
         navigate("/pro");
         alert("로그인 완료!");
       } else {

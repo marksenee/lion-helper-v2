@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
+import useAuthStore from "../../\bstore/useAuthStore";
 
 // 헤더 스타일
 const HeaderContainer = styled.header`
@@ -57,6 +58,23 @@ const NavItem = styled(NavLink)`
   }
 `;
 
+// 네비게이션 링크 스타일
+const NavLogin = styled.button`
+  font-family: "Pretandard", sans-serif;
+  font-size: 22px;
+  text-decoration: none;
+  margin-right: 20px;
+  color: #ff7710;
+
+  background-color: transparent;
+  border-color: transparent;
+  cursor: pointer;
+
+  &.active {
+    color: #ff7710;
+  }
+`;
+
 // 로그인 버튼 스타일
 const LoginButton = styled(NavLink)`
   font-family: "Pretandard", sans-serif;
@@ -68,6 +86,9 @@ const LoginButton = styled(NavLink)`
 `;
 
 const Header = ({ children }) => {
+  const { username, setUsername } = useAuthStore();
+  const navigate = useNavigate();
+
   return (
     <HeaderContainer>
       {/* 왼쪽 로고 */}
@@ -75,7 +96,7 @@ const Header = ({ children }) => {
 
       {/* 중앙 메뉴 */}
       <Nav>
-        <NavItem to="/" exact activeClassName="active">
+        <NavItem to="/home" exact activeClassName="active">
           홈
         </NavItem>
         {children} {/* ✅ children을 추가해야 Search가 렌더링됨 */}
@@ -91,9 +112,12 @@ const Header = ({ children }) => {
         {children} {/* ✅ children을 추가해야 Search가 렌더링됨 */}
       </Nav>
 
-      {/* 오른쪽 로그인 버튼 */}
-
-      <LoginButton to="/login">로그인</LoginButton>
+      {/* 오른쪽 로그인 버튼
+      {username ? (
+        <NavLogin>로그아웃</NavLogin>
+      ) : (
+        <NavLogin onClick={() => navigate("/login")}>로그인</NavLogin>
+      )} */}
     </HeaderContainer>
   );
 };

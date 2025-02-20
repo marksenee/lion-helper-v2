@@ -231,6 +231,7 @@ export const proPage = {
   getCheckPercent: async () => {
     try {
       const response = await api.get("/admin/task_status");
+      console.log("response", response);
       return response;
     } catch (error) {
       return error.response;
@@ -245,6 +246,8 @@ export const proPage = {
           "Content-Type": "application/json",
         },
       });
+      console.log("response", response.data.user.username);
+
       return response;
     } catch (error) {
       console.error("로그인 오류:", error.response || error);
