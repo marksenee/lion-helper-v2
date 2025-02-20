@@ -213,9 +213,6 @@ const DailyCheckList = ({ selectedCourse }) => {
     <div>
       <div style={{ display: "flex", marginTop: "3%" }}>
         <Title>✅ 업무 체크리스트</Title>
-        <CheckListSaveButton onClick={handleSaveChecklist}>
-          체크리스트 저장
-        </CheckListSaveButton>
       </div>
       <BoxContainer>
         <TabWrapper>
@@ -268,6 +265,9 @@ const DailyCheckList = ({ selectedCourse }) => {
                 ))}
               </div>
             ))}
+            <CheckListSaveButton onClick={handleSaveChecklist}>
+              체크리스트 저장
+            </CheckListSaveButton>
           </ChecklistContainer>
         </div>
         <div

@@ -23,14 +23,19 @@ const Title = styled.div`
 `;
 
 const CheckListSaveButton = styled.button`
+  width: 150px;
+  height: 40px;
   font-size: 13pt;
-  margin-left: 1%;
+  /* margin-left: 1%; */
   margin-top: 2%;
-  background-color: transparent;
+  background-color: #f5f5f5;
+  border-radius: 5px;
   border: 1px solid transparent;
   color: gray;
   cursor: pointer;
   transition: color 0.3s ease;
+  /* justify-content: flex-end; */
+
   &:hover {
     color: #ff7710;
   }

@@ -231,7 +231,7 @@ export const proPage = {
   getCheckPercent: async () => {
     try {
       const response = await api.get("/admin/task_status");
-      console.log("response", response);
+      // console.log("response", response);
       return response;
     } catch (error) {
       return error.response;
