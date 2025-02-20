@@ -92,7 +92,12 @@ const Header = ({ children }) => {
   return (
     <HeaderContainer>
       {/* 왼쪽 로고 */}
-      <Logo src={process.env.PUBLIC_URL + "/likelion_logo.png"} alt="Logo" />
+      <Logo
+        src={process.env.PUBLIC_URL + "/likelion_logo.png"}
+        alt="Logo"
+        onClick={() => navigate("/")}
+        style={{ cursor: "pointer" }} // 클릭 가능하게 설정
+      />{" "}
       {/* 중앙 메뉴 */}
       <Nav>
         <NavItem to="/" exact activeClassName="active">
@@ -110,11 +115,11 @@ const Header = ({ children }) => {
         </NavItem> */}
         {children} {/* ✅ children을 추가해야 Search가 렌더링됨 */}
       </Nav>
-      {username ? (
+      {/* {username ? (
         <NavLogin>로그아웃</NavLogin>
       ) : (
         <NavLogin onClick={() => navigate("/login")}>로그인</NavLogin>
-      )}
+      )} */}
     </HeaderContainer>
   );
 };
