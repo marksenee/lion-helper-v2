@@ -42,15 +42,33 @@ const AttendanceRecord = ({ selectedDate, selectedCourse }) => {
   const handleTimeChange = (index, role, field, value) => {
     const updateList =
       role === "main" ? [...mainInstructors] : [...subInstructors];
-    const cleanedValue = value.replace(/[^0-9]/g, "").slice(0, 4);
-    if (cleanedValue.length === 4) {
-      updateList[index][field] = cleanedValue.replace(
-        /(\d{2})(\d{2})/,
-        "$1:$2"
-      );
-    } else {
-      updateList[index][field] = cleanedValue;
+    let cleanedValue = value.replace(/[^0-9]/g, ""); // 숫자만 남김
+
+    // 1️⃣ '845' → '08:45'로 변환하도록 4자리 미만일 때 보완
+    if (cleanedValue.length === 3) {
+      cleanedValue = "0" + cleanedValue; // 앞에 '0' 추가 (예: '845' → '0845')
     }
+
+    // 2️⃣ 4자리 이상 입력되었을 경우 처리
+    if (cleanedValue.length >= 4) {
+      cleanedValue = cleanedValue.substring(0, 4); // 앞의 4자리만 유지
+
+      // 🕒 시간 및 분을 올바르게 나누기 위한 보정 작업
+      let hours = cleanedValue.substring(0, 2);
+      let minutes = cleanedValue.substring(2, 4);
+
+      // 🚨 유효한 범위인지 체크 (00~23시, 00~59분)
+      let validHours = Math.min(Math.max(parseInt(hours, 10), 0), 23);
+      let validMinutes = Math.min(Math.max(parseInt(minutes, 10), 0), 59);
+
+      // 최종 변환
+      updateList[index][field] = `${validHours
+        .toString()
+        .padStart(2, "0")}:${validMinutes.toString().padStart(2, "0")}`;
+    } else {
+      updateList[index][field] = cleanedValue; // 아직 4자리가 안되면 그냥 유지
+    }
+
     role === "main"
       ? setMainInstructors(updateList)
       : setSubInstructors(updateList);

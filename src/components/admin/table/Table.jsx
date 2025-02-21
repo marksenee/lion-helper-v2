@@ -22,7 +22,7 @@ import {
 import useCourseStore from "../../../\bstore/useCourseStore";
 
 const TableComponents = () => {
-  const { courseItems } = useCourseStore();
+  // const { courseItems } = useCourseStore();
 
   const [taskData, setTaskData] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState("과정 선택");
@@ -35,7 +35,7 @@ const TableComponents = () => {
         console.log("asdf", response.data);
 
         if (response && response.data) {
-          // console.log("asdf", response.data.data[0].check_rate);
+          console.log("asdf", response.data.data.dept);
 
           const data = response.data.data;
           setTaskData(data);
@@ -60,12 +60,12 @@ const TableComponents = () => {
           {selectedCourse || "부서 선택"}
           <DropdownIcon />
           <DropdownList isOpen={dropdownOpen}>
-            {courseItems.map((course) => (
+            {taskData.map((item) => (
               <DropdownItem
-                key={course}
-                onClick={() => handleCourseSelect(course)}
+                key={item.dept} // Use the dept as the key
+                onClick={() => handleCourseSelect(item.dept)}
               >
-                {course}
+                {item.dept}
               </DropdownItem>
             ))}
           </DropdownList>
@@ -76,6 +76,8 @@ const TableComponents = () => {
           <TableHead>
             <TableRow>
               <TableHeader>과정</TableHeader>
+              <TableHeader>담당자</TableHeader>
+
               <TableHeader>체크율</TableHeader>
               <TableHeader>완수여부</TableHeader>
             </TableRow>
@@ -84,6 +86,7 @@ const TableComponents = () => {
             {taskData.map((item, index) => (
               <TableRow key={index}>
                 <TableCell>{item.training_course}</TableCell>
+                <TableCell>전승목</TableCell>
                 <TableCell>{item.check_rate}</TableCell>
                 <TableUrgencyCell>
                   <UrgencyBadge urgent={item.check_rate === "100.0%"}>
