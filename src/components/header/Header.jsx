@@ -63,7 +63,7 @@ const NavLogin = styled.button`
   font-family: "Pretandard", sans-serif;
   font-size: 22px;
   text-decoration: none;
-  margin-right: 20px;
+  margin-right: 50px;
   color: #ff7710;
 
   background-color: transparent;
@@ -115,6 +115,7 @@ const Header = ({ children }) => {
         </NavItem> */}
         {children} {/* ✅ children을 추가해야 Search가 렌더링됨 */}
       </Nav>
+      <NavLogin onClick={() => navigate("/login")}>로그인</NavLogin>
       {/* {username ? (
         <NavLogin>로그아웃</NavLogin>
       ) : (

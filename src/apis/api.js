@@ -247,7 +247,7 @@ export const proPage = {
           "Content-Type": "application/json",
         },
       });
-      console.log("response", response.data.user.username);
+      // console.log("response", response.data.user.username);
 
       return response;
     } catch (error) {

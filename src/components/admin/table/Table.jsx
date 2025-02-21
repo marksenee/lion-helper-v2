@@ -12,14 +12,27 @@ import {
   UrgencyBadge,
 } from "./styles";
 import { proPage } from "../../../apis/api";
+import {
+  DropdownContainer,
+  DropdownIcon,
+  DropdownItem,
+  DropdownList,
+  TitleWrapper,
+} from "../issues/styles";
+import useCourseStore from "../../../\bstore/useCourseStore";
 
 const TableComponents = () => {
+  const { courseItems } = useCourseStore();
+
   const [taskData, setTaskData] = useState([]);
+  const [selectedCourse, setSelectedCourse] = useState("과정 선택");
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   useEffect(() => {
     const fetchTaskData = async () => {
       try {
         const response = await proPage.getCheckPercent();
+        console.log("asdf", response.data);
 
         if (response && response.data) {
           // console.log("asdf", response.data.data[0].check_rate);
@@ -34,9 +47,30 @@ const TableComponents = () => {
     fetchTaskData();
   }, []);
 
+  const handleCourseSelect = (course) => {
+    setSelectedCourse(course);
+    setDropdownOpen(false);
+  };
+
   return (
     <Container>
-      <Title>✍🏻 업무 현황</Title>
+      <TitleWrapper>
+        <Title>✍🏻 업무 현황</Title>
+        <DropdownContainer onClick={() => setDropdownOpen(!dropdownOpen)}>
+          {selectedCourse || "부서 선택"}
+          <DropdownIcon />
+          <DropdownList isOpen={dropdownOpen}>
+            {courseItems.map((course) => (
+              <DropdownItem
+                key={course}
+                onClick={() => handleCourseSelect(course)}
+              >
+                {course}
+              </DropdownItem>
+            ))}
+          </DropdownList>
+        </DropdownContainer>
+      </TitleWrapper>
       <TableWrapper>
         <Table>
           <TableHead>
