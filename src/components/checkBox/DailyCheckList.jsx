@@ -59,20 +59,18 @@ const DailyCheckList = ({ selectedCourse }) => {
     fetchChecklist();
   }, []);
 
-  const handleCheckboxChange = async (id, checkedItem) => {
-    setCheckedStates((prev) => {
-      return {
-        ...prev,
-        [id]: !prev[id], // 해당 체크박스 상태만 토글
-      };
-    });
+  useEffect(() => {
+    const unresolvedItems = checkItems.filter(
+      (item) => !checkedStates[item.id]
+    );
+    setUncheckedItems(unresolvedItems);
+  }, [checkedStates, checkItems]);
 
-    // 체크된 항목만 제거
-    if (!checkedStates[id]) {
-      setUncheckedItems((prev) => prev.filter((item) => item.id !== id));
-    } else {
-      setUncheckedItems((prev) => [...prev, checkedItem]);
-    }
+  const handleCheckboxChange = async (id, checkedItem) => {
+    setCheckedStates((prev) => ({
+      ...prev,
+      [id]: !prev[id], // 현재 상태 반전
+    }));
 
     try {
       await proPage.postDailyCheck({
