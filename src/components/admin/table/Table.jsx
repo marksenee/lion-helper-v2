@@ -35,7 +35,7 @@ const TableComponents = () => {
         console.log("asdf", response.data);
 
         if (response && response.data) {
-          console.log("asdf", response.data.data.dept);
+          console.log("테스트", response);
 
           const data = response.data.data;
           setTaskData(data);
