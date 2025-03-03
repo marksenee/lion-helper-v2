@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
-import Header from "../components/header/Header";
+import Header from "../components/header/Headertest";
 import { proPage } from "../apis/api";
 import TableComponents from "../components/admin/table/Table";
 import GetIssuesComponent from "../components/admin/issues/GetIssuesComponent";
