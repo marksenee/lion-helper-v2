@@ -3,9 +3,9 @@ import styled from "styled-components";
 const BoxContainer = styled.div`
   width: 886px;
   background-color: white;
-  border: 1px solid #dcdcdc;
+  /* border: 1px solid #dcdcdc; */
   border-radius: 10px;
-  padding-left: 20px;
+  /* padding-left: 20px; */
   padding-right: 20px;
 
   /* padding: 20px; */
@@ -18,8 +18,8 @@ const Title = styled.div`
   font-size: 18pt;
   font-weight: bold;
   color: #000000;
-  margin-top: 2%;
-  margin-left: 1%;
+  margin-top: 5%;
+  /* margin-left: 1%; */
 `;
 
 const CheckListSaveButton = styled.button`
@@ -50,7 +50,15 @@ const ChecklistContainer = styled.div`
 const CheckboxContainer = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
   margin-bottom: 15px;
+  border-bottom: 1px solid #dcdcdc;
+  padding: 15px;
+`;
+
+const CategoryText = styled.text`
+  color: #ff7710;
+  font-size: medium;
 `;
 
 const CheckboxLabel = styled.div`
@@ -226,4 +234,5 @@ export {
   SaveButton,
   HiddenCheckbox,
   Circle,
+  CategoryText,
 };

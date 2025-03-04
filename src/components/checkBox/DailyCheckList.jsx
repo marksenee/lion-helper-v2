@@ -9,21 +9,16 @@ import {
   ChecklistContainer,
   CheckboxContainer,
   CheckboxLabel,
-  Checkbox,
-  ReasonInputContainer,
   ReasonInput,
   UncheckedListContainer,
-  TabContainer,
-  Tab,
-  TabWrapper,
   SaveButton,
   Circle,
   HiddenCheckbox,
+  CategoryText,
 } from "./styles";
 import useCourseStore from "../../\bstore/useCourseStore";
 
 const DailyCheckList = ({ activeTab }) => {
-  console.log("Asdf", activeTab);
   const { selectedCourse } = useCourseStore(); // 선택된 과정 가져오기
 
   const [checkItems, setCheckItems] = useState([]);
@@ -67,18 +62,22 @@ const DailyCheckList = ({ activeTab }) => {
 
   useEffect(() => {
     const unresolvedItems = checkItems.filter(
-      (item) => !checkedStates[item.id]
+      (item) => checkedStates[item.id] !== "yes"
     );
-    console.log("test2", unresolvedItems);
     setUncheckedItems(unresolvedItems);
-  }, [checkedStates, checkItems]);
+  }, [checkItems, checkedStates]);
 
   const handleCheckboxChange = async (id, checkedItem, isYesChecked) => {
     console.log(id, checkedItem, isYesChecked);
     const newState = isYesChecked ? "yes" : "no";
     const updatedCheckedStates = { ...checkedStates, [id]: newState };
+
     setCheckedStates(updatedCheckedStates);
-    console.log("test:", updatedCheckedStates);
+
+    // ✅ checkedStates 업데이트 이후 즉시 uncheckedItems 업데이트
+    setUncheckedItems(
+      checkItems.filter((item) => updatedCheckedStates[item.id] !== "yes")
+    );
 
     try {
       await proPage.postDailyCheck({
@@ -220,85 +219,119 @@ const DailyCheckList = ({ activeTab }) => {
 
   return (
     <div>
-      <div style={{ display: "flex", marginTop: "3%" }}>
-        <Title>✅ 업무 체크리스트</Title>
-      </div>
+      <div style={{ display: "flex" }}></div>
       <BoxContainer>
-        {/* <TabWrapper>
-          <TabContainer>
-            <Tab
-              active={activeTab === "daily"}
-              onClick={() => setActiveTab("daily")}
-            >
-              데일리 체크리스트
-            </Tab>
-            <Tab
-              active={activeTab === "weekly"}
-              onClick={() => setActiveTab("weekly")}
-            >
-              위클리 체크리스트
-            </Tab>
-          </TabContainer>
-        </TabWrapper> */}
         <div>
           <ChecklistContainer>
             {Object.entries(groupedTasks).map(([category, tasks]) => (
-              <div key={category} style={{ marginBottom: "15px" }}>
-                <h3>{category}</h3>
+              <div key={category}>
                 {tasks.map((item) => (
                   <CheckboxContainer key={item.id}>
                     {/* Yes 체크박스 */}
-                    <HiddenCheckbox
-                      type="checkbox"
-                      checked={checkedStates[item.id] === "yes"}
-                      onChange={() => handleCheckboxChange(item.id, item, true)}
-                      style={{ display: "none" }} // 체크박스를 숨깁니다
-                    />
-                    <Circle
-                      checked={checkedStates[item.id] === "yes"}
-                      onClick={() => handleCheckboxChange(item.id, item, true)} // Yes 체크박스 클릭 시 상태 변경
-                    />
-                    {/* No 체크박스 */}
-                    <HiddenCheckbox
-                      type="checkbox"
-                      checked={checkedStates[item.id] === "no"}
-                      onChange={() =>
-                        handleCheckboxChange(item.id, item, false)
-                      }
-                      style={{ display: "none" }} // 체크박스를 숨깁니다
-                    />
-                    <Circle
-                      checked={checkedStates[item.id] === "no"}
-                      onClick={() => handleCheckboxChange(item.id, item, false)} // No 체크박스 클릭 시 상태 변경
-                    />
-
-                    <CheckboxLabel>{item.task_name}</CheckboxLabel>
-                    <FiHelpCircle
-                      data-tooltip-id={`tooltip-${item.id}`}
+                    <div
                       style={{
-                        marginLeft: "5px",
-                        cursor: "pointer",
-                        color: "#888",
+                        display: "flex",
+                        alignItems: "center",
                       }}
-                    />
-                    <Tooltip
-                      id={`tooltip-${item.id}`}
-                      place="top"
-                      effect="solid"
                     >
-                      {item.guide && item.guide !== "업무 가이드 없음"
-                        ? item.guide
-                        : "가이드 정보 없음"}
-                    </Tooltip>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          flexDirection: "column",
+                        }}
+                      >
+                        <span
+                          style={{
+                            fontSize: "12px",
+                            color: "#888",
+                            marginRight: "10px",
+                          }}
+                        >
+                          YES
+                        </span>
+                        <HiddenCheckbox
+                          type="checkbox"
+                          checked={checkedStates[item.id] === "yes"}
+                          onChange={() =>
+                            handleCheckboxChange(item.id, item, true)
+                          }
+                          style={{ display: "none" }}
+                        />
+                        <Circle
+                          checked={checkedStates[item.id] === "yes"}
+                          onClick={() =>
+                            handleCheckboxChange(item.id, item, true)
+                          }
+                        />
+                      </div>
+                      {/* No 체크박스 */}
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          flexDirection: "column",
+                          marginLeft: "10px",
+                        }}
+                      >
+                        <span
+                          style={{
+                            fontSize: "12px",
+                            color: "#888",
+                            marginRight: "10px",
+                          }}
+                        >
+                          NO
+                        </span>
+                        <HiddenCheckbox
+                          type="checkbox"
+                          checked={checkedStates[item.id] === "no"}
+                          onChange={() =>
+                            handleCheckboxChange(item.id, item, false)
+                          }
+                          style={{ display: "none" }}
+                        />
+                        <Circle
+                          checked={checkedStates[item.id] === "no"}
+                          onClick={() =>
+                            handleCheckboxChange(item.id, item, false)
+                          }
+                        />
+                      </div>
+
+                      <CheckboxLabel>{item.task_name}</CheckboxLabel>
+                      <FiHelpCircle
+                        data-tooltip-id={`tooltip-${item.id}`}
+                        style={{
+                          marginLeft: "5px",
+                          cursor: "pointer",
+                          color: "#888",
+                        }}
+                      />
+                      <Tooltip
+                        id={`tooltip-${item.id}`}
+                        place="top"
+                        effect="solid"
+                      >
+                        {item.guide && item.guide !== "업무 가이드 없음"
+                          ? item.guide
+                          : "가이드 정보 없음"}
+                      </Tooltip>
+                    </div>
+
+                    <div>
+                      <CategoryText>
+                        {"#"}
+                        {category}
+                      </CategoryText>
+                    </div>
                   </CheckboxContainer>
                 ))}
               </div>
             ))}
-            <CheckListSaveButton onClick={handleSaveChecklist}>
-              체크리스트 저장
-            </CheckListSaveButton>
           </ChecklistContainer>
         </div>
+        <Title>💡미체크 사유</Title>
         <div
           style={{
             marginTop: "3%",
@@ -308,7 +341,6 @@ const DailyCheckList = ({ activeTab }) => {
             padding: "10px",
           }}
         >
-          <Title>💡미체크 항목 액션 플랜</Title>
           {filteredUncheckedItems.length > 0 ? (
             <UncheckedListContainer>
               {filteredUncheckedItems.map((item) => (
@@ -358,50 +390,19 @@ const DailyCheckList = ({ activeTab }) => {
             <p>미체크된 항목이 없습니다.</p>
           )}
         </div>
+        {/* 왼쪽 정렬된 버튼 */}
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-end",
+            width: "100%",
+          }}
+        >
+          <CheckListSaveButton onClick={handleSaveChecklist}>
+            체크리스트 저장
+          </CheckListSaveButton>
+        </div>
       </BoxContainer>
-      {/* <div style={{ marginTop: "3%", marginBottom: "3%" }}>
-        <BoxContainer>
-          <Title>💡미체크 항목 액션 플랜</Title>
-          {filteredUncheckedItems.length > 0 ? (
-            <UncheckedListContainer>
-              {filteredUncheckedItems.map((item) => (
-                <div
-                  key={item.id}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    marginBottom: "10px",
-                  }}
-                >
-                  <div style={{ width: "500px" }}>
-                    <text
-                      style={{
-                        marginBottom: "10px",
-                        fontSize: "13pt",
-                        padding: "1%",
-                      }}
-                    >
-                      {item.task_name}
-                    </text>
-                  </div>
-                  <ReasonInput
-                    placeholder="액션플랜을 입력하세요"
-                    value={reasonState[item.id] || ""}
-                    onChange={(e) =>
-                      handleCommentChange(item.id, e.target.value)
-                    }
-                  />
-                  <SaveButton onClick={() => handleCommentSubmit(item.id)}>
-                    등록
-                  </SaveButton>
-                </div>
-              ))}
-            </UncheckedListContainer>
-          ) : (
-            <p>미체크된 항목이 없습니다.</p>
-          )}
-        </BoxContainer>
-      </div> */}
     </div>
   );
 };
