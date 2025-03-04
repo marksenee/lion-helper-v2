@@ -1,11 +1,19 @@
 import styled from "styled-components";
 
+const Content = styled.div`
+  /* margin-top: 30px; */
+  font-size: 20px;
+  text-align: center;
+`;
+
 // 네비게이션 탭 스타일
 const TabContainer = styled.div`
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 20px;
-  margin-top: 20px;
+  /* margin-top: 50px; */
+  margin-left: 10px; //사이드바 너비만큼 여백을 줌
+  margin-bottom: 50px;
 `;
 
 const TabItem = styled.div`
@@ -27,4 +35,4 @@ const TabItem = styled.div`
   }
 `;
 
-export { TabContainer, TabItem };
+export { Content, TabContainer, TabItem };

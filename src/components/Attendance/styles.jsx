@@ -5,7 +5,7 @@ const Container = styled.div`
   width: 886px;
   /* height: 450px; */
   background: #fff;
-  border: 1px solid #dcdcdc;
+  /* border: 1px solid #dcdcdc; */
   border-radius: 10px;
   padding: 20px;
   font-family: Pretendard, sans-serif;

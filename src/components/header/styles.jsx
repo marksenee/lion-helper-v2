@@ -2,25 +2,28 @@ import styled from "styled-components";
 
 const Layout = styled.div`
   display: flex;
-  min-height: 100vh;
+  /* min-height: 100vh; */
+  position: relative; /* 레이아웃 컨테이너는 상대 위치 */
 `;
 
 const Sidebar = styled.div`
   width: 250px;
   height: 100vh;
   background-color: #fffaf5;
-  position: fixed;
+  position: fixed; /* 화면에 고정 */
   top: 0;
   left: 0;
-  display: flex;
-  flex-direction: column;
+  /* display: flex; */
+  /* flex-direction: column; */
   padding: 20px;
+  z-index: 10; /* 본문보다 위로 오도록 설정 */
 `;
 
 const Content = styled.div`
   flex: 1;
   margin-left: 400px;
   padding: 20px;
+  overflow-x: hidden; /* 가로 스크롤 방지 */
 `;
 
 const Logo = styled.img`

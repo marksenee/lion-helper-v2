@@ -5,17 +5,23 @@ import ProPage from "./pages/ProPage";
 import AdminPage from "./pages/AdminPage";
 import MainPage from "./pages/MainPage";
 import NoticePage from "./pages/NoticePage";
+import NavigationTabs from "./components/tab/Tab";
+import Header from "./components/header/Header";
+import TodayCheckListPage from "./pages/TodayCheckListPage";
 
 const Router = () => {
   return (
     <BrowserRouter>
+      <Header />
       <Routes>
         {/* <Route path="/" element={<LoginPage />} /> */}
         <Route path="/" element={<MainPage />} />
-        <Route path="/pro" element={<ProPage />} />
+        <Route path="/checklist/*" element={<NavigationTabs />} />
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/login" element={<LoginPage />} />
         {/* <Route path="/notice" element={<NoticePage />} /> */}
+        {/* NavigationTabs가 포함된 페이지 */}
+        {/* <Route path="/checklist/*" element={<NavigationTabs />} /> */}
       </Routes>
     </BrowserRouter>
   );

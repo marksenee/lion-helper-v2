@@ -9,6 +9,7 @@ import AttendancePage from "../components/Attendance/Attendance";
 import DailyCheckList from "../components/checkBox/DailyCheckList";
 import Issues from "../components/issue/Issue";
 import { proPage } from "../apis/api";
+import NavigationTabs from "../components/tab/Tab";
 
 const LayoutContainer = styled.div`
   display: flex;
@@ -93,7 +94,7 @@ const CalendarIcon = styled(FiCalendar)`
 
 const DropdownContainer = styled.div`
   width: 25%;
-  height: 50px;
+  height: 30px;
   background-color: white;
   border: 2px solid #dcdcdc;
   display: flex;
@@ -180,12 +181,13 @@ const ProPage = () => {
       <LayoutContainer>
         {/* <SidebarContainer></SidebarContainer> */}
         <Header />
-
         <ContentContainer>
+          <NavigationTabs />
+
           <ProPageContainer>
             <InputContainer>
               {/* 날짜 입력 */}
-              <Label>날짜 입력</Label>
+              {/* <Label>날짜 입력</Label>
               <InputBox>
                 <DateInput
                   selected={selectedDate}
@@ -193,10 +195,10 @@ const ProPage = () => {
                   dateFormat="yyyy-MM-dd"
                 />
                 <CalendarIcon />
-              </InputBox>
+              </InputBox> */}
 
               {/* 과정 선택 */}
-              <Label>담당 과정 선택</Label>
+              {/* <Label>담당 과정 선택</Label> */}
               <DropdownContainer onClick={() => setDropdownOpen(!dropdownOpen)}>
                 {selectedCourse}
                 <DropdownIcon />
@@ -221,10 +223,10 @@ const ProPage = () => {
             {/* <IrregularCheckList selectedCourse={selectedCourse} /> */}
 
             {/* 버튼을 오른쪽 아래에 배치 */}
-            <Issues
+            {/* <Issues
               formattedDate={formattedDate}
               selectedCourse={selectedCourse}
-            />
+            /> */}
           </ProPageContainer>
         </ContentContainer>
       </LayoutContainer>

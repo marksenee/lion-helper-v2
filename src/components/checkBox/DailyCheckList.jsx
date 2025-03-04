@@ -17,16 +17,22 @@ import {
   Tab,
   TabWrapper,
   SaveButton,
+  Circle,
+  HiddenCheckbox,
 } from "./styles";
+import useCourseStore from "../../\bstore/useCourseStore";
 
-const DailyCheckList = ({ selectedCourse }) => {
+const DailyCheckList = ({ activeTab }) => {
+  console.log("Asdf", activeTab);
+  const { selectedCourse } = useCourseStore(); // 선택된 과정 가져오기
+
   const [checkItems, setCheckItems] = useState([]);
   const [uncheckedItems, setUncheckedItems] = useState([]);
   const [commentsState, setCommentsState] = useState({});
   const [checkedStates, setCheckedStates] = useState({});
   const [reason, setReason] = useState("");
   const [alertVisible, setAlertVisible] = useState(false);
-  const [activeTab, setActiveTab] = useState("daily");
+  // const [activeTab, setActiveTab] = useState("daily");
   const [reasonState, setReasonState] = useState({}); // 각 항목의 액션 플랜을 저장
 
   useEffect(() => {
@@ -37,10 +43,10 @@ const DailyCheckList = ({ selectedCourse }) => {
           const limitedCheckItems = response.data.data;
           setCheckItems(limitedCheckItems);
 
-          const unresolvedItems = response.data.data.filter(
-            (item) => !item.is_checked
-          );
-          setUncheckedItems(unresolvedItems);
+          // const unresolvedItems = response.data.data.filter(
+          //   (item) => !item.is_checked
+          // );
+          // setUncheckedItems(unresolvedItems);
 
           const initialCheckedStates = response.data.data.reduce(
             (acc, item) => {
@@ -63,19 +69,24 @@ const DailyCheckList = ({ selectedCourse }) => {
     const unresolvedItems = checkItems.filter(
       (item) => !checkedStates[item.id]
     );
+    console.log("test2", unresolvedItems);
     setUncheckedItems(unresolvedItems);
   }, [checkedStates, checkItems]);
 
-  const handleCheckboxChange = async (id, checkedItem) => {
-    setCheckedStates((prev) => ({
-      ...prev,
-      [id]: !prev[id], // 현재 상태 반전
-    }));
+  const handleCheckboxChange = async (id, checkedItem, isYesChecked) => {
+    console.log(id, checkedItem, isYesChecked);
+    const newState = isYesChecked ? "yes" : "no";
+    const updatedCheckedStates = { ...checkedStates, [id]: newState };
+    setCheckedStates(updatedCheckedStates);
+    console.log("test:", updatedCheckedStates);
 
     try {
       await proPage.postDailyCheck({
+        // updates: [
+        //   { is_checked: !checkedStates[id], task_name: checkedItem.task_name },
+        // ],
         updates: [
-          { is_checked: !checkedStates[id], task_name: checkedItem.task_name },
+          { is_checked: newState === "yes", task_name: checkedItem.task_name },
         ],
       });
       console.log(
@@ -213,7 +224,7 @@ const DailyCheckList = ({ selectedCourse }) => {
         <Title>✅ 업무 체크리스트</Title>
       </div>
       <BoxContainer>
-        <TabWrapper>
+        {/* <TabWrapper>
           <TabContainer>
             <Tab
               active={activeTab === "daily"}
@@ -228,7 +239,7 @@ const DailyCheckList = ({ selectedCourse }) => {
               위클리 체크리스트
             </Tab>
           </TabContainer>
-        </TabWrapper>
+        </TabWrapper> */}
         <div>
           <ChecklistContainer>
             {Object.entries(groupedTasks).map(([category, tasks]) => (
@@ -236,11 +247,31 @@ const DailyCheckList = ({ selectedCourse }) => {
                 <h3>{category}</h3>
                 {tasks.map((item) => (
                   <CheckboxContainer key={item.id}>
-                    <Checkbox
+                    {/* Yes 체크박스 */}
+                    <HiddenCheckbox
                       type="checkbox"
-                      checked={!!checkedStates[item.id]}
-                      onChange={() => handleCheckboxChange(item.id, item)}
+                      checked={checkedStates[item.id] === "yes"}
+                      onChange={() => handleCheckboxChange(item.id, item, true)}
+                      style={{ display: "none" }} // 체크박스를 숨깁니다
                     />
+                    <Circle
+                      checked={checkedStates[item.id] === "yes"}
+                      onClick={() => handleCheckboxChange(item.id, item, true)} // Yes 체크박스 클릭 시 상태 변경
+                    />
+                    {/* No 체크박스 */}
+                    <HiddenCheckbox
+                      type="checkbox"
+                      checked={checkedStates[item.id] === "no"}
+                      onChange={() =>
+                        handleCheckboxChange(item.id, item, false)
+                      }
+                      style={{ display: "none" }} // 체크박스를 숨깁니다
+                    />
+                    <Circle
+                      checked={checkedStates[item.id] === "no"}
+                      onClick={() => handleCheckboxChange(item.id, item, false)} // No 체크박스 클릭 시 상태 변경
+                    />
+
                     <CheckboxLabel>{item.task_name}</CheckboxLabel>
                     <FiHelpCircle
                       data-tooltip-id={`tooltip-${item.id}`}

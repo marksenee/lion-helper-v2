@@ -17,8 +17,11 @@ import {
   TitleContainer,
   DownloadButton,
 } from "./styles";
+import useCourseStore from "../../\bstore/useCourseStore";
 
-const AttendanceRecord = ({ selectedDate, selectedCourse }) => {
+const AttendanceRecord = ({ selectedDate }) => {
+  const { selectedCourse } = useCourseStore(); // 선택된 과정 가져오기
+
   const [dateInputError, setDateInputError] = useState();
   const [courseInputMessage, setCouresInputMessage] = useState();
   const [courseInputError, setCouresInputError] = useState();
@@ -248,7 +251,7 @@ const AttendanceRecord = ({ selectedDate, selectedCourse }) => {
         <Title>🕕 강사/보조강사 출퇴근 기록</Title>
         {/* <DownloadButton onClick={handleDownload}>기록 다운로드</DownloadButton> */}
       </TitleContainer>{" "}
-      <Subtitle>📌 출/퇴근 기록은 퇴근 후 한 번에 기록해 주세요!</Subtitle>
+      {/* <Subtitle>📌 출/퇴근 기록은 퇴근 후 한 번에 기록해 주세요!</Subtitle> */}
       {/* 주강사 입력 필드 */}
       {mainInstructors.map((instructor, index) => (
         <TimeInputContainer key={`main-${index}`}>

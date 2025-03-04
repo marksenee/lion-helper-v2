@@ -3,7 +3,8 @@ import { proPage } from "../apis/api";
 
 const useCourseStore = create((set) => ({
   courseItems: [], // 과정 데이터 저장
-  selectedCourse: null, // 선택된 과정
+  selectedCourse: "과정 선택", // 선택된 과정 (초기값)
+
   setSelectedCourse: (course) => set({ selectedCourse: course }),
 
   fetchCourseItems: async () => {

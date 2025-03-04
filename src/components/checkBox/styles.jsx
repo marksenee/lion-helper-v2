@@ -183,6 +183,31 @@ const SaveButton = styled.button`
   }
 `;
 
+const Circle = styled.span`
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #888;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+  position: relative;
+
+  &:after {
+    content: "";
+    width: 12px;
+    height: 12px;
+    background-color: ${({ checked }) => (checked ? "#888" : "transparent")};
+    border-radius: 50%;
+    transition: background-color 0.2s ease-in-out;
+  }
+`;
+
+const HiddenCheckbox = styled.input`
+  display: none;
+`;
+
 export {
   BoxContainer,
   Title,
@@ -199,4 +224,6 @@ export {
   Tab,
   TabWrapper,
   SaveButton,
+  HiddenCheckbox,
+  Circle,
 };

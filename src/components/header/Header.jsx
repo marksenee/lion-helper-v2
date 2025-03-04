@@ -30,7 +30,7 @@ const Header = () => {
       id: "checklist",
       label: "체크리스트",
       icon: <MdDashboard />,
-      path: "/pro",
+      path: "/checklist/today",
     },
     // {
     //   id: "dashboard",
