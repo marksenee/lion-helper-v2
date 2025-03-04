@@ -11,6 +11,7 @@ const useCourseStore = create((set) => ({
     try {
       const response = await proPage.getCourse();
       if (response?.data?.data) {
+        console.log("data", response.data.data);
         set({ courseItems: response.data.data });
       } else {
         console.error("🚨 데이터 형식 오류: 예상된 데이터가 없습니다.");

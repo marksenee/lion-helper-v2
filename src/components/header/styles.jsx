@@ -49,13 +49,13 @@ const NavItem = styled.li`
   width: 220px;
   height: 30px;
   padding: 10px;
-  color: #3f3f3f;
   cursor: pointer;
-  background-color: ${(props) =>
-    props.active ? "rgba(255, 202, 162, 0.47)" : "transparent"};
   border-radius: 8px;
   margin-bottom: 1%;
-  /* transition: background-color 0.3s ease; */
+  color: ${(props) =>
+    props.active ? "#FF7710" : "#3f3f3f"}; /* 선택 시 색상 변경 */
+  background-color: ${(props) =>
+    props.active ? "rgba(255, 202, 162, 0.47)" : "transparent"};
 
   &:hover {
     background-color: rgba(255, 202, 162, 0.2);
@@ -65,6 +65,8 @@ const NavItem = styled.li`
 const Icon = styled.div`
   font-size: 24px;
   margin-right: 12px;
+  color: ${(props) =>
+    props.active ? "#FF7710" : "#3f3f3f"}; /* 아이콘 색상 변경 */
 `;
 
 export { Layout, Sidebar, Content, Logo, Title, NavList, NavItem, Icon };

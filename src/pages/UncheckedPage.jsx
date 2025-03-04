@@ -8,6 +8,7 @@ import GetUnCheckedComponent from "../components/admin/unchecked/GetUnChecked";
 import useCourseStore from "../\bstore/useCourseStore";
 import AdminNavigationTabs from "../components/tab/AdminTab";
 import { ContentContainer } from "../components/content_layout/styles";
+import UncheckedTable from "../components/admin/table/UncheckedTable";
 
 const AdminPageContainer = styled.div`
   display: flex;
@@ -22,7 +23,7 @@ const AdminPageContainer = styled.div`
   padding-bottom: 90px; //푸터 공간을 위해 여백 추가
 `;
 
-const AdminPage = () => {
+const UncheckedPage = () => {
   const { fetchCourseItems } = useCourseStore();
 
   useEffect(() => {
@@ -38,10 +39,10 @@ const AdminPage = () => {
       {/* <GetIssuesComponent /> */}
       <ContentContainer>
         <AdminNavigationTabs />
-        <TableComponents />
+        <UncheckedTable />
       </ContentContainer>
     </>
   );
 };
 
-export default AdminPage;
+export default UncheckedPage;

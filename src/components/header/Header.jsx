@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { FiHome } from "react-icons/fi";
 import { FaCheckCircle } from "react-icons/fa";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   MdDashboard,
   MdAdminPanelSettings,
@@ -20,8 +20,9 @@ import {
 } from "./styles";
 
 const Header = () => {
-  const [active, setActive] = useState("home");
+  // const [active, setActive] = useState("home");
   const navigate = useNavigate();
+  const location = useLocation(); // 현재 URL 가져오기
 
   // 네비게이션 아이템 리스트
   const menuItems = [
@@ -42,7 +43,7 @@ const Header = () => {
       id: "admin",
       label: "어드민",
       icon: <MdAdminPanelSettings />,
-      path: "/admin",
+      path: "/admin/teamTask",
     },
     {
       id: "notice",
@@ -51,6 +52,14 @@ const Header = () => {
       path: "/notice",
     },
   ];
+
+  // 현재 URL과 일치하는 메뉴 아이템 찾기 (없으면 기본값 "home")
+  const currentMenuItem = menuItems.find((item) =>
+    location.pathname.startsWith(item.path)
+  );
+  const [active, setActive] = useState(
+    currentMenuItem ? currentMenuItem.id : "home"
+  );
 
   return (
     <Layout>
@@ -61,7 +70,7 @@ const Header = () => {
           onClick={() => navigate("/")}
           style={{ cursor: "pointer" }} // 클릭 가능하게 설정
         />{" "}
-        <Title>000님의 라이언헬퍼</Title>
+        {/* <Title>000님의 라이언헬퍼</Title> */}
         <NavList>
           {menuItems.map((item) => (
             <NavItem
@@ -72,7 +81,8 @@ const Header = () => {
                 navigate(item.path);
               }}
             >
-              <Icon>{item.icon}</Icon>
+              <Icon active={active === item.id}>{item.icon}</Icon>{" "}
+              {/* Icon에도 active 적용 */}
               {item.label}
             </NavItem>
           ))}

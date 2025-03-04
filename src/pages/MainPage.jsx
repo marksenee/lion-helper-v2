@@ -1,12 +1,16 @@
 import React from "react";
 import Search from "../components/Search/Search";
 import Layout from "../components/layout/Layout";
+import { ContentContainer } from "../components/content_layout/styles";
 
 const MainPage = () => {
   return (
-    <Layout>
+    // <Layout>
+    //   <Search />
+    // </Layout>
+    <ContentContainer>
       <Search />
-    </Layout>
+    </ContentContainer>
   );
 };
 

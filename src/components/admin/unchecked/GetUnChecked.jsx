@@ -242,7 +242,7 @@ const GetUnCheckedComponent = () => {
 
   return (
     <Container>
-      <TitleWrapper>
+      {/* <TitleWrapper>
         <Title>✍🏻 미체크 항목</Title>
         <DropdownContainer onClick={() => setDropdownOpen(!dropdownOpen)}>
           {selectedCourse || "과정 선택"}
@@ -258,7 +258,7 @@ const GetUnCheckedComponent = () => {
             ))}
           </DropdownList>
         </DropdownContainer>
-      </TitleWrapper>
+      </TitleWrapper> */}
       <TaskList items={items} selectedCourse={selectedCourse} />
       {/* <NoticeBox>
         <NoticeList>

@@ -143,6 +143,7 @@ const DropdownContainer = styled.div`
   cursor: pointer;
   border-radius: 10px;
   margin-top: 1%;
+  margin-bottom: 3%;
 `;
 
 const DropdownIcon = styled(IoIosArrowDown)`
