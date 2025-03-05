@@ -1,12 +1,13 @@
 import styled from "styled-components";
 
 const ContentContainer = styled.div`
-  flex: 1;
-  margin-left: 380px;
-  margin-top: 20px;
+  width: 100%;
+  min-height: 100vh; /* 화면 높이 채우기 */
+  display: flex;
+  flex-direction: column; /* 세로 방향 정렬 */
+  align-items: center; /* 가로 중앙 정렬 */
+  justify-content: center; /* 세로 중앙 정렬 */
   padding: 20px;
-  background-color: #fff;
-  transition: margin-left 0.3s ease; /* 사이드바 크기 조정 시 부드러운 전환 효과 */
 `;
 
 const PageContainer = styled.div`
