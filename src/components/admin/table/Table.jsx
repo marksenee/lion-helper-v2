@@ -24,65 +24,62 @@ import useCourseStore from "../../../\bstore/useCourseStore";
 const TableComponents = () => {
   // const { courseItems } = useCourseStore();
 
-  // const [taskData, setTaskData] = useState([]);
-  const [taskData, setTaskData] = useState([
-    {
-      dept: "TechSolLab",
-      training_course: "데이터분석 부트캠프 4회차",
-      manager: "최갑주",
-      today_check_rate: "80.0%",
-      check_rate: "80.0%",
-    },
-    {
-      dept: "TechSolLab",
-      training_course: "클라우드 엔지니어링 2회차",
-      manager: "박세은",
-      today_check_rate: "80.0%",
-      check_rate: "80.0%",
-    },
-    {
-      dept: "TechSolLab",
-      training_course: "그로스마케팅 1회차",
-      manager: "이채안",
-      today_check_rate: "90.0%",
-      check_rate: "80.0%",
-    },
-    {
-      dept: "DevLab",
-      training_course: "Android 부트캠프 3회차",
-      manager: "이도현",
-      today_check_rate: "100.0%",
-      check_rate: "100.0%",
-    },
-    {
-      dept: "PilotTeam",
-      training_course: "유니티 게임 부트캠프 3회차",
-      manager: "전승목",
-      today_check_rate: "70.0%",
-      check_rate: "80.0%",
-    },
-  ]);
+  const [taskData, setTaskData] = useState([]);
+  // const [taskData, setTaskData] = useState([
+  //   {
+  //     dept: "TechSolLab",
+  //     training_course: "데이터분석 부트캠프 4회차",
+  //     manager: "최갑주",
+  //     today_check_rate: "80.0%",
+  //     check_rate: "80.0%",
+  //   },
+  //   {
+  //     dept: "TechSolLab",
+  //     training_course: "클라우드 엔지니어링 2회차",
+  //     manager: "박세은",
+  //     today_check_rate: "80.0%",
+  //     check_rate: "80.0%",
+  //   },
+  //   {
+  //     dept: "TechSolLab",
+  //     training_course: "그로스마케팅 1회차",
+  //     manager: "이채안",
+  //     today_check_rate: "90.0%",
+  //     check_rate: "80.0%",
+  //   },
+  //   {
+  //     dept: "DevLab",
+  //     training_course: "Android 부트캠프 3회차",
+  //     manager: "이도현",
+  //     today_check_rate: "100.0%",
+  //     check_rate: "100.0%",
+  //   },
+  //   {
+  //     dept: "PilotTeam",
+  //     training_course: "유니티 게임 부트캠프 3회차",
+  //     manager: "전승목",
+  //     today_check_rate: "70.0%",
+  //     check_rate: "80.0%",
+  //   },
+  // ]);
   const [selectedCourse, setSelectedCourse] = useState("과정 선택");
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
-  // useEffect(() => {
-  //   const fetchTaskData = async () => {
-  //     try {
-  //       const response = await proPage.getCheckPercent();
-  //       console.log("asdf", response.data);
+  useEffect(() => {
+    const fetchTaskData = async () => {
+      try {
+        const response = await proPage.getCheckPercent();
 
-  //       if (response && response.data) {
-  //         console.log("테스트", response);
-
-  //         const data = response.data.data;
-  //         setTaskData(data);
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching checklist:", error);
-  //     }
-  //   };
-  //   fetchTaskData();
-  // }, []);
+        if (response && response.data) {
+          const data = response.data.data;
+          setTaskData(data);
+        }
+      } catch (error) {
+        console.error("Error fetching checklist:", error);
+      }
+    };
+    fetchTaskData();
+  }, []);
 
   const handleCourseSelect = (course) => {
     setSelectedCourse(course);

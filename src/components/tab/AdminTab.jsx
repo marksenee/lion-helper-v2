@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Content, TabContainer, TabItem } from "./styles";
+import { Content, TabContainer, TabItem, Wrapper } from "./styles";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import WeeklyCheckListPage from "../../pages/WeeklyCheckListPage";
 import AdminPage from "../../pages/AdminPage";
@@ -33,26 +33,28 @@ const AdminNavigationTabs = () => {
   return (
     <>
       {/* 네비게이션 탭 */}
-      <TabContainer>
-        {tabs.map((tab) => (
-          <TabItem
-            key={tab.name}
-            active={selectedTab === tab.name}
-            onClick={() => {
-              setSelectedTab(tab.name);
-              {
-                /* 클릭 시 selectedTab 업데이트 */
-              }
-              navigate(tab.path);
-              {
-                /* 페이지 이동 */
-              }
-            }}
-          >
-            {tab.name}
-          </TabItem>
-        ))}
-      </TabContainer>
+      <Wrapper>
+        <TabContainer>
+          {tabs.map((tab) => (
+            <TabItem
+              key={tab.name}
+              active={selectedTab === tab.name}
+              onClick={() => {
+                setSelectedTab(tab.name);
+                {
+                  /* 클릭 시 selectedTab 업데이트 */
+                }
+                navigate(tab.path);
+                {
+                  /* 페이지 이동 */
+                }
+              }}
+            >
+              {tab.name}
+            </TabItem>
+          ))}
+        </TabContainer>
+      </Wrapper>
 
       {/* 선택된 탭에 따라 다른 페이지 표시 */}
       <Routes>
