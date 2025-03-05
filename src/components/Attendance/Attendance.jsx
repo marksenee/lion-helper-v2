@@ -150,13 +150,14 @@ const AttendanceRecord = ({ selectedDate }) => {
       check_in: instructors[index].startTime,
       check_out: instructors[index].endTime,
       daily_log: true,
-      date: selectedDate,
+      date: new Date().toISOString().split("T")[0], // 오늘 날짜 설정
       instructor: role === "main" ? "1" : "2",
       instructor_name: instructorNames[index] || "", // 보조강사도 입력할 수 있도록 추가
       training_course: selectedCourse,
     };
 
     try {
+      console.log("res", requestData);
       const response = await proPage.attendance(requestData);
       if (response.status === 201) {
         messages[index] = "출퇴근 기록이 제출되었습니다.";

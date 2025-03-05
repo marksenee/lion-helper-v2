@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import useCourseStore from "../../\bstore/useCourseStore";
 // import useCourseStore from "../../store/useCourseStore";
 import {
+  Wrapper,
   DropdownContainer,
   DropdownIcon,
   DropdownList,
@@ -23,17 +24,22 @@ const CourseDropDown = () => {
   };
 
   return (
-    <DropdownContainer onClick={() => setDropdownOpen(!dropdownOpen)}>
-      {selectedCourse}
-      <DropdownIcon />
-      <DropdownList isOpen={dropdownOpen}>
-        {courseItems.map((course) => (
-          <DropdownItem key={course} onClick={() => handleCourseSelect(course)}>
-            {course}
-          </DropdownItem>
-        ))}
-      </DropdownList>
-    </DropdownContainer>
+    <Wrapper>
+      <DropdownContainer onClick={() => setDropdownOpen(!dropdownOpen)}>
+        {selectedCourse}
+        <DropdownIcon />
+        <DropdownList isOpen={dropdownOpen}>
+          {courseItems.map((course) => (
+            <DropdownItem
+              key={course}
+              onClick={() => handleCourseSelect(course)}
+            >
+              {course}
+            </DropdownItem>
+          ))}
+        </DropdownList>
+      </DropdownContainer>
+    </Wrapper>
   );
 };
 

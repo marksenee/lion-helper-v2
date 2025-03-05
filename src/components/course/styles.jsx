@@ -1,9 +1,16 @@
 import styled from "styled-components";
 import { IoIosArrowDown } from "react-icons/io"; // 토글 아이콘
 
+const Wrapper = styled.div`
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  justify-content: flex-start; /* 왼쪽 정렬 */
+`;
+
 const DropdownContainer = styled.div`
-  width: 25%;
-  height: 30px;
+  /* width: 50%; */
+  max-width: 400px; /* 드롭다운 최대 크기 */
   background-color: white;
   border: 2px solid #dcdcdc;
   display: flex;
@@ -12,6 +19,10 @@ const DropdownContainer = styled.div`
   position: relative;
   cursor: pointer;
   border-radius: 10px;
+  overflow: visible;
+
+  /* 왼쪽 정렬 */
+  justify-content: flex-start;
 `;
 
 const DropdownIcon = styled(IoIosArrowDown)`
@@ -32,6 +43,9 @@ const DropdownList = styled.ul`
   padding: 0;
   margin: 0;
   display: ${({ isOpen }) => (isOpen ? "block" : "none")};
+
+  z-index: 1000; /* 겹침 방지 */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* 드롭다운 강조 */
 `;
 
 const DropdownItem = styled.li`
@@ -43,4 +57,4 @@ const DropdownItem = styled.li`
   }
 `;
 
-export { DropdownContainer, DropdownIcon, DropdownList, DropdownItem };
+export { Wrapper, DropdownContainer, DropdownIcon, DropdownList, DropdownItem };

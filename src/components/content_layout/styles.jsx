@@ -1,12 +1,21 @@
 import styled from "styled-components";
 
 const ContentContainer = styled.div`
-  flex: 1;
-  margin-left: 380px;
-  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  width: calc(100vw - 250px); /* 사이드바 크기만큼 빼줌 */
+  margin-left: 250px; /* 사이드바가 fixed라면 필요 */
   padding: 20px;
-  background-color: #fff;
-  transition: margin-left 0.3s ease; /* 사이드바 크기 조정 시 부드러운 전환 효과 */
+  box-sizing: border-box;
+
+  @media (max-width: 1024px) {
+    /* 태블릿 이하에서는 자동 조정 */
+    width: 100vw;
+    margin-left: 0;
+  }
 `;
 
 const PageContainer = styled.div`

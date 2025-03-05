@@ -6,14 +6,20 @@ const Content = styled.div`
   text-align: center;
 `;
 
+const Wrapper = styled.div`
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  justify-content: flex-start; /* 왼쪽 정렬 */
+`;
+
 // 네비게이션 탭 스타일
 const TabContainer = styled.div`
   display: flex;
   justify-content: flex-start;
   gap: 20px;
-  /* margin-top: 50px; */
-  margin-left: 10px; //사이드바 너비만큼 여백을 줌
   margin-bottom: 50px;
+  width: 77%; /* 필요 시 추가 */
 `;
 
 const TabItem = styled.div`
@@ -35,4 +41,4 @@ const TabItem = styled.div`
   }
 `;
 
-export { Content, TabContainer, TabItem };
+export { Content, Wrapper, TabContainer, TabItem };

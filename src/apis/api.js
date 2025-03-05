@@ -21,6 +21,7 @@ export const proPage = {
 
   // 출,퇴근 기록 저장
   attendance: async (data) => {
+    console.log("data", data);
     try {
       const response = await api.post("/attendance", data);
       return response;
