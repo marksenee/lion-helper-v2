@@ -162,6 +162,7 @@ export const proPage = {
   deleteUnCheckedDescriptions: async (data) => {
     try {
       const response = await api.post("/unchecked_descriptions/resolve", data);
+
       return response;
     } catch (error) {
       return error.response;
@@ -181,7 +182,7 @@ export const proPage = {
   // 미체크 항목 대응현황 댓글 조회
   getUnCheckComment: async (query) => {
     try {
-      const response = await api.get("/unchecked_comments", query);
+      const response = await api.get("/unchecked_comments", { params: query }); // params로 감싸
       return response;
     } catch (error) {
       return error.response;
