@@ -14,22 +14,18 @@ import NavigationTabs from "../components/tab/Tab";
 //   /* min-height: 100vh; */
 // `;
 
-const Wrapper = styled.div`
-  width: 100%;
-  max-width: 900px;
-  display: flex;
-  justify-content: flex-start; /* 왼쪽 정렬 */
-`;
+// const Wrapper = styled.div`
+//   width: 100%;
+//   max-width: 900px;
+//   display: flex;
+//   justify-content: flex-start; /* 왼쪽 정렬 */
+// `;
 
 const TodayCheckListPage = () => {
   return (
     <ContentContainer>
-      <Wrapper>
-        <NavigationTabs /> {/* 왼쪽 정렬 */}
-      </Wrapper>
-      <Wrapper>
-        <CourseDropDown />
-      </Wrapper>{" "}
+      <NavigationTabs /> {/* 왼쪽 정렬 */}
+      <CourseDropDown />
       <AttendanceRecord />
       <DailyCheckList activeTab="daily" />
     </ContentContainer>

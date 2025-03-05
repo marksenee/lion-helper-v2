@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import useCourseStore from "../../\bstore/useCourseStore";
 // import useCourseStore from "../../store/useCourseStore";
 import {
+  Wrapper,
   DropdownContainer,
   DropdownIcon,
   DropdownList,
@@ -23,7 +24,7 @@ const CourseDropDown = () => {
   };
 
   return (
-    <div>
+    <Wrapper>
       <DropdownContainer onClick={() => setDropdownOpen(!dropdownOpen)}>
         {selectedCourse}
         <DropdownIcon />
@@ -38,7 +39,7 @@ const CourseDropDown = () => {
           ))}
         </DropdownList>
       </DropdownContainer>
-    </div>
+    </Wrapper>
   );
 };
 

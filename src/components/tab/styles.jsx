@@ -6,6 +6,13 @@ const Content = styled.div`
   text-align: center;
 `;
 
+const Wrapper = styled.div`
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  justify-content: flex-start; /* 왼쪽 정렬 */
+`;
+
 // 네비게이션 탭 스타일
 const TabContainer = styled.div`
   display: flex;
@@ -34,4 +41,4 @@ const TabItem = styled.div`
   }
 `;
 
-export { Content, TabContainer, TabItem };
+export { Content, Wrapper, TabContainer, TabItem };

@@ -1,8 +1,15 @@
 import styled from "styled-components";
 import { IoIosArrowDown } from "react-icons/io"; // 토글 아이콘
 
-const DropdownContainer = styled.div`
+const Wrapper = styled.div`
   width: 100%;
+  max-width: 900px;
+  display: flex;
+  justify-content: flex-start; /* 왼쪽 정렬 */
+`;
+
+const DropdownContainer = styled.div`
+  /* width: 50%; */
   max-width: 400px; /* 드롭다운 최대 크기 */
   background-color: white;
   border: 2px solid #dcdcdc;
@@ -50,4 +57,4 @@ const DropdownItem = styled.li`
   }
 `;
 
-export { DropdownContainer, DropdownIcon, DropdownList, DropdownItem };
+export { Wrapper, DropdownContainer, DropdownIcon, DropdownList, DropdownItem };
