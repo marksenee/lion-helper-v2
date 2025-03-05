@@ -13,7 +13,7 @@ const OtherPage = () => <Content>🔍 기타 페이지</Content>;
 const tabs = [
   { name: "오늘", path: "/checklist/today" },
   { name: "주간", path: "/checklist/weekly" },
-  { name: "미체크 항목", path: "/checklist/unchecked" },
+  // { name: "미체크 항목", path: "/checklist/unchecked" },
 ];
 
 const NavigationTabs = () => {
@@ -28,9 +28,10 @@ const NavigationTabs = () => {
       setSelectedTab("오늘");
     } else if (currentPath.includes("weekly")) {
       setSelectedTab("주간");
-    } else if (currentPath.includes("unchecked")) {
-      setSelectedTab("미체크 항목");
     }
+    // else if (currentPath.includes("unchecked")) {
+    //   setSelectedTab("미체크 항목");
+    // }
   }, [location.pathname]); // 경로가 바뀔 때마다 실행
 
   return (
@@ -61,7 +62,7 @@ const NavigationTabs = () => {
       <Routes>
         <Route path="today" element={<TodayCheckListPage />} />
         <Route path="weekly" element={<WeeklyCheckListPage />} />
-        <Route path="unchecked" element={<ProUncheckedPage />} />
+        {/* <Route path="unchecked" element={<ProUncheckedPage />} /> */}
       </Routes>
     </>
   );
