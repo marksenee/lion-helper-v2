@@ -11,9 +11,8 @@ const TabContainer = styled.div`
   display: flex;
   justify-content: flex-start;
   gap: 20px;
-  /* margin-top: 50px; */
-  margin-left: 10px; //사이드바 너비만큼 여백을 줌
   margin-bottom: 50px;
+  width: 77%; /* 필요 시 추가 */
 `;
 
 const TabItem = styled.div`

@@ -23,17 +23,22 @@ const CourseDropDown = () => {
   };
 
   return (
-    <DropdownContainer onClick={() => setDropdownOpen(!dropdownOpen)}>
-      {selectedCourse}
-      <DropdownIcon />
-      <DropdownList isOpen={dropdownOpen}>
-        {courseItems.map((course) => (
-          <DropdownItem key={course} onClick={() => handleCourseSelect(course)}>
-            {course}
-          </DropdownItem>
-        ))}
-      </DropdownList>
-    </DropdownContainer>
+    <div>
+      <DropdownContainer onClick={() => setDropdownOpen(!dropdownOpen)}>
+        {selectedCourse}
+        <DropdownIcon />
+        <DropdownList isOpen={dropdownOpen}>
+          {courseItems.map((course) => (
+            <DropdownItem
+              key={course}
+              onClick={() => handleCourseSelect(course)}
+            >
+              {course}
+            </DropdownItem>
+          ))}
+        </DropdownList>
+      </DropdownContainer>
+    </div>
   );
 };
 

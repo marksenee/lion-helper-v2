@@ -1,13 +1,21 @@
 import styled from "styled-components";
 
 const ContentContainer = styled.div`
-  width: 100%;
-  min-height: 100vh; /* 화면 높이 채우기 */
   display: flex;
-  flex-direction: column; /* 세로 방향 정렬 */
-  align-items: center; /* 가로 중앙 정렬 */
-  justify-content: center; /* 세로 중앙 정렬 */
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  width: calc(100vw - 250px); /* 사이드바 크기만큼 빼줌 */
+  margin-left: 250px; /* 사이드바가 fixed라면 필요 */
   padding: 20px;
+  box-sizing: border-box;
+
+  @media (max-width: 1024px) {
+    /* 태블릿 이하에서는 자동 조정 */
+    width: 100vw;
+    margin-left: 0;
+  }
 `;
 
 const PageContainer = styled.div`
