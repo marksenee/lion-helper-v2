@@ -14,7 +14,7 @@ import NavigationTabs from "../components/tab/Tab";
 //   /* min-height: 100vh; */
 // `;
 
-const CourseDropDownWrapper = styled.div`
+const Wrapper = styled.div`
   width: 100%;
   max-width: 900px;
   display: flex;
@@ -24,10 +24,12 @@ const CourseDropDownWrapper = styled.div`
 const TodayCheckListPage = () => {
   return (
     <ContentContainer>
-      <NavigationTabs style={{ alignSelf: "flex-start" }} /> {/* 왼쪽 정렬 */}
-      <CourseDropDownWrapper>
+      <Wrapper>
+        <NavigationTabs /> {/* 왼쪽 정렬 */}
+      </Wrapper>
+      <Wrapper>
         <CourseDropDown />
-      </CourseDropDownWrapper>{" "}
+      </Wrapper>{" "}
       <AttendanceRecord />
       <DailyCheckList activeTab="daily" />
     </ContentContainer>
