@@ -43,12 +43,27 @@ const UncheckedTable = () => {
         )}`;
   };
 
-  // ✅ 해결 Due 계산
+  // ✅ 해결 Due 계산 (월별 마지막 날 반영)
   const calculateDueDate = (createdAt) => {
     const createdDate = new Date(createdAt);
-    return isNaN(createdDate.getTime())
-      ? "-"
-      : `${createdDate.getMonth() + 1}/${createdDate.getDate() + 7}`;
+    if (isNaN(createdDate.getTime())) return "-";
+
+    const year = createdDate.getFullYear();
+    const month = createdDate.getMonth();
+
+    // 월별 마지막 날짜 계산 (예: 2월은 28일 또는 29일, 4월은 30일)
+    const lastDayOfMonth = new Date(year, month + 1, 0).getDate();
+
+    // 7일 후 날짜 계산 (기존 날짜 + 7일)
+    const dueDate = new Date(createdDate);
+    dueDate.setDate(createdDate.getDate() + 7);
+
+    // 만약 dueDate가 해당 월의 마지막 날짜를 넘으면 마지막 날짜로 설정
+    if (dueDate.getDate() > lastDayOfMonth) {
+      dueDate.setDate(lastDayOfMonth);
+    }
+
+    return `${dueDate.getMonth() + 1}/${dueDate.getDate()}`;
   };
 
   const cleanContent = (text) => {
