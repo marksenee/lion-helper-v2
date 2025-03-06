@@ -25,6 +25,7 @@ const TableComponents = () => {
   // const { courseItems } = useCourseStore();
 
   const [taskData, setTaskData] = useState([]);
+  const [allCheckRate, setAllCheckRate] = useState([]);
   // const [taskData, setTaskData] = useState([
   //   {
   //     dept: "TechSolLab",
@@ -78,7 +79,22 @@ const TableComponents = () => {
         console.error("Error fetching checklist:", error);
       }
     };
+
+    const fetchAllCheckRate = async () => {
+      try {
+        const response = await proPage.getAllCheckRate();
+
+        if (response && response.data) {
+          const data = response.data.data;
+          setAllCheckRate(data);
+        }
+      } catch (error) {
+        console.error("Error fetching checklist:", error);
+      }
+    };
+
     fetchTaskData();
+    fetchAllCheckRate();
   }, []);
 
   const handleCourseSelect = (course) => {
@@ -117,20 +133,35 @@ const TableComponents = () => {
             </TableRow>
           </TableHead>
           <tbody>
-            {taskData.map((item, index) => (
-              <TableRow key={index}>
-                <TableCell>{item.training_course}</TableCell>
-                <TableCell>{item.manager}</TableCell>
-                <TableCell>{item.today_check_rate}</TableCell>
+            {taskData.map((item, index) => {
+              // allCheckRate에서 해당 항목 찾기
+              const matchingCheckRate = allCheckRate.find(
+                (rate) => rate.training_course === item.training_course
+              );
 
-                <TableCell>{item.check_rate}</TableCell>
-                <TableUrgencyCell>
-                  <UrgencyBadge urgent={item.check_rate === "100.0%"}>
-                    {item.check_rate === "100.0%" ? "완수" : "미완수"}
-                  </UrgencyBadge>
-                </TableUrgencyCell>
-              </TableRow>
-            ))}
+              return (
+                <TableRow key={index}>
+                  <TableCell>{item.training_course}</TableCell>
+                  <TableCell>{item.manager}</TableCell>
+                  <TableCell>{item.check_rate}</TableCell>
+
+                  {/* `matchingCheckRate`가 있으면 해당 `check_rate`를 보여주고, 없으면 기본값 표시 */}
+                  <TableCell>
+                    {matchingCheckRate ? matchingCheckRate.check_rate : "0%"}
+                  </TableCell>
+
+                  <TableUrgencyCell>
+                    <UrgencyBadge
+                      urgent={matchingCheckRate?.check_rate === "100.0%"}
+                    >
+                      {matchingCheckRate?.check_rate === "100.0%"
+                        ? "완수"
+                        : "미완수"}
+                    </UrgencyBadge>
+                  </TableUrgencyCell>
+                </TableRow>
+              );
+            })}
           </tbody>
         </Table>
       </TableWrapper>

@@ -27,6 +27,7 @@ const UncheckedTable = () => {
   const [solutions, setSolutions] = useState({});
   const [activeInput, setActiveInput] = useState(null);
   const [allTaskData, setAllTaskData] = useState([]); // 원본 데이터 저장
+  const [comments, setComments] = useState({});
 
   const formatDate = (dateString) => {
     if (!dateString) return "";
@@ -81,40 +82,28 @@ const UncheckedTable = () => {
   const handleSolutionSubmit = async (id) => {
     if (!solutions[id]) return;
 
-    const requestData = {
+    const newComment = {
       comment: solutions[id],
       unchecked_id: id,
     };
 
     try {
       const response = await proPage.postUnCheckedDescriptionsComment(
-        requestData
+        newComment
       );
-      console.log("POST Response:", response);
 
       if (response.status === 201) {
         alert("해결 방안이 성공적으로 전송되었습니다.");
 
-        console.log("Fetching comments for ID:", id); // ID가 제대로 찍히는지 확인
-
-        const updatedComments = await proPage.getUnCheckComment({
-          unchecked_id: id,
-        });
-
-        console.log("Full GET Response:", updatedComments);
-
-        const newComment = updatedComments.data.data.comment; // 이 부분은 구조 확인 후 수정 필요
-        console.log("New Comment:", newComment);
-
+        // ✅ 상태 업데이트 (새로운 댓글 바로 반영)
         setTaskData((prev) =>
-          prev.map((item) =>
-            item.id === id ? { ...item, action_plan: newComment } : item
-          )
+          prev.map((item) => (item.id === id ? { ...item } : item))
         );
 
+        // ✅ 입력 필드 초기화 X (사용자가 입력한 값 유지)
         setSolutions((prev) => ({
           ...prev,
-          [id]: "",
+          [id]: newComment.comment, // 입력한 값 유지
         }));
       }
     } catch (error) {
@@ -159,6 +148,37 @@ const UncheckedTable = () => {
 
     setTaskData(filteredData);
   }, [selectedCourse, allTaskData]); // ✅ allTaskData가 바뀌면 다시 반영
+
+  useEffect(() => {
+    taskData.forEach((item) => {
+      if (!solutions[item.id]) {
+        fetchComments(item.id);
+      }
+    });
+  }, [taskData]); // taskData가 변경될 때마다 실행
+
+  const fetchComments = async (unchecked_id) => {
+    try {
+      if (!unchecked_id) {
+        console.error("🚨 오류: issue_id가 제공되지 않음");
+        return;
+      }
+
+      const response = await proPage.getUnCheckComment({
+        params: { unchecked_id: unchecked_id },
+      }); // 🔹 query로 issue_id 전달
+      if (response.status === 200) {
+        setComments((prev) => ({
+          ...prev,
+          [unchecked_id]: response.data.data.comment, // 🔹 API 응답 구조 맞게 수정
+        }));
+      } else {
+        console.error("🚨 댓글 조회 실패:", response.data.message);
+      }
+    } catch (error) {
+      console.error("🚨 API 호출 오류:", error);
+    }
+  };
 
   const handleCourseSelect = (course) => {
     setSelectedCourse(course);
@@ -234,7 +254,6 @@ const UncheckedTable = () => {
                       }))
                     }
                     onFocus={() => setActiveInput(item.id)}
-                    onBlur={() => setActiveInput(null)}
                     onKeyDown={(e) => {
                       if (e.key === "Enter" && activeInput === item.id) {
                         handleSolutionSubmit(item.id);

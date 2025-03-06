@@ -183,6 +183,8 @@ export const proPage = {
   getUnCheckComment: async (query) => {
     try {
       const response = await api.get("/unchecked_comments", { params: query }); // params로 감싸
+      console.log("query", query);
+
       return response;
     } catch (error) {
       return error.response;
@@ -233,6 +235,17 @@ export const proPage = {
   getCheckPercent: async () => {
     try {
       const response = await api.get("/admin/task_status");
+      // console.log("response", response);
+      return response;
+    } catch (error) {
+      return error.response;
+    }
+  },
+
+  //누적 체크율 조회 기능
+  getAllCheckRate: async () => {
+    try {
+      const response = await api.get("/admin/task_status_overall");
       // console.log("response", response);
       return response;
     } catch (error) {
