@@ -23,12 +23,9 @@ const DailyCheckList = ({ activeTab }) => {
 
   const [checkItems, setCheckItems] = useState([]);
   const [uncheckedItems, setUncheckedItems] = useState([]);
-  const [commentsState, setCommentsState] = useState({});
   const [checkedStates, setCheckedStates] = useState({});
-  const [reason, setReason] = useState("");
-  const [alertVisible, setAlertVisible] = useState(false);
-  // const [activeTab, setActiveTab] = useState("daily");
   const [reasonState, setReasonState] = useState({}); // 각 항목의 액션 플랜을 저장
+  const [showInput, setShowInput] = useState({}); // 특정 항목의 입력창 표시 여부
 
   useEffect(() => {
     const fetchChecklist = async () => {
@@ -37,12 +34,6 @@ const DailyCheckList = ({ activeTab }) => {
         if (response?.data?.data) {
           const limitedCheckItems = response.data.data;
           setCheckItems(limitedCheckItems);
-
-          // const unresolvedItems = response.data.data.filter(
-          //   (item) => !item.is_checked
-          // );
-          // setUncheckedItems(unresolvedItems);
-
           const initialCheckedStates = response.data.data.reduce(
             (acc, item) => {
               acc[item.id] = item.is_checked;
@@ -56,7 +47,6 @@ const DailyCheckList = ({ activeTab }) => {
         console.error("Error fetching checklist:", error);
       }
     };
-
     fetchChecklist();
   }, []);
 
@@ -68,43 +58,27 @@ const DailyCheckList = ({ activeTab }) => {
   }, [checkItems, checkedStates]);
 
   const handleCheckboxChange = async (id, checkedItem, isYesChecked) => {
-    console.log(id, checkedItem, isYesChecked);
     const newState = isYesChecked ? "yes" : "no";
     const updatedCheckedStates = { ...checkedStates, [id]: newState };
-
     setCheckedStates(updatedCheckedStates);
-
-    // ✅ checkedStates 업데이트 이후 즉시 uncheckedItems 업데이트
     setUncheckedItems(
       checkItems.filter((item) => updatedCheckedStates[item.id] !== "yes")
     );
-
     try {
       await proPage.postDailyCheck({
-        // updates: [
-        //   { is_checked: !checkedStates[id], task_name: checkedItem.task_name },
-        // ],
         updates: [
           { is_checked: newState === "yes", task_name: checkedItem.task_name },
         ],
       });
-      console.log(
-        `체크리스트 업데이트: ${checkedItem.task_name} ${
-          !checkedStates[id] ? "체크됨" : "체크 해제됨"
-        }`
-      );
     } catch (error) {
       console.error("체크 상태 업데이트 실패:", error);
     }
   };
 
-  // 입력값 변경 시 즉시 상태 업데이트
   const handleReasonChange = (id, value) => {
-    setReasonState((prev) => ({
-      ...prev,
-      [id]: value, // 해당 id에 대한 액션 플랜 저장
-    }));
+    setReasonState((prev) => ({ ...prev, [id]: value }));
   };
+
   const groupedTasks = checkItems
     .filter((item) => item.task_period === activeTab)
     .reduce((acc, item) => {
@@ -119,48 +93,18 @@ const DailyCheckList = ({ activeTab }) => {
       return acc;
     }, {});
 
-  const handleSubmit = async () => {
-    const uncheckedItemsData = checkItems
-      .filter((item) => !checkedStates[item.id])
-      .map((item) => ({
-        id: item.id,
-        task_name: item.task_name,
-      }));
-
-    const unCheckedDescriptionData = {
-      description: reason,
-      training_course: selectedCourse,
-    };
-
-    try {
-      const response = await proPage.postUnCheckedDescriptions(
-        unCheckedDescriptionData
-      );
-      if (response.status === 201) {
-        // alert("저장이 완료되었습니다");
-        setAlertVisible(true); // 알람 표시
-
-        setReason("");
-      }
-    } catch (error) {
-      console.error("Error posting issue:", error);
-    }
-  };
-
   const handleSaveChecklist = async () => {
     const allItems = checkItems.map((item) => ({
-      is_checked: !!checkedStates[item.id], // true 또는 false 값을 포함
+      is_checked: !!checkedStates[item.id],
       task_name: item.task_name,
     }));
-
     if (!selectedCourse || selectedCourse === "과정 선택") {
       alert("과정을 선택해 주세요");
       return;
     }
-
     try {
       const response = await proPage.postDailyCheck({
-        updates: allItems, // ✅ 모든 항목을 전송 (체크 여부 포함)
+        updates: allItems,
         training_course: selectedCourse,
       });
       if (response.status === 201) {
@@ -227,13 +171,8 @@ const DailyCheckList = ({ activeTab }) => {
               <div key={category}>
                 {tasks.map((item) => (
                   <CheckboxContainer key={item.id}>
-                    {/* Yes 체크박스 */}
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                      }}
-                    >
+                    <div style={{ display: "flex", alignItems: "center" }}>
+                      {/* YES 체크박스 */}
                       <div
                         style={{
                           display: "flex",
@@ -260,12 +199,17 @@ const DailyCheckList = ({ activeTab }) => {
                         />
                         <Circle
                           checked={checkedStates[item.id] === "yes"}
-                          onClick={() =>
-                            handleCheckboxChange(item.id, item, true)
-                          }
+                          onClick={() => {
+                            handleCheckboxChange(item.id, item, true);
+                            setShowInput((prev) => ({
+                              ...prev,
+                              [item.id]: false,
+                            }));
+                          }}
                         />
                       </div>
-                      {/* No 체크박스 */}
+
+                      {/* NO 체크박스 */}
                       <div
                         style={{
                           display: "flex",
@@ -293,9 +237,13 @@ const DailyCheckList = ({ activeTab }) => {
                         />
                         <Circle
                           checked={checkedStates[item.id] === "no"}
-                          onClick={() =>
-                            handleCheckboxChange(item.id, item, false)
-                          }
+                          onClick={() => {
+                            handleCheckboxChange(item.id, item, false);
+                            setShowInput((prev) => ({
+                              ...prev,
+                              [item.id]: true,
+                            }));
+                          }}
                         />
                       </div>
 
@@ -319,6 +267,46 @@ const DailyCheckList = ({ activeTab }) => {
                       </Tooltip>
                     </div>
 
+                    {/* NO 선택 시 입력창과 버튼 표시 */}
+                    {showInput[item.id] && (
+                      <div
+                        style={{
+                          marginTop: "10px",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <input
+                          type="text"
+                          placeholder="이유를 입력하세요"
+                          value={reasonState[item.id] || ""}
+                          onChange={(e) =>
+                            handleReasonChange(item.id, e.target.value)
+                          }
+                          style={{
+                            padding: "5px",
+                            marginRight: "10px",
+                            borderRadius: "5px",
+                            border: "1px solid #ccc",
+                          }}
+                        />
+                        <button
+                          onClick={() =>
+                            handleCommentSubmit(item.id, reasonState[item.id])
+                          }
+                          style={{
+                            padding: "5px 10px",
+                            borderRadius: "5px",
+                            background: "#007bff",
+                            color: "white",
+                            border: "none",
+                            cursor: "pointer",
+                          }}
+                        >
+                          등록
+                        </button>
+                      </div>
+                    )}
                     <div>
                       <CategoryText>
                         {"#"}

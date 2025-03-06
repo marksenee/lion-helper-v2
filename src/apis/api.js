@@ -245,8 +245,7 @@ export const proPage = {
   //누적 체크율 조회 기능
   getAllCheckRate: async () => {
     try {
-      const response = await api.get("/admin/task_status_overall");
-      // console.log("response", response);
+      const response = await api.get("/admin/task_status_combined");
       return response;
     } catch (error) {
       return error.response;

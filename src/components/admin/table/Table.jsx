@@ -67,19 +67,6 @@ const TableComponents = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   useEffect(() => {
-    const fetchTaskData = async () => {
-      try {
-        const response = await proPage.getCheckPercent();
-
-        if (response && response.data) {
-          const data = response.data.data;
-          setTaskData(data);
-        }
-      } catch (error) {
-        console.error("Error fetching checklist:", error);
-      }
-    };
-
     const fetchAllCheckRate = async () => {
       try {
         const response = await proPage.getAllCheckRate();
@@ -93,7 +80,6 @@ const TableComponents = () => {
       }
     };
 
-    fetchTaskData();
     fetchAllCheckRate();
   }, []);
 
@@ -113,12 +99,6 @@ const TableComponents = () => {
     setSelectedCourse(course);
     setDropdownOpen(false);
   };
-
-  // 필터링된 데이터: 선택된 과정에 맞는 taskData와 allCheckRate
-  const filteredTaskData =
-    selectedCourse !== "과정 선택"
-      ? taskData.filter((item) => item.training_course === selectedCourse)
-      : taskData;
 
   const filteredCheckRate =
     selectedCourse !== "과정 선택"
@@ -160,28 +140,17 @@ const TableComponents = () => {
           </TableHead>
           <tbody>
             {filteredCheckRate.map((item, index) => {
-              // allCheckRate에서 해당 항목 찾기
-              const matchingCheckRate = filteredTaskData.find(
-                (rate) => rate.training_course === item.training_course
-              );
-
               return (
                 <TableRow key={index}>
                   <TableCell>{item.training_course}</TableCell>
                   <TableCell>{item.manager}</TableCell>
                   {/* `matchingCheckRate`가 있으면 해당 `check_rate`를 보여주고, 없으면 기본값 표시 */}
-                  <TableCell>
-                    {matchingCheckRate ? matchingCheckRate.check_rate : "0%"}
-                  </TableCell>
-                  <TableCell>{item.check_rate}</TableCell>
+                  <TableCell>{item.daily_check_rate}</TableCell>
+                  <TableCell>{item.overall_check_rate}</TableCell>
 
                   <TableUrgencyCell>
-                    <UrgencyBadge
-                      urgent={matchingCheckRate?.check_rate === "100.0%"}
-                    >
-                      {matchingCheckRate?.check_rate === "100.0%"
-                        ? "완수"
-                        : "미완수"}
+                    <UrgencyBadge urgent={item.overall_check_rate === "100.0%"}>
+                      {item.overall_check_rate === "100.0%" ? "완수" : "미완수"}
                     </UrgencyBadge>
                   </TableUrgencyCell>
                 </TableRow>
