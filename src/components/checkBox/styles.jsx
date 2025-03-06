@@ -83,22 +83,30 @@ const ReasonInputContainer = styled.div`
   margin-top: 20px;
   display: flex;
   flex-direction: column;
+  position: relative; /* 부모 컨테이너가 위치 기준 */
+  background-color: #f5f5f5;
+`;
+
+const ReasonInputWrapper = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
 `;
 
 const ReasonInput = styled.textarea`
-  width: 800px;
-  min-height: 20px;
+  width: 100%;
+  height: 100%;
   padding: 7px;
   border: none;
   outline: none;
   font-size: 13pt;
   color: #000000;
   resize: none;
-  margin-left: 5%;
   margin-right: 1%;
   white-space: pre-line;
   border-radius: 5px;
   background-color: #f5f5f5;
+  box-sizing: border-box; /* padding 포함한 크기 계산 */
 
   &::placeholder {
     color: #adabab;
@@ -106,6 +114,9 @@ const ReasonInput = styled.textarea`
 `;
 
 const SubmitButton = styled.button`
+  position: absolute;
+  bottom: 10px; /* 입력창 하단에 위치 */
+  right: 10px; /* 입력창 오른쪽에 위치 */
   width: 50px;
   height: 30px;
   background-color: white;
@@ -113,7 +124,6 @@ const SubmitButton = styled.button`
   color: #ff7710;
   font-size: 13px;
   cursor: pointer;
-  align-self: flex-end;
   border-radius: 5px;
 
   &:hover {
@@ -216,6 +226,15 @@ const HiddenCheckbox = styled.input`
   display: none;
 `;
 
+const UncheckedInputBox = styled.input`
+  margin-left: 10px;
+  /* margin-bottom: 6px; */
+  border-radius: 5px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  width: 250px;
+`;
+
 export {
   BoxContainer,
   Title,
@@ -235,4 +254,5 @@ export {
   HiddenCheckbox,
   Circle,
   CategoryText,
+  UncheckedInputBox,
 };

@@ -15,8 +15,11 @@ import {
   Circle,
   HiddenCheckbox,
   CategoryText,
+  UncheckedInputBox,
+  ReasonInputContainer,
 } from "./styles";
 import useCourseStore from "../../\bstore/useCourseStore";
+import { SubmitButton } from "../issue/styles";
 
 const DailyCheckList = ({ activeTab }) => {
   const { selectedCourse } = useCourseStore(); // 선택된 과정 가져오기
@@ -26,6 +29,7 @@ const DailyCheckList = ({ activeTab }) => {
   const [checkedStates, setCheckedStates] = useState({});
   const [reasonState, setReasonState] = useState({}); // 각 항목의 액션 플랜을 저장
   const [showInput, setShowInput] = useState({}); // 특정 항목의 입력창 표시 여부
+  const [reason, setReason] = useState("");
 
   useEffect(() => {
     const fetchChecklist = async () => {
@@ -64,15 +68,15 @@ const DailyCheckList = ({ activeTab }) => {
     setUncheckedItems(
       checkItems.filter((item) => updatedCheckedStates[item.id] !== "yes")
     );
-    try {
-      await proPage.postDailyCheck({
-        updates: [
-          { is_checked: newState === "yes", task_name: checkedItem.task_name },
-        ],
-      });
-    } catch (error) {
-      console.error("체크 상태 업데이트 실패:", error);
-    }
+    // try {
+    //   await proPage.postDailyCheck({
+    //     updates: [
+    //       { is_checked: newState === "yes", task_name: checkedItem.task_name },
+    //     ],
+    //   });
+    // } catch (error) {
+    //   console.error("체크 상태 업데이트 실패:", error);
+    // }
   };
 
   const handleReasonChange = (id, value) => {
@@ -103,6 +107,10 @@ const DailyCheckList = ({ activeTab }) => {
       return;
     }
     try {
+      console.log("response", {
+        updates: allItems,
+        training_course: selectedCourse,
+      });
       const response = await proPage.postDailyCheck({
         updates: allItems,
         training_course: selectedCourse,
@@ -120,6 +128,33 @@ const DailyCheckList = ({ activeTab }) => {
       ...prev,
       [id]: value, // ✅ reasonState 업데이트 유지
     }));
+  };
+
+  const today = new Date();
+
+  const handleSubmit = async () => {
+    const issueData = {
+      issue: reason,
+      date: today,
+      training_course: selectedCourse,
+    };
+
+    if (!selectedCourse || selectedCourse === "과정 선택") {
+      alert("과정을 선택해주세요!");
+      return;
+    }
+
+    try {
+      const response = await proPage.postIssues(issueData);
+      if (response.status === 201) {
+        alert("저장이 완료되었습니다 \n (어드민페이지에서 내용 확인 가능)");
+        setReason("");
+      } else if (response.status === 400) {
+        alert("이슈 사항을 입력해주세요!");
+      }
+    } catch (error) {
+      console.error("Error posting issue:", error);
+    }
   };
 
   const handleCommentSubmit = async (id) => {
@@ -246,7 +281,6 @@ const DailyCheckList = ({ activeTab }) => {
                           }}
                         />
                       </div>
-
                       <CheckboxLabel>{item.task_name}</CheckboxLabel>
                       <FiHelpCircle
                         data-tooltip-id={`tooltip-${item.id}`}
@@ -265,48 +299,49 @@ const DailyCheckList = ({ activeTab }) => {
                           ? item.guide
                           : "가이드 정보 없음"}
                       </Tooltip>
-                    </div>
-
-                    {/* NO 선택 시 입력창과 버튼 표시 */}
-                    {showInput[item.id] && (
-                      <div
-                        style={{
-                          marginTop: "10px",
-                          display: "flex",
-                          alignItems: "center",
-                        }}
-                      >
-                        <input
-                          type="text"
-                          placeholder="이유를 입력하세요"
-                          value={reasonState[item.id] || ""}
-                          onChange={(e) =>
-                            handleReasonChange(item.id, e.target.value)
-                          }
+                      {showInput[item.id] && (
+                        <div
                           style={{
-                            padding: "5px",
-                            marginRight: "10px",
-                            borderRadius: "5px",
-                            border: "1px solid #ccc",
-                          }}
-                        />
-                        <button
-                          onClick={() =>
-                            handleCommentSubmit(item.id, reasonState[item.id])
-                          }
-                          style={{
-                            padding: "5px 10px",
-                            borderRadius: "5px",
-                            background: "#007bff",
-                            color: "white",
-                            border: "none",
-                            cursor: "pointer",
+                            display: "flex",
+                            alignItems: "center",
                           }}
                         >
-                          등록
-                        </button>
-                      </div>
-                    )}
+                          <UncheckedInputBox
+                            type="text"
+                            placeholder="이유를 입력하세요"
+                            value={reasonState[item.id] || ""}
+                            onChange={(e) =>
+                              handleReasonChange(item.id, e.target.value)
+                            }
+                            onKeyDown={(e) => {
+                              if (e.key === "Enter") {
+                                e.preventDefault(); // 엔터 입력 시 새로고침 방지
+                                handleCommentSubmit(
+                                  item.id,
+                                  reasonState[item.id]
+                                );
+                              }
+                            }}
+                          />
+                          {/* 
+                          <button
+                            onClick={() =>
+                              handleCommentSubmit(item.id, reasonState[item.id])
+                            }
+                            style={{
+                              padding: "5px 10px",
+                              borderRadius: "5px",
+                              background: "#007bff",
+                              color: "white",
+                              border: "none",
+                              cursor: "pointer",
+                            }}
+                          >
+                            등록
+                          </button> */}
+                        </div>
+                      )}
+                    </div>
                     <div>
                       <CategoryText>
                         {"#"}
@@ -319,8 +354,23 @@ const DailyCheckList = ({ activeTab }) => {
             ))}
           </ChecklistContainer>
         </div>
-        <Title>💡미체크 사유</Title>
-        <div
+        <Title>이슈사항</Title>
+        <ReasonInputContainer>
+          <ReasonInput
+            placeholder={"이슈 사항이 있을 경우 작성해 주세요"}
+            value={reason}
+            onChange={(e) => setReason(e.target.value)}
+            // onKeyDown={(e) => {
+            //   if (e.key === "Enter") {
+            //     e.preventDefault();
+            //     handleSubmit();
+            //   }
+            // }}
+          />
+
+          <SubmitButton onClick={handleSubmit}>등록</SubmitButton>
+        </ReasonInputContainer>
+        {/* <div
           style={{
             marginTop: "3%",
             marginBottom: "3%",
@@ -377,7 +427,7 @@ const DailyCheckList = ({ activeTab }) => {
           ) : (
             <p>미체크된 항목이 없습니다.</p>
           )}
-        </div>
+        </div> */}
         {/* 왼쪽 정렬된 버튼 */}
         <div
           style={{

@@ -47,7 +47,7 @@ const ReasonInput = styled.textarea`
 const SubmitButton = styled.button`
   width: 70px;
   height: 52px;
-  background-color: #f5f5f5;
+  background-color: white;
   border-color: transparent;
   font-size: 14px;
   font-family: "Pretandard", sans-serif;
