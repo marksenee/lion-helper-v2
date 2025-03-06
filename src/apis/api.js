@@ -21,7 +21,6 @@ export const proPage = {
 
   // 출,퇴근 기록 저장
   attendance: async (data) => {
-    console.log("data", data);
     try {
       const response = await api.post("/attendance", data);
       return response;
@@ -183,8 +182,6 @@ export const proPage = {
   getUnCheckComment: async (query) => {
     try {
       const response = await api.get("/unchecked_comments", { params: query }); // params로 감싸
-      console.log("query", query);
-
       return response;
     } catch (error) {
       return error.response;
