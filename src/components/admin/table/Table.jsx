@@ -97,10 +97,33 @@ const TableComponents = () => {
     fetchAllCheckRate();
   }, []);
 
+  // useEffect(() => {
+  //   // ✅ 선택된 부서에 따라 필터링된 데이터 설정
+  //   const filteredData =
+  //     selectedCourse === "부서 선택"
+  //       ? allCheckRate
+  //       : allCheckRate.filter(
+  //           (item) => item.training_course === selectedCourse
+  //         );
+
+  //   setTaskData(filteredData);
+  // }, [selectedCourse, allCheckRate]); // ✅ allTaskData가 바뀌면 다시 반영
+
   const handleCourseSelect = (course) => {
     setSelectedCourse(course);
     setDropdownOpen(false);
   };
+
+  // 필터링된 데이터: 선택된 과정에 맞는 taskData와 allCheckRate
+  const filteredTaskData =
+    selectedCourse !== "과정 선택"
+      ? taskData.filter((item) => item.training_course === selectedCourse)
+      : taskData;
+
+  const filteredCheckRate =
+    selectedCourse !== "과정 선택"
+      ? allCheckRate.filter((item) => item.training_course === selectedCourse)
+      : allCheckRate;
 
   return (
     <Container>
@@ -109,15 +132,18 @@ const TableComponents = () => {
         <DropdownContainer onClick={() => setDropdownOpen(!dropdownOpen)}>
           {selectedCourse || "부서 선택"}
           <DropdownIcon />
+
           <DropdownList isOpen={dropdownOpen}>
-            {taskData.map((item) => (
-              <DropdownItem
-                key={item.dept} // Use the dept as the key
-                onClick={() => handleCourseSelect(item.dept)}
-              >
-                {item.dept}
-              </DropdownItem>
-            ))}
+            {[...new Set(allCheckRate.map((item) => item.training_course))].map(
+              (course) => (
+                <DropdownItem
+                  key={course}
+                  onClick={() => handleCourseSelect(course)}
+                >
+                  {course}
+                </DropdownItem>
+              )
+            )}
           </DropdownList>
         </DropdownContainer>
       </TitleWrapper>
@@ -133,9 +159,9 @@ const TableComponents = () => {
             </TableRow>
           </TableHead>
           <tbody>
-            {taskData.map((item, index) => {
+            {filteredCheckRate.map((item, index) => {
               // allCheckRate에서 해당 항목 찾기
-              const matchingCheckRate = allCheckRate.find(
+              const matchingCheckRate = filteredTaskData.find(
                 (rate) => rate.training_course === item.training_course
               );
 
@@ -143,12 +169,11 @@ const TableComponents = () => {
                 <TableRow key={index}>
                   <TableCell>{item.training_course}</TableCell>
                   <TableCell>{item.manager}</TableCell>
-                  <TableCell>{item.check_rate}</TableCell>
-
                   {/* `matchingCheckRate`가 있으면 해당 `check_rate`를 보여주고, 없으면 기본값 표시 */}
                   <TableCell>
                     {matchingCheckRate ? matchingCheckRate.check_rate : "0%"}
                   </TableCell>
+                  <TableCell>{item.check_rate}</TableCell>
 
                   <TableUrgencyCell>
                     <UrgencyBadge
