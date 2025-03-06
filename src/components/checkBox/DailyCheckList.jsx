@@ -308,7 +308,7 @@ const DailyCheckList = ({ activeTab }) => {
                         >
                           <UncheckedInputBox
                             type="text"
-                            placeholder="이유를 입력하세요"
+                            placeholder="사유 입력 후 엔터를 눌러주세요!"
                             value={reasonState[item.id] || ""}
                             onChange={(e) =>
                               handleReasonChange(item.id, e.target.value)
