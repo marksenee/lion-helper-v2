@@ -20,6 +20,7 @@ import {
   TitleWrapper,
 } from "../issues/styles";
 import useCourseStore from "../../../\bstore/useCourseStore";
+import GetIssuesComponent from "../issues/GetIssuesComponent";
 
 const TableComponents = () => {
   // const { courseItems } = useCourseStore();
@@ -159,6 +160,7 @@ const TableComponents = () => {
           </tbody>
         </Table>
       </TableWrapper>
+      <GetIssuesComponent />
     </Container>
   );
 };

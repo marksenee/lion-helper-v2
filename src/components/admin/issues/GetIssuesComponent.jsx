@@ -242,7 +242,7 @@ const GetIssuesComponent = () => {
   return (
     <Container>
       <TitleWrapper>
-        <Title>📌 이슈 사항</Title>
+        <Title>이슈 사항</Title>
         <DropdownContainer onClick={() => setDropdownOpen(!dropdownOpen)}>
           {selectedCourse || "과정 선택"}
           <DropdownIcon />

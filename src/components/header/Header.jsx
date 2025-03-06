@@ -45,12 +45,12 @@ const Header = () => {
       icon: <MdAdminPanelSettings />,
       path: "/admin/teamTask",
     },
-    {
-      id: "notice",
-      label: "공지사항",
-      icon: <MdAnnouncement />,
-      path: "/notice",
-    },
+    // {
+    //   id: "notice",
+    //   label: "공지사항",
+    //   icon: <MdAnnouncement />,
+    //   path: "/notice",
+    // },
   ];
 
   // 현재 URL과 일치하는 메뉴 아이템 찾기 (없으면 기본값 "home")
