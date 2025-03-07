@@ -231,11 +231,18 @@ const GetIssuesComponent = () => {
   const handleCourseSelect = (course) => {
     setSelectedCourse(course);
 
-    const selectedIssues = items
-      .filter((item) => item.training_course === course)
-      .flatMap((item) => item.issues || []);
+    if (course === "전체 과정") {
+      // 전체 과정 선택 시 모든 이슈를 표시
+      const allIssues = items.flatMap((item) => item.issues || []);
+      setFilteredIssues(allIssues);
+    } else {
+      // 특정 과정 선택 시 해당 과정의 이슈만 표시
+      const selectedIssues = items
+        .filter((item) => item.training_course === course)
+        .flatMap((item) => item.issues || []);
+      setFilteredIssues(selectedIssues);
+    }
 
-    setFilteredIssues(selectedIssues); // ✅ 직접 업데이트
     setDropdownOpen(false);
   };
 
@@ -247,6 +254,12 @@ const GetIssuesComponent = () => {
           {selectedCourse || "과정 선택"}
           <DropdownIcon />
           <DropdownList isOpen={dropdownOpen}>
+            <DropdownItem
+              key="all-courses"
+              onClick={() => handleCourseSelect("전체 과정")}
+            >
+              전체 과정
+            </DropdownItem>
             {courseItems.map((course) => (
               <DropdownItem
                 key={course}
