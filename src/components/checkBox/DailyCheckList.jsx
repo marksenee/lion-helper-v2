@@ -104,7 +104,7 @@ const DailyCheckList = ({ activeTab }) => {
     );
 
     const allItems = filteredItems.map((item) => ({
-      is_checked: !!checkedStates[item.id],
+      is_checked: checkedStates[item.id] === "yes", // "yes"일 때만 true, "no"면 false
       task_name: item.task_name,
     }));
 
