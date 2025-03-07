@@ -124,8 +124,7 @@ const TableComponents = () => {
               <TableHeader>과정</TableHeader>
               <TableHeader>담당자</TableHeader>
               <TableHeader>오늘 체크율</TableHeader>
-              <TableHeader>완수여부</TableHeader>
-
+              <TableHeader>오늘의 완수여부</TableHeader>
               <TableHeader>월별 누적 체크율</TableHeader>
             </TableRow>
           </TableHead>
