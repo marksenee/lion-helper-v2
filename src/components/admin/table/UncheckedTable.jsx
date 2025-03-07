@@ -197,6 +197,7 @@ const UncheckedTable = () => {
           <TableHead>
             <TableRow>
               <TableHeader>일자</TableHeader>
+              <TableHeader>과정명</TableHeader>
               <TableHeader>미체크 항목</TableHeader>
               <TableHeader>사유</TableHeader>
               <TableHeader>해결 지연</TableHeader>
@@ -209,6 +210,7 @@ const UncheckedTable = () => {
             {filteredCheckRate.map((item, index) => (
               <TableRow key={index}>
                 <TableCell>{item.created_at}</TableCell>
+                <TableCell>{item.training_course}</TableCell>
                 <TableCell>{item.content}</TableCell>
                 <TableCell>{item.action_plan}</TableCell>
                 <TableCell>{item.delay}</TableCell>
