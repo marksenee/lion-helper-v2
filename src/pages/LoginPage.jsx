@@ -98,7 +98,7 @@ const Login = () => {
     try {
       await postLogin(loginData); // Zustand의 postLogin 호출
       alert("로그인 완료!");
-      navigate("/checklist/today");
+      navigate("/app/checklist/today");
     } catch (error) {
       console.error("로그인 오류:", error);
       alert("로그인 실패. 다시 시도해주세요.");

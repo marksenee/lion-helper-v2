@@ -10,14 +10,14 @@ const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
-        {/* 로그인 화면 */}
-        <Route path="/login" element={<LoginPage />} />
+        {/* 로그인 페이지가 첫 화면 */}
+        <Route path="/" element={<LoginPage />} />
 
-        {/* 로그인 후에 접근해야 할 페이지 */}
-        <Route element={<Layout />}>
-          <Route path="/" element={<MainPage />} />
-          <Route path="/checklist/*" element={<NavigationTabs />} />
-          <Route path="/admin/*" element={<AdminNavigationTabs />} />
+        {/* 로그인 이후 접근 가능한 페이지들 */}
+        <Route path="/app" element={<Layout />}>
+          <Route path="main" element={<MainPage />} />
+          <Route path="checklist/*" element={<NavigationTabs />} />
+          <Route path="admin/*" element={<AdminNavigationTabs />} />
         </Route>
       </Routes>
     </BrowserRouter>
