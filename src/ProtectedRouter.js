@@ -4,7 +4,7 @@ import useAuthStore from "./\bstore/useAuthStore";
 const ProtectedRoute = () => {
   const { username } = useAuthStore();
 
-  return username ? <Outlet /> : <Navigate to="/loginpage" replace />;
+  return username ? <Outlet /> : <Navigate to="/login" replace />;
 };
 
 export default ProtectedRoute;

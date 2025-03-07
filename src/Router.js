@@ -12,12 +12,14 @@ const Router = () => {
     <BrowserRouter>
       <Routes>
         {/* ✅ 로그인 필요 페이지 (ProtectedRoute로 감싸기) */}
-        <Route path="/main" element={<MainPage />} />
-        <Route path="/checklist/*" element={<NavigationTabs />} />
-        <Route path="/admin/*" element={<AdminNavigationTabs />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/" element={<MainPage />} />
+          <Route path="/checklist/*" element={<NavigationTabs />} />
+          <Route path="/admin/*" element={<AdminNavigationTabs />} />
+        </Route>
 
         {/* 개별적으로 관리할 페이지 (헤더 제외) */}
-        <Route path="/" element={<LoginPage />} />
+        <Route path="/login" element={<LoginPage />} />
       </Routes>
     </BrowserRouter>
   );
