@@ -1,18 +1,18 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./Layout";
-import ProtectedRoute from "./ProtectedRoute";
 import LoginPage from "./pages/LoginPage";
 import MainPage from "./pages/MainPage";
 import NavigationTabs from "./components/tab/Tab";
 import AdminNavigationTabs from "./components/tab/AdminTab";
+import ProtectedRouter from "/Users/parkseeun/Projects/lion-helper-v2/src/ProtectedRouter.js";
 
 const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
         {/* ✅ 로그인 필요 페이지 (ProtectedRoute로 감싸기) */}
-        <Route element={<ProtectedRoute />}>
+        <Route element={<ProtectedRouter />}>
           <Route element={<Layout />}>
             <Route path="/" element={<MainPage />} />
             <Route path="/checklist/*" element={<NavigationTabs />} />
