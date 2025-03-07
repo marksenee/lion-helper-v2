@@ -5,7 +5,7 @@ import LoginPage from "./pages/LoginPage";
 import MainPage from "./pages/MainPage";
 import NavigationTabs from "./components/tab/Tab";
 import AdminNavigationTabs from "./components/tab/AdminTab";
-import useAuthStore from "./store/useAuthStore";
+import useAuthStore from "./\bstore/useAuthStore";
 
 const ProtectRouter = ({ children }) => {
   const { username } = useAuthStore();
