@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Layout from "./Layout";
 import LoginPage from "./pages/LoginPage";
@@ -9,6 +9,15 @@ import useAuthStore from "./\bstore/useAuthStore";
 
 const ProtectRouter = ({ children }) => {
   const { username } = useAuthStore();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // 세션 스토리지가 제대로 반영될 때까지 로딩 유지
+    const timeout = setTimeout(() => setLoading(false), 100);
+    return () => clearTimeout(timeout);
+  }, []);
+
+  if (loading) return <div>로딩 중...</div>;
 
   if (!username) {
     return <Navigate to="/login" replace />;
