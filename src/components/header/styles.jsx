@@ -29,18 +29,22 @@ const Content = styled.div`
 const Logo = styled.img`
   width: 161px;
   margin-bottom: 20px;
+  margin-top: 10px;
   cursor: pointer;
 `;
 
 const Title = styled.h2`
-  font-size: 18px;
+  font-size: 20px;
   color: #3f3f3f;
-  margin-bottom: 30px;
+  margin-top: 30px;
+  font-family: "suite";
+  /* margin-bottom: 30px; */
 `;
 
 const NavList = styled.ul`
   list-style: none;
   padding: 0;
+  margin-top: 50px;
 `;
 
 const NavItem = styled.li`
@@ -51,7 +55,9 @@ const NavItem = styled.li`
   padding: 10px;
   cursor: pointer;
   border-radius: 8px;
-  margin-bottom: 1%;
+  font-family: "Pretandard";
+  font-size: 20px;
+  margin-bottom: 5%;
   color: ${(props) =>
     props.active ? "#FF7710" : "#3f3f3f"}; /* 선택 시 색상 변경 */
   background-color: ${(props) =>

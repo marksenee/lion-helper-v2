@@ -21,13 +21,14 @@ import {
 } from "../issues/styles";
 import useCourseStore from "../../../\bstore/useCourseStore";
 import GetIssuesComponent from "../issues/GetIssuesComponent";
+import useAuthStore from "../../../\bstore/useAuthStore";
 
 const TableComponents = () => {
   // const { courseItems } = useCourseStore();
 
   const [taskData, setTaskData] = useState([]);
   const [selectedDept, setSelectedDept] = useState("전체 보기");
-
+  const { username, logout } = useAuthStore(); // username 상태 가져오기
   const [allCheckRate, setAllCheckRate] = useState([]);
   // const [taskData, setTaskData] = useState([
   //   {
@@ -67,7 +68,6 @@ const TableComponents = () => {
   //   },
   // ]);
   const [selectedCourse, setSelectedCourse] = useState("과정 선택");
-
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   useEffect(() => {
@@ -133,7 +133,7 @@ const TableComponents = () => {
               return (
                 <TableRow key={index}>
                   <TableCell>{item.training_course}</TableCell>
-                  <TableCell>{item.manager}</TableCell>
+                  <TableCell>{item.username}</TableCell>
                   {/* `matchingCheckRate`가 있으면 해당 `check_rate`를 보여주고, 없으면 기본값 표시 */}
                   <TableCell>{item.daily_check_rate}</TableCell>
                   <TableUrgencyCell>
