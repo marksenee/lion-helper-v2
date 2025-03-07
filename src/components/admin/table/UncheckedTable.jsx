@@ -20,6 +20,8 @@ import {
 const UncheckedTable = () => {
   const [taskData, setTaskData] = useState([]);
   const [selectedCourse, setSelectedCourse] = useState("부서 선택");
+  const [selectedDept, setSelectedDept] = useState("전체 보기");
+
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [solutions, setSolutions] = useState({});
   const [activeInput, setActiveInput] = useState(null);
@@ -237,7 +239,11 @@ const UncheckedTable = () => {
                   ) : (
                     <div
                       onClick={() => setActiveInput(item.id)}
-                      style={{ cursor: "pointer" }}
+                      style={{
+                        cursor: "pointer",
+                        border: "1px solid #ccc",
+                        width: "200px",
+                      }}
                     >
                       {solutions[item.id] || "해결 방안을 입력하세요"}
                     </div>
