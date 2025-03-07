@@ -26,6 +26,8 @@ const TableComponents = () => {
   // const { courseItems } = useCourseStore();
 
   const [taskData, setTaskData] = useState([]);
+  const [selectedDept, setSelectedDept] = useState("전체 보기");
+
   const [allCheckRate, setAllCheckRate] = useState([]);
   // const [taskData, setTaskData] = useState([
   //   {
@@ -65,6 +67,7 @@ const TableComponents = () => {
   //   },
   // ]);
   const [selectedCourse, setSelectedCourse] = useState("과정 선택");
+
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   useEffect(() => {
@@ -73,8 +76,7 @@ const TableComponents = () => {
         const response = await proPage.getAllCheckRate();
 
         if (response && response.data) {
-          const data = response.data.data;
-          setAllCheckRate(data);
+          setAllCheckRate(response.data.data);
         }
       } catch (error) {
         console.error("Error fetching checklist:", error);
@@ -84,26 +86,19 @@ const TableComponents = () => {
     fetchAllCheckRate();
   }, []);
 
-  // useEffect(() => {
-  //   // ✅ 선택된 부서에 따라 필터링된 데이터 설정
-  //   const filteredData =
-  //     selectedCourse === "부서 선택"
-  //       ? allCheckRate
-  //       : allCheckRate.filter(
-  //           (item) => item.training_course === selectedCourse
-  //         );
-
-  //   setTaskData(filteredData);
-  // }, [selectedCourse, allCheckRate]); // ✅ allTaskData가 바뀌면 다시 반영
-
-  const handleCourseSelect = (course) => {
-    setSelectedCourse(course);
+  const handleDeptSelect = (dept) => {
+    setSelectedDept(dept);
     setDropdownOpen(false);
   };
 
+  const uniqueDepts = [
+    "전체 보기",
+    ...new Set(allCheckRate.map((item) => item.dept)),
+  ];
+
   const filteredCheckRate =
-    selectedCourse !== "과정 선택"
-      ? allCheckRate.filter((item) => item.training_course === selectedCourse)
+    selectedDept !== "전체 보기"
+      ? allCheckRate.filter((item) => item.dept === selectedDept)
       : allCheckRate;
 
   return (
@@ -111,20 +106,14 @@ const TableComponents = () => {
       <TitleWrapper>
         {/* <Title>✍🏻 업무 현황</Title> */}
         <DropdownContainer onClick={() => setDropdownOpen(!dropdownOpen)}>
-          {selectedCourse || "부서 선택"}
+          {selectedDept}
           <DropdownIcon />
-
           <DropdownList isOpen={dropdownOpen}>
-            {[...new Set(allCheckRate.map((item) => item.training_course))].map(
-              (course) => (
-                <DropdownItem
-                  key={course}
-                  onClick={() => handleCourseSelect(course)}
-                >
-                  {course}
-                </DropdownItem>
-              )
-            )}
+            {uniqueDepts.map((dept) => (
+              <DropdownItem key={dept} onClick={() => handleDeptSelect(dept)}>
+                {dept}
+              </DropdownItem>
+            ))}
           </DropdownList>
         </DropdownContainer>
       </TitleWrapper>
