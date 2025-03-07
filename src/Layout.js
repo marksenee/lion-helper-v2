@@ -3,7 +3,7 @@ import Header from "./components/header/Header";
 
 const Layout = () => {
   const location = useLocation();
-  const hideHeaderRoutes = ["/login"]; // 헤더를 숨길 경로 목록
+  const hideHeaderRoutes = ["/loginpage"]; // 헤더를 숨길 경로 목록
 
   return (
     <>
