@@ -29,7 +29,7 @@ const GetIssuesComponent = () => {
   const [items, setItems] = useState([]); // API 데이터 상태
   const [filteredIssues, setFilteredIssues] = useState([]); // 필터링된 이슈
 
-  const [selectedCourse, setSelectedCourse] = useState("과정 선택");
+  const [selectedCourse, setSelectedCourse] = useState("전체 과정");
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const [comments, setComments] = useState(Array(items.length).fill(""));
@@ -45,9 +45,12 @@ const GetIssuesComponent = () => {
         const response = await proPage.getIssues();
         if (response?.data?.data && Array.isArray(response.data.data)) {
           setItems(response.data.data);
-          if (response.data.data.length > 0) {
-            setSelectedCourse(response.data.data[0].training_course); // 기본값 설정
-          }
+
+          // ✅ "전체 과정" 선택 시 모든 이슈를 가져오도록 설정
+          const allIssues = response.data.data.flatMap(
+            (item) => item.issues || []
+          );
+          setFilteredIssues(allIssues);
         } else {
           console.error("데이터 형식 오류: 예상된 데이터가 없습니다.");
         }
@@ -59,14 +62,16 @@ const GetIssuesComponent = () => {
   }, []);
 
   useEffect(() => {
-    if (!selectedCourse) return;
-
-    // 기존 filteredIssues 업데이트 로직 수정
-    const selectedIssues = items
-      .filter((item) => item.training_course === selectedCourse)
-      .flatMap((item) => item.issues || []);
-
-    setFilteredIssues(selectedIssues);
+    if (selectedCourse === "전체 과정") {
+      // ✅ "전체 과정"일 경우 모든 이슈 반영
+      const allIssues = items.flatMap((item) => item.issues || []);
+      setFilteredIssues(allIssues);
+    } else {
+      const selectedIssues = items
+        .filter((item) => item.training_course === selectedCourse)
+        .flatMap((item) => item.issues || []);
+      setFilteredIssues(selectedIssues);
+    }
   }, [selectedCourse, items]); // ✅ `items` 변경 시 자동 반영
 
   useEffect(() => {
@@ -230,20 +235,7 @@ const GetIssuesComponent = () => {
 
   const handleCourseSelect = (course) => {
     setSelectedCourse(course);
-
-    if (course === "전체 과정") {
-      // 전체 과정 선택 시 모든 이슈를 표시
-      const allIssues = items.flatMap((item) => item.issues || []);
-      setFilteredIssues(allIssues);
-    } else {
-      // 특정 과정 선택 시 해당 과정의 이슈만 표시
-      const selectedIssues = items
-        .filter((item) => item.training_course === course)
-        .flatMap((item) => item.issues || []);
-      setFilteredIssues(selectedIssues);
-    }
-
-    setDropdownOpen(false);
+    setDropdownOpen(false); // 드롭다운 닫기
   };
 
   return (
