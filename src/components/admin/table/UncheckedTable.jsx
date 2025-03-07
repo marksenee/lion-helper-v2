@@ -143,18 +143,20 @@ const UncheckedTable = () => {
     }
   };
 
-  // ✅ 부서 선택 시 필터링 (useMemo 활용)
-  const filteredData = useMemo(() => {
-    return selectedCourse === "부서 선택"
-      ? taskData
-      : taskData.filter((item) => item.training_course === selectedCourse);
-  }, [selectedCourse, taskData]);
-
-  // ✅ 부서 선택 핸들러
-  const handleCourseSelect = (course) => {
-    setSelectedCourse(course);
+  const handleDeptSelect = (dept) => {
+    setSelectedDept(dept);
     setDropdownOpen(false);
   };
+
+  const uniqueDepts = [
+    "전체 보기",
+    ...new Set(allTaskData.map((item) => item.dept)),
+  ];
+
+  const filteredCheckRate =
+    selectedDept !== "전체 보기"
+      ? allTaskData.filter((item) => item.dept === selectedDept)
+      : allTaskData;
 
   // ✅ 미체크 이슈 삭제
   const handleDeleteIssue = async (id) => {
@@ -179,19 +181,14 @@ const UncheckedTable = () => {
     <Container>
       <TitleWrapper>
         <DropdownContainer onClick={() => setDropdownOpen(!dropdownOpen)}>
-          {selectedCourse || "코스 선택"}
+          {selectedDept}
           <DropdownIcon />
           <DropdownList isOpen={dropdownOpen}>
-            {[...new Set(allTaskData.map((item) => item.training_course))].map(
-              (course) => (
-                <DropdownItem
-                  key={course}
-                  onClick={() => handleCourseSelect(course)}
-                >
-                  {course}
-                </DropdownItem>
-              )
-            )}
+            {uniqueDepts.map((dept) => (
+              <DropdownItem key={dept} onClick={() => handleDeptSelect(dept)}>
+                {dept}
+              </DropdownItem>
+            ))}
           </DropdownList>
         </DropdownContainer>
       </TitleWrapper>
@@ -209,7 +206,7 @@ const UncheckedTable = () => {
             </TableRow>
           </TableHead>
           <tbody>
-            {filteredData.map((item, index) => (
+            {filteredCheckRate.map((item, index) => (
               <TableRow key={index}>
                 <TableCell>{item.created_at}</TableCell>
                 <TableCell>{item.content}</TableCell>
