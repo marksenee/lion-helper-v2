@@ -4,144 +4,127 @@ import { proPage } from "../apis/api";
 import { useNavigate } from "react-router-dom";
 import useAuthStore from "../\bstore/useAuthStore";
 
-// 전체 화면 중앙 정렬
 const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-color: #ffff;
+  background-color: #f9fafb;
 `;
 
-// 로고 스타일
-// const Logo = styled.img`
-//   width: 300px;
-//   height: 55px;
-//   cursor: pointer;
-//   margin-bottom: 20px;
-
-//   @media (max-width: 768px) {
-//     width: 120px; /* 모바일에서 로고 크기 조정 */
-//     height: auto;
-//   }
-// `;
-
-// 로그인 박스
 const LoginBox = styled.div`
-  width: 704px;
-  height: 586px;
-  border: 2px solid #dcdcdc;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  width: 450px;
+  padding: 40px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  text-align: center;
 `;
 
-// 로그인 텍스트
-const LoginTitle = styled.h1`
-  font-family: "SUITE", sans-serif;
-  font-size: 50px;
+const Logo = styled.div`
+  font-size: 35px;
   font-weight: bold;
   color: #ff7710;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  font-family: "suite";
 `;
 
-// 입력창 스타일
-const Input = styled.input`
-  width: 490px;
-  height: 55px;
-  border: 2px solid #ff7710;
-  font-size: 18px;
-  padding: 10px;
-  margin-bottom: 20px;
-  border-radius: 10px;
-  outline: none;
+const SubText = styled.p`
+  color: #555;
+  font-size: 14px;
+  margin-bottom: 30px;
+`;
 
-  &::placeholder {
-    color: gray;
+const Input = styled.input`
+  width: 95%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+
+  &:focus {
+    border-color: #ffcaa2;
+    outline: none;
   }
 `;
 
-// 로그인 버튼
 const LoginButton = styled.button`
-  width: 515px;
-  height: 80px;
-  background-color: #ff7710;
+  width: 100%;
+  padding: 12px;
+  background-color: #ffcaa2;
   color: white;
-  font-size: 20px;
+  font-size: 16px;
   font-weight: bold;
   border: none;
-  border-radius: 10px;
+  border-radius: 8px;
   cursor: pointer;
 
   &:hover {
-    background-color: #e0660d;
+    background-color: #ff7710;
   }
+`;
+
+const OptionBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  font-size: 12px;
+  color: #555;
 `;
 
 const Login = () => {
   const [id, setId] = useState("");
   const [pw, setPw] = useState("");
-  // const setUsername = useAuthStore((state) => state.setUsername);
-
   const navigate = useNavigate();
+  const { postLogin } = useAuthStore(); // Zustand에서 postLogin 가져오기
 
   const handleLogin = async () => {
+    if (!id || !pw) {
+      alert("아이디와 비밀번호를 입력해주세요");
+      return;
+    }
+
     const loginData = {
-      password: pw,
       username: id,
+      password: pw,
     };
 
     try {
-      console.log("loginData", loginData);
-      const response = await proPage.postLogin(loginData);
-      if (response?.status === 200 && response.data?.success) {
-        // setUsername(response.data.user.username); // Zustand 상태 업데이트
-        navigate("/pro");
-        alert("로그인 완료!");
-      } else {
-        console.error(response);
-      }
+      await postLogin(loginData); // Zustand의 postLogin 호출
+      alert("로그인 완료!");
+      navigate("/checklist/today");
     } catch (error) {
-      console.error("Error posting comment:", error);
+      console.error("로그인 오류:", error);
+      alert("로그인 실패. 다시 시도해주세요.");
     }
-  };
-
-  const handleIdData = (e) => {
-    setId(e.target.value);
-  };
-
-  const handlePwData = (e) => {
-    setPw(e.target.value);
   };
 
   return (
     <Container>
-      {/* 로고 (박스 밖) */}
-      {/* <Logo src={process.env.PUBLIC_URL + "/likelion_logo.png"} alt="Logo" /> */}
-      {/* 로그인 박스 */}
       <LoginBox>
-        <LoginTitle>로그인</LoginTitle>
-
-        {/* ID 입력창 */}
+        <Logo>멋쟁이사자처럼 라이언헬퍼</Logo>
+        <SubText>아이디와 비밀번호를 입력해주세요</SubText>
         <Input
           type="text"
-          placeholder="ID를 입력해주세요(사번)"
+          placeholder="아이디 입력"
           value={id}
-          onChange={handleIdData}
+          onChange={(e) => setId(e.target.value)}
         />
-
-        {/* 비밀번호 입력창 */}
         <Input
           type="password"
-          placeholder="비밀번호를 입력해주세요"
+          placeholder="비밀번호 입력"
           value={pw}
-          onChange={handlePwData}
+          onChange={(e) => setPw(e.target.value)}
         />
-
-        {/* 로그인 버튼 */}
-        <LoginButton onClick={() => handleLogin(id, pw)}>로그인</LoginButton>
+        <LoginButton onClick={handleLogin}>로그인</LoginButton>
+        {/* <OptionBox>
+          <label>
+            <input type="checkbox" /> 로그인 유지
+          </label>
+          <a href="/find-password">비밀번호 찾기</a>
+        </OptionBox> */}
       </LoginBox>
     </Container>
   );

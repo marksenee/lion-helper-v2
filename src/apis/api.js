@@ -252,7 +252,7 @@ export const proPage = {
 
   //로그인
   postLogin: async (data) => {
-    console.log("data", data);
+    // console.log("data", data);
     try {
       const response = await api.post("/login", JSON.stringify(data), {
         headers: {

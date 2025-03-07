@@ -1,24 +1,27 @@
 import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Layout from "./Layout";
+import ProtectedRoute from "./ProtectedRouter";
 import LoginPage from "./pages/LoginPage";
 import MainPage from "./pages/MainPage";
 import NavigationTabs from "./components/tab/Tab";
-import Header from "./components/header/Header";
 import AdminNavigationTabs from "./components/tab/AdminTab";
 
 const Router = () => {
   return (
     <BrowserRouter>
-      <Header />
       <Routes>
-        {/* <Route path="/" element={<LoginPage />} /> */}
-        <Route path="/" element={<MainPage />} />
-        <Route path="/checklist/*" element={<NavigationTabs />} />
-        <Route path="/admin/*" element={<AdminNavigationTabs />} />
+        {/* ✅ 로그인 필요 페이지 (ProtectedRoute로 감싸기) */}
+        <Route element={<ProtectedRoute />}>
+          <Route element={<Layout />}>
+            <Route path="/" element={<MainPage />} />
+            <Route path="/checklist/*" element={<NavigationTabs />} />
+            <Route path="/admin/*" element={<AdminNavigationTabs />} />
+          </Route>
+        </Route>
+
+        {/* 개별적으로 관리할 페이지 (헤더 제외) */}
         <Route path="/login" element={<LoginPage />} />
-        {/* <Route path="/notice" element={<NoticePage />} /> */}
-        {/* NavigationTabs가 포함된 페이지 */}
-        {/* <Route path="/checklist/*" element={<NavigationTabs />} /> */}
       </Routes>
     </BrowserRouter>
   );

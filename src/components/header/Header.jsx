@@ -18,11 +18,13 @@ import {
   NavItem,
   Icon,
 } from "./styles";
+import useAuthStore from "../../\bstore/useAuthStore";
 
 const Header = () => {
   // const [active, setActive] = useState("home");
   const navigate = useNavigate();
   const location = useLocation(); // 현재 URL 가져오기
+  const { username, logout } = useAuthStore(); // username 상태 가져오기
 
   // 네비게이션 아이템 리스트
   const menuItems = [
@@ -70,7 +72,7 @@ const Header = () => {
           onClick={() => navigate("/")}
           style={{ cursor: "pointer" }} // 클릭 가능하게 설정
         />{" "}
-        {/* <Title>000님의 라이언헬퍼</Title> */}
+        <Title>{username}님의 라이언헬퍼</Title>
         <NavList>
           {menuItems.map((item) => (
             <NavItem
