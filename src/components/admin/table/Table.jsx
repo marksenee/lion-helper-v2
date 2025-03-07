@@ -137,8 +137,8 @@ const TableComponents = () => {
                   {/* `matchingCheckRate`가 있으면 해당 `check_rate`를 보여주고, 없으면 기본값 표시 */}
                   <TableCell>{item.daily_check_rate}</TableCell>
                   <TableUrgencyCell>
-                    <UrgencyBadge urgent={item.overall_check_rate === "100.0%"}>
-                      {item.overall_check_rate === "100.0%" ? "완수" : "미완수"}
+                    <UrgencyBadge urgent={item.daily_check_rate === "100.0%"}>
+                      {item.daily_check_rate === "100.0%" ? "완수" : "미완수"}
                     </UrgencyBadge>
                   </TableUrgencyCell>
                   <TableCell>{item.overall_check_rate}</TableCell>
