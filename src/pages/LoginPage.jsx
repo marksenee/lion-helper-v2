@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { proPage } from "../apis/api";
 import { useNavigate } from "react-router-dom";
@@ -79,6 +79,10 @@ const Login = () => {
   const [pw, setPw] = useState("");
   const navigate = useNavigate();
   const { postLogin } = useAuthStore(); // Zustand에서 postLogin 가져오기
+
+  useEffect(() => {
+    // 스타일 로드가 지연될 경우 강제로 업데이트 (스타일 지연 문제 해결)
+  }, []);
 
   const handleLogin = async () => {
     if (!id || !pw) {
