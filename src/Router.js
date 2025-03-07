@@ -21,7 +21,7 @@ const Router = () => {
         </Route>
 
         {/* 개별적으로 관리할 페이지 (헤더 제외) */}
-        <Route path="/loginpage" element={<LoginPage />} />
+        <Route path="/login" element={<LoginPage />} />
       </Routes>
     </BrowserRouter>
   );
