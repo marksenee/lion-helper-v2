@@ -124,8 +124,9 @@ const TableComponents = () => {
               <TableHeader>과정</TableHeader>
               <TableHeader>담당자</TableHeader>
               <TableHeader>오늘 체크율</TableHeader>
-              <TableHeader>월별 누적 체크율</TableHeader>
               <TableHeader>완수여부</TableHeader>
+
+              <TableHeader>월별 누적 체크율</TableHeader>
             </TableRow>
           </TableHead>
           <tbody>
@@ -136,13 +137,12 @@ const TableComponents = () => {
                   <TableCell>{item.manager}</TableCell>
                   {/* `matchingCheckRate`가 있으면 해당 `check_rate`를 보여주고, 없으면 기본값 표시 */}
                   <TableCell>{item.daily_check_rate}</TableCell>
-                  <TableCell>{item.overall_check_rate}</TableCell>
-
                   <TableUrgencyCell>
                     <UrgencyBadge urgent={item.overall_check_rate === "100.0%"}>
                       {item.overall_check_rate === "100.0%" ? "완수" : "미완수"}
                     </UrgencyBadge>
                   </TableUrgencyCell>
+                  <TableCell>{item.overall_check_rate}</TableCell>
                 </TableRow>
               );
             })}
