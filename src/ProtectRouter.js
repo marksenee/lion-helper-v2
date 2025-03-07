@@ -2,7 +2,7 @@ import { Navigate, Outlet } from "react-router-dom";
 import { useEffect, useState } from "react";
 import useAuthStore from "./\bstore/useAuthStore";
 
-const ProtectedRoute = () => {
+const ProtectRouter = () => {
   const { username } = useAuthStore();
   const [loading, setLoading] = useState(true);
 
@@ -15,4 +15,4 @@ const ProtectedRoute = () => {
   return username ? <Outlet /> : <Navigate to="/login" replace />;
 };
 
-export default ProtectedRoute;
+export default ProtectRouter;

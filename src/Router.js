@@ -5,14 +5,14 @@ import LoginPage from "./pages/LoginPage";
 import MainPage from "./pages/MainPage";
 import NavigationTabs from "./components/tab/Tab";
 import AdminNavigationTabs from "./components/tab/AdminTab";
-import ProtectedRouter from "/Users/parkseeun/Projects/lion-helper-v2/src/ProtectedRouter.js";
+import ProtectRouter from "./ProtectRouter";
 
 const Router = () => {
   return (
     <BrowserRouter>
       <Routes>
         {/* ✅ 로그인 필요 페이지 (ProtectedRoute로 감싸기) */}
-        <Route element={<ProtectedRouter />}>
+        <Route element={<ProtectRouter />}>
           <Route element={<Layout />}>
             <Route path="/" element={<MainPage />} />
             <Route path="/checklist/*" element={<NavigationTabs />} />
