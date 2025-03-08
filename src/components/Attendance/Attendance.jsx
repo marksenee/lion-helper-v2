@@ -252,7 +252,7 @@ const AttendanceRecord = ({ selectedDate }) => {
         <Title>🕕 강사/보조강사 출퇴근 기록</Title>
         {/* <DownloadButton onClick={handleDownload}>기록 다운로드</DownloadButton> */}
       </TitleContainer>{" "}
-      {/* <Subtitle>📌 출/퇴근 기록은 퇴근 후 한 번에 기록해 주세요!</Subtitle> */}
+      <Subtitle>수업 종료 후 18시에 강사 출/퇴근 기록을 입력해주세요!</Subtitle>
       {/* 주강사 입력 필드 */}
       {mainInstructors.map((instructor, index) => (
         <TimeInputContainer key={`main-${index}`}>
