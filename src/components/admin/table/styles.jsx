@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const Container = styled.div`
-  width: 886px;
+  width: 900px;
   min-height: 250px; /* 최소 높이를 지정하여, 콘텐츠가 많으면 늘어날 수 있도록 */
   background: #fff;
   border-radius: 10px;

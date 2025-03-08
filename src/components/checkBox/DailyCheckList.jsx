@@ -98,19 +98,22 @@ const DailyCheckList = ({ activeTab }) => {
     }, {});
 
   const handleSaveChecklist = async () => {
-    const allItems = checkItems.map((item) => ({
-      is_checked: !!checkedStates[item.id],
+    // Filter items based on activeTab and task_period
+    const filteredItems = checkItems.filter(
+      (item) => item.task_period === activeTab
+    );
+
+    const allItems = filteredItems.map((item) => ({
+      is_checked: checkedStates[item.id] === "yes", // "yes"일 때만 true, "no"면 false
       task_name: item.task_name,
     }));
+
     if (!selectedCourse || selectedCourse === "과정 선택") {
       alert("과정을 선택해 주세요");
       return;
     }
+
     try {
-      console.log("response", {
-        updates: allItems,
-        training_course: selectedCourse,
-      });
       const response = await proPage.postDailyCheck({
         updates: allItems,
         training_course: selectedCourse,

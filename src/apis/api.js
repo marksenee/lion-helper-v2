@@ -62,6 +62,7 @@ export const proPage = {
   // 일일 업무 전송하기
   postDailyCheck: async (data) => {
     try {
+      console.log("data", data);
       const response = await api.post("/tasks", data);
       return response;
     } catch (error) {
@@ -252,7 +253,7 @@ export const proPage = {
 
   //로그인
   postLogin: async (data) => {
-    console.log("data", data);
+    // console.log("data", data);
     try {
       const response = await api.post("/login", JSON.stringify(data), {
         headers: {

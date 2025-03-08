@@ -21,11 +21,14 @@ import {
 } from "../issues/styles";
 import useCourseStore from "../../../\bstore/useCourseStore";
 import GetIssuesComponent from "../issues/GetIssuesComponent";
+import useAuthStore from "../../../\bstore/useAuthStore";
 
 const TableComponents = () => {
   // const { courseItems } = useCourseStore();
 
   const [taskData, setTaskData] = useState([]);
+  const [selectedDept, setSelectedDept] = useState("전체 보기");
+  const { username, logout } = useAuthStore(); // username 상태 가져오기
   const [allCheckRate, setAllCheckRate] = useState([]);
   // const [taskData, setTaskData] = useState([
   //   {
@@ -73,8 +76,7 @@ const TableComponents = () => {
         const response = await proPage.getAllCheckRate();
 
         if (response && response.data) {
-          const data = response.data.data;
-          setAllCheckRate(data);
+          setAllCheckRate(response.data.data);
         }
       } catch (error) {
         console.error("Error fetching checklist:", error);
@@ -84,26 +86,19 @@ const TableComponents = () => {
     fetchAllCheckRate();
   }, []);
 
-  // useEffect(() => {
-  //   // ✅ 선택된 부서에 따라 필터링된 데이터 설정
-  //   const filteredData =
-  //     selectedCourse === "부서 선택"
-  //       ? allCheckRate
-  //       : allCheckRate.filter(
-  //           (item) => item.training_course === selectedCourse
-  //         );
-
-  //   setTaskData(filteredData);
-  // }, [selectedCourse, allCheckRate]); // ✅ allTaskData가 바뀌면 다시 반영
-
-  const handleCourseSelect = (course) => {
-    setSelectedCourse(course);
+  const handleDeptSelect = (dept) => {
+    setSelectedDept(dept);
     setDropdownOpen(false);
   };
 
+  const uniqueDepts = [
+    "전체 보기",
+    ...new Set(allCheckRate.map((item) => item.dept)),
+  ];
+
   const filteredCheckRate =
-    selectedCourse !== "과정 선택"
-      ? allCheckRate.filter((item) => item.training_course === selectedCourse)
+    selectedDept !== "전체 보기"
+      ? allCheckRate.filter((item) => item.dept === selectedDept)
       : allCheckRate;
 
   return (
@@ -111,20 +106,14 @@ const TableComponents = () => {
       <TitleWrapper>
         {/* <Title>✍🏻 업무 현황</Title> */}
         <DropdownContainer onClick={() => setDropdownOpen(!dropdownOpen)}>
-          {selectedCourse || "부서 선택"}
+          {selectedDept}
           <DropdownIcon />
-
           <DropdownList isOpen={dropdownOpen}>
-            {[...new Set(allCheckRate.map((item) => item.training_course))].map(
-              (course) => (
-                <DropdownItem
-                  key={course}
-                  onClick={() => handleCourseSelect(course)}
-                >
-                  {course}
-                </DropdownItem>
-              )
-            )}
+            {uniqueDepts.map((dept) => (
+              <DropdownItem key={dept} onClick={() => handleDeptSelect(dept)}>
+                {dept}
+              </DropdownItem>
+            ))}
           </DropdownList>
         </DropdownContainer>
       </TitleWrapper>
@@ -135,8 +124,8 @@ const TableComponents = () => {
               <TableHeader>과정</TableHeader>
               <TableHeader>담당자</TableHeader>
               <TableHeader>오늘 체크율</TableHeader>
+              <TableHeader>오늘의 완수여부</TableHeader>
               <TableHeader>월별 누적 체크율</TableHeader>
-              <TableHeader>완수여부</TableHeader>
             </TableRow>
           </TableHead>
           <tbody>
@@ -144,16 +133,15 @@ const TableComponents = () => {
               return (
                 <TableRow key={index}>
                   <TableCell>{item.training_course}</TableCell>
-                  <TableCell>{item.manager}</TableCell>
+                  <TableCell>{item.username}</TableCell>
                   {/* `matchingCheckRate`가 있으면 해당 `check_rate`를 보여주고, 없으면 기본값 표시 */}
                   <TableCell>{item.daily_check_rate}</TableCell>
-                  <TableCell>{item.overall_check_rate}</TableCell>
-
                   <TableUrgencyCell>
-                    <UrgencyBadge urgent={item.overall_check_rate === "100.0%"}>
-                      {item.overall_check_rate === "100.0%" ? "완수" : "미완수"}
+                    <UrgencyBadge urgent={item.daily_check_rate === "100.0%"}>
+                      {item.daily_check_rate === "100.0%" ? "완수" : "미완수"}
                     </UrgencyBadge>
                   </TableUrgencyCell>
+                  <TableCell>{item.overall_check_rate}</TableCell>
                 </TableRow>
               );
             })}
