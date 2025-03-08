@@ -49,15 +49,15 @@ const SubmitButton = styled.button`
   height: 52px;
   background-color: white;
   border-color: transparent;
-  font-size: 14px;
+  font-size: 15px;
   font-family: "Pretandard", sans-serif;
   cursor: pointer;
   align-self: flex-end;
   border-radius: 5px;
   margin-top: 10px;
   &:hover {
-    background-color: #ff7710;
-    color: white;
+    background-color: #fffaf5;
+    color: #ff7710;
   }
 `;
 

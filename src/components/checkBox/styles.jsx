@@ -74,17 +74,16 @@ const Checkbox = styled.input`
 `;
 
 const ReasonInputContainer = styled.div`
-  width: 95%;
-  height: 190px;
-  background-color: #ffffff;
+  width: 98%;
+  height: 50px;
+  background-color: #f5f5f5;
   border: 1px solid #ecebeb;
   border-radius: 5px;
   padding: 10px;
   margin-top: 20px;
   display: flex;
-  flex-direction: column;
-  position: relative; /* 부모 컨테이너가 위치 기준 */
-  background-color: #f5f5f5;
+  align-items: center; /* 세로 중앙 정렬 */
+  position: relative;
 `;
 
 const ReasonInputWrapper = styled.div`
@@ -102,11 +101,10 @@ const ReasonInput = styled.textarea`
   font-size: 13pt;
   color: #000000;
   resize: none;
-  margin-right: 1%;
   white-space: pre-line;
   border-radius: 5px;
   background-color: #f5f5f5;
-  box-sizing: border-box; /* padding 포함한 크기 계산 */
+  box-sizing: border-box;
 
   &::placeholder {
     color: #adabab;
