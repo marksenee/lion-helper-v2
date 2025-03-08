@@ -20,6 +20,10 @@ import {
 } from "./styles";
 import useCourseStore from "../../\bstore/useCourseStore";
 import { SubmitButton } from "../issue/styles";
+import {
+  loadFromLocalStorage,
+  saveToLocalStorage,
+} from "../../utils/saveCheckList";
 
 const DailyCheckList = ({ activeTab }) => {
   const { selectedCourse } = useCourseStore(); // 선택된 과정 가져오기
@@ -31,6 +35,7 @@ const DailyCheckList = ({ activeTab }) => {
   const [showInput, setShowInput] = useState({}); // 특정 항목의 입력창 표시 여부
   const [reason, setReason] = useState("");
 
+  // ✅ 체크리스트 데이터를 가져오면서 localStorage 데이터도 반영
   useEffect(() => {
     const fetchChecklist = async () => {
       try {
@@ -38,19 +43,25 @@ const DailyCheckList = ({ activeTab }) => {
         if (response?.data?.data) {
           const limitedCheckItems = response.data.data;
           setCheckItems(limitedCheckItems);
+
+          // ✅ localStorage에 저장된 데이터가 있으면 적용
+          const savedStates = loadFromLocalStorage("checkedStates");
           const initialCheckedStates = response.data.data.reduce(
             (acc, item) => {
-              acc[item.id] = item.is_checked;
+              acc[item.id] = savedStates?.[item.id] ?? item.is_checked;
               return acc;
             },
             {}
           );
+
           setCheckedStates(initialCheckedStates);
+          updateUncheckedItems(initialCheckedStates, limitedCheckItems);
         }
       } catch (error) {
         console.error("Error fetching checklist:", error);
       }
     };
+
     fetchChecklist();
   }, []);
 
@@ -61,22 +72,24 @@ const DailyCheckList = ({ activeTab }) => {
     setUncheckedItems(unresolvedItems);
   }, [checkItems, checkedStates]);
 
+  // ✅ 체크박스 상태 변경 및 localStorage 저장
   const handleCheckboxChange = async (id, checkedItem, isYesChecked) => {
     const newState = isYesChecked ? "yes" : "no";
     const updatedCheckedStates = { ...checkedStates, [id]: newState };
+
     setCheckedStates(updatedCheckedStates);
-    setUncheckedItems(
-      checkItems.filter((item) => updatedCheckedStates[item.id] !== "yes")
+    updateUncheckedItems(updatedCheckedStates, checkItems);
+
+    // ✅ 변경된 데이터 즉시 localStorage 저장
+    saveToLocalStorage("checkedStates", updatedCheckedStates);
+  };
+
+  // ✅ 체크되지 않은 항목 업데이트 (useEffect 제거)
+  const updateUncheckedItems = (updatedCheckedStates, items) => {
+    const unresolvedItems = items.filter(
+      (item) => updatedCheckedStates[item.id] !== "yes"
     );
-    // try {
-    //   await proPage.postDailyCheck({
-    //     updates: [
-    //       { is_checked: newState === "yes", task_name: checkedItem.task_name },
-    //     ],
-    //   });
-    // } catch (error) {
-    //   console.error("체크 상태 업데이트 실패:", error);
-    // }
+    setUncheckedItems(unresolvedItems);
   };
 
   const handleReasonChange = (id, value) => {
@@ -284,7 +297,20 @@ const DailyCheckList = ({ activeTab }) => {
                           }}
                         />
                       </div>
-                      <CheckboxLabel>{item.task_name}</CheckboxLabel>
+                      <CheckboxLabel
+                        style={{
+                          textDecoration:
+                            checkedStates[item.id] === "yes"
+                              ? "line-through"
+                              : "none",
+                          color:
+                            checkedStates[item.id] === "yes"
+                              ? "#888"
+                              : "inherit",
+                        }}
+                      >
+                        {item.task_name}
+                      </CheckboxLabel>
                       <FiHelpCircle
                         data-tooltip-id={`tooltip-${item.id}`}
                         style={{
