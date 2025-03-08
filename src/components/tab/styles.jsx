@@ -23,7 +23,7 @@ const TabContainer = styled.div`
 `;
 
 const TabItem = styled.div`
-  font-size: 22px;
+  font-size: 28px;
   color: ${(props) => (props.active ? "#FF7710" : "#888888")};
   cursor: pointer;
   position: relative;

@@ -10,6 +10,7 @@ import AttendanceRecord from "../components/Attendance/Attendance";
 import DailyCheckList from "../components/checkBox/DailyCheckList";
 import Header from "../components/header/Header";
 import NavigationTabs from "../components/tab/Tab";
+import CheckListGuide from "../components/guide/CheckListGuide";
 
 // const LayoutContainer = styled.div`
 //   display: flex;
@@ -20,6 +21,7 @@ const WeeklyCheckListPage = () => {
   return (
     <ContentContainer>
       <NavigationTabs />
+      <CheckListGuide />
       <CourseDropDown />
       <DailyCheckList activeTab="weekly" />
     </ContentContainer>

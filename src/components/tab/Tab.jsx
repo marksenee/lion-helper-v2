@@ -1,14 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Content, Wrapper, TabContainer, TabItem } from "./styles";
-import DailyCheckList from "../checkBox/DailyCheckList";
+import { Wrapper, TabContainer, TabItem } from "./styles";
 import TodayCheckListPage from "../../pages/TodayCheckListPage";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import WeeklyCheckListPage from "../../pages/WeeklyCheckListPage";
-import ProUncheckedPage from "../../pages/ProUncheckedPage";
-
-// 페이지 내용 컴포넌트
-const MonthlyPage = () => <Content>🗓️ 월간 페이지</Content>;
-const OtherPage = () => <Content>🔍 기타 페이지</Content>;
 
 const tabs = [
   { name: "오늘", path: "/app/checklist/today" },

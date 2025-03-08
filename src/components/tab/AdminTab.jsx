@@ -1,14 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { Content, TabContainer, TabItem, Wrapper } from "./styles";
+import { TabContainer, TabItem, Wrapper } from "./styles";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
-import WeeklyCheckListPage from "../../pages/WeeklyCheckListPage";
 import AdminPage from "../../pages/AdminPage";
-import { UncheckedListContainer } from "../checkBox/styles";
 import UncheckedPage from "../../pages/UncheckedPage";
-
-// 페이지 내용 컴포넌트
-const MonthlyPage = () => <Content>🗓️ 월간 페이지</Content>;
-const OtherPage = () => <Content>🔍 기타 페이지</Content>;
 
 const tabs = [
   { name: "팀 업무 현황", path: "/app/admin/teamTask" },
