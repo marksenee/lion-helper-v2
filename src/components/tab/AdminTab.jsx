@@ -11,8 +11,8 @@ const MonthlyPage = () => <Content>🗓️ 월간 페이지</Content>;
 const OtherPage = () => <Content>🔍 기타 페이지</Content>;
 
 const tabs = [
-  { name: "팀 업무 현황", path: "/admin/teamTask" },
-  { name: "미체크 항목", path: "/admin/uncheckedTask" },
+  { name: "팀 업무 현황", path: "/app/admin/teamTask" },
+  { name: "미체크 항목", path: "/app/admin/uncheckedTask" },
 ];
 
 const AdminNavigationTabs = () => {

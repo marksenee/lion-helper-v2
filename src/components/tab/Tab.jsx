@@ -11,8 +11,8 @@ const MonthlyPage = () => <Content>🗓️ 월간 페이지</Content>;
 const OtherPage = () => <Content>🔍 기타 페이지</Content>;
 
 const tabs = [
-  { name: "오늘", path: "/checklist/today" },
-  { name: "주간", path: "/checklist/weekly" },
+  { name: "오늘", path: "/app/checklist/today" },
+  { name: "주간", path: "/app/checklist/weekly" },
   // { name: "미체크 항목", path: "/checklist/unchecked" },
 ];
 
