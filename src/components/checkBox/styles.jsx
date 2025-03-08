@@ -233,6 +233,31 @@ const UncheckedInputBox = styled.input`
   width: 250px;
 `;
 
+const StatusContainer = styled.div`
+  display: flex;
+  justify-content: flex-start; /* 왼쪽 정렬 */
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+`;
+
+const YesCount = styled.span`
+  color: #888888;
+  margin-right: 10px;
+  font-family: "Pretendard", sans-serif;
+  font-size: 18px;
+`;
+
+const NoCount = styled.span`
+  color: #ff7710;
+  font-family: "Pretendard", sans-serif;
+  /* font-weight: bold; */
+  font-size: 18px;
+`;
+
 export {
   BoxContainer,
   Title,
@@ -253,4 +278,7 @@ export {
   Circle,
   CategoryText,
   UncheckedInputBox,
+  StatusContainer,
+  YesCount,
+  NoCount,
 };

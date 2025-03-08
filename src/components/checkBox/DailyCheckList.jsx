@@ -17,6 +17,9 @@ import {
   CategoryText,
   UncheckedInputBox,
   ReasonInputContainer,
+  StatusContainer,
+  NoCount,
+  YesCount,
 } from "./styles";
 import useCourseStore from "../../\bstore/useCourseStore";
 import { SubmitButton } from "../issue/styles";
@@ -240,11 +243,23 @@ const DailyCheckList = ({ activeTab }) => {
     (item) => item.task_period === activeTab
   );
 
+  const yesCount = Object.values(checkedStates).filter(
+    (state) => state === "yes"
+  ).length;
+  const noCount = Object.values(checkedStates).filter(
+    (state) => state === "no"
+  ).length;
+
   return (
     <div>
       <div style={{ display: "flex" }}></div>
       <BoxContainer>
         <div>
+          {/* ✅ 상태 표시 UI */}
+          <StatusContainer>
+            <NoCount>미완료 {noCount}건</NoCount> /{"  "}
+            <YesCount>완료 {yesCount}건</YesCount>
+          </StatusContainer>
           <ChecklistContainer>
             {Object.entries(groupedTasks).map(([category, tasks]) => (
               <div key={category}>
