@@ -244,12 +244,13 @@ const DailyCheckList = ({ activeTab }) => {
   const filteredUncheckedItems = uncheckedItems.filter(
     (item) => item.task_period === activeTab
   );
-
-  const yesCount = Object.values(checkedStates).filter(
-    (state) => state === "yes"
+  // 오늘/주간 카운트 계산
+  const yesCount = checkItems.filter(
+    (item) => item.task_period === activeTab && checkedStates[item.id] === "yes"
   ).length;
-  const noCount = Object.values(checkedStates).filter(
-    (state) => state === "no"
+
+  const noCount = checkItems.filter(
+    (item) => item.task_period === activeTab && checkedStates[item.id] === "no"
   ).length;
 
   const handleReasonInputChange = (index, value) => {
