@@ -63,7 +63,14 @@ export const proPage = {
   postDailyCheck: async (data) => {
     try {
       console.log("data", data);
-      const response = await api.post("/tasks", data);
+      console.log("저장된 토큰:", localStorage.getItem("token"));
+
+      const response = await api.post("/tasks", data, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`, // 토큰이 있는지 확인
+          "Content-Type": "application/json",
+        },
+      });
       return response;
     } catch (error) {
       return error.response;
@@ -262,6 +269,10 @@ export const proPage = {
       });
       // console.log("response", response.data.user.username);
 
+      console.log("받은 토큰:", response);
+      console.log("받은 토큰:", data.token);
+
+      sessionStorage.setItem("token", data.token);
       return response;
     } catch (error) {
       console.error("로그인 오류:", error.response || error);

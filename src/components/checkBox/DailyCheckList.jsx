@@ -40,6 +40,7 @@ const DailyCheckList = ({ activeTab }) => {
   const [showInput, setShowInput] = useState({}); // 특정 항목의 입력창 표시 여부
   const [reason, setReason] = useState("");
   const [reasons, setReasons] = useState(Array(5).fill(""));
+  const [reasonInputState, setReasonInputState] = useState({});
 
   // ✅ 체크리스트 데이터를 가져오면서 localStorage 데이터도 반영
   useEffect(() => {
@@ -159,18 +160,18 @@ const DailyCheckList = ({ activeTab }) => {
 
   const handleSubmit = async () => {
     // "no"로 체크된 항목 중에서 코멘트가 입력되지 않은 항목 찾기
-    const uncheckedItemsWithoutComment = checkItems.filter(
-      (item) => checkedStates[item.id] === "no" && !reasonState[item.id]?.trim()
-    );
+    // const uncheckedItemsWithoutComment = checkItems.filter(
+    //   (item) => checkedStates[item.id] === "no" && !reasonState[item.id]?.trim()
+    // );
 
-    // 미입력된 항목이 하나라도 있으면 알림 띄우고 제출 막기
-    if (uncheckedItemsWithoutComment.length > 0) {
-      alert("이슈사항을 입력해주세요!");
-      return;
-    }
+    // // 미입력된 항목이 하나라도 있으면 알림 띄우고 제출 막기
+    // if (uncheckedItemsWithoutComment.length > 0) {
+    //   alert("이슈사항을 입력해주세요!");
+    //   return;
+    // }
 
     const issueData = {
-      issue: reason,
+      issue: Object.values(reasonState).join(" "), // 이유값만 하나의 문자열로 결합
       date: today,
       training_course: selectedCourse,
     };
@@ -181,6 +182,7 @@ const DailyCheckList = ({ activeTab }) => {
     }
 
     try {
+      console.log("dat", issueData);
       const response = await proPage.postIssues(issueData);
       if (response.status === 201) {
         alert("저장이 완료되었습니다 \n (어드민페이지에서 내용 확인 가능)");
@@ -250,6 +252,13 @@ const DailyCheckList = ({ activeTab }) => {
     (state) => state === "no"
   ).length;
 
+  const handleReasonInputChange = (index, value) => {
+    setReasonInputState((prev) => ({
+      ...prev,
+      [index]: value, // index로 state 관리
+    }));
+  };
+
   return (
     <div>
       <div style={{ display: "flex" }}></div>
@@ -257,7 +266,7 @@ const DailyCheckList = ({ activeTab }) => {
         <div>
           {/* ✅ 상태 표시 UI */}
           <StatusContainer>
-            <NoCount>미완료 {noCount}건</NoCount> /{"  "}
+            <NoCount>미완료 {noCount}건</NoCount> /{" "}
             <YesCount>완료 {yesCount}건</YesCount>
           </StatusContainer>
           <ChecklistContainer>
@@ -416,7 +425,7 @@ const DailyCheckList = ({ activeTab }) => {
           <ReasonInputContainer key={index}>
             <ReasonInput
               placeholder="이슈사항을 작성해주세요! 예) 취업으로 인한 중도퇴소자 연속 발생"
-              value={reason}
+              value={reasonState[index] || ""}
               onChange={(e) => handleReasonChange(index, e.target.value)}
             />
             <SubmitButton onClick={() => handleSubmit(index)}>
@@ -424,6 +433,7 @@ const DailyCheckList = ({ activeTab }) => {
             </SubmitButton>
           </ReasonInputContainer>
         ))}
+
         {/* <div
           style={{
             marginTop: "3%",

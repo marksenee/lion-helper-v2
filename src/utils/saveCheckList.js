@@ -1,4 +1,31 @@
-const EXPIRATION_HOURS = 24; // ⏳ 만료 시간 (24시간)
+const RESET_HOUR = 6; // 리셋할 시간 (06:00)
+
+/**
+ * ✅ 매일 오전 6시에 localStorage 데이터 삭제
+ */
+const resetLocalStorageAtSixAM = () => {
+  const now = new Date();
+  const currentHour = now.getHours();
+  const currentMinutes = now.getMinutes();
+
+  // 현재 날짜를 가져옴
+  const today = new Date().toDateString();
+  const lastReset = localStorage.getItem("lastReset");
+
+  // 마지막 리셋 날짜가 오늘이 아니고, 현재 시간이 06:00이면 localStorage 초기화
+  if (
+    lastReset !== today &&
+    currentHour === RESET_HOUR &&
+    currentMinutes === 0
+  ) {
+    localStorage.clear(); // 모든 데이터 삭제
+    localStorage.setItem("lastReset", today); // 마지막 리셋 날짜 저장
+    console.log("🔄 localStorage가 오전 6시에 리셋되었습니다.");
+  }
+};
+
+// 1분마다 실행하여 06:00 감지
+setInterval(resetLocalStorageAtSixAM, 60 * 1000);
 
 /**
  * ✅ localStorage에 데이터 저장 (만료 시간 포함)
@@ -7,7 +34,7 @@ const EXPIRATION_HOURS = 24; // ⏳ 만료 시간 (24시간)
  */
 export const saveToLocalStorage = (key, data) => {
   const now = new Date().getTime();
-  const expirationTime = now + EXPIRATION_HOURS * 60 * 60 * 1000; // 24시간 후
+  const expirationTime = now + 24 * 60 * 60 * 1000; // 24시간 후
 
   localStorage.setItem(key, JSON.stringify({ data, expirationTime }));
 };
@@ -30,12 +57,4 @@ export const loadFromLocalStorage = (key) => {
   }
 
   return data;
-};
-
-/**
- * ✅ localStorage에서 특정 key의 데이터 삭제
- * @param {string} key 삭제할 key 값
- */
-export const removeFromLocalStorage = (key) => {
-  localStorage.removeItem(key);
 };
