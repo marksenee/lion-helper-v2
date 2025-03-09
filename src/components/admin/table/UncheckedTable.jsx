@@ -254,7 +254,15 @@ const UncheckedTable = () => {
                 <TableCell>
                   <button
                     onClick={() => handleDeleteIssue(item.id)}
-                    style={{ marginLeft: "10px", color: "red" }}
+                    style={{
+                      padding: "4px 8px",
+                      backgroundColor: "#FFCAA2",
+                      color: "#FFFFFF",
+                      border: "none",
+                      borderRadius: "4px",
+                      fontFamily: "pretandard",
+                      cursor: "pointer",
+                    }}
                   >
                     해결
                   </button>
