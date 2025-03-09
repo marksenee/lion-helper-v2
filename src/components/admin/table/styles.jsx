@@ -12,6 +12,18 @@ const Container = styled.div`
   flex-grow: 1; //데이터가 많을 때 자동으로 공간을 차지하도록 함
 `;
 
+const UncheckedContainder = styled.div`
+  width: 1000px;
+  min-height: 250px; /* 최소 높이를 지정하여, 콘텐츠가 많으면 늘어날 수 있도록 */
+  background: #fff;
+  border-radius: 10px;
+  /* padding: 20px; */
+  font-family: Pretendard, sans-serif;
+  margin-top: 1%;
+  margin-bottom: 2%;
+  flex-grow: 1; //데이터가 많을 때 자동으로 공간을 차지하도록 함
+`;
+
 const Title = styled.h2`
   font-size: 20pt;
   font-weight: semibold;
@@ -89,4 +101,5 @@ export {
   TableHeader,
   TableUrgencyCell,
   UrgencyBadge,
+  UncheckedContainder,
 };

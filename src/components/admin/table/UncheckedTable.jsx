@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import {
   TableWrapper,
   Container,
+  UncheckedContainder,
   Table,
   TableHead,
   TableRow,
@@ -193,53 +194,44 @@ const UncheckedTable = () => {
   };
 
   return (
-    <Container>
-      <TitleWrapper>
-        <DropdownContainer onClick={() => setDropdownOpen(!dropdownOpen)}>
-          {selectedDept}
-          <DropdownIcon />
-          <DropdownList isOpen={dropdownOpen}>
-            {uniqueDepts.map((dept) => (
-              <DropdownItem key={dept} onClick={() => handleDeptSelect(dept)}>
-                {dept}
-              </DropdownItem>
-            ))}
-          </DropdownList>
-        </DropdownContainer>
-      </TitleWrapper>
+    <UncheckedContainder>
       <TableWrapper>
         <Table>
           <TableHead>
             <TableRow>
               <TableHeader>일자</TableHeader>
               <TableHeader>과정명</TableHeader>
-              <TableHeader>미체크 항목</TableHeader>
-              <TableHeader>사유</TableHeader>
-              <TableHeader>해결 지연</TableHeader>
-              <TableHeader>해결Due</TableHeader>
-              <TableHeader>해결방안</TableHeader>
-              <TableHeader>해결여부</TableHeader>
+              <TableHeader>미체크 항목 & 사유</TableHeader>
+              <TableHeader>해결 기한 & 지연</TableHeader>
+              <TableHeader style={{ width: "30%" }}>해결 방안</TableHeader>
+              <TableHeader>해결 여부</TableHeader>
             </TableRow>
           </TableHead>
           <tbody>
-            {filteredCheckRate.map((item, index) => (
-              <TableRow key={index}>
+            {taskData.map((item) => (
+              <TableRow key={item.id}>
                 <TableCell>{item.created_at}</TableCell>
                 <TableCell>{item.training_course}</TableCell>
-                <TableCell>{item.content}</TableCell>
-                <TableCell>{item.action_plan}</TableCell>
-                <TableCell>{item.delay}</TableCell>
-                <TableCell>{item.due_date}</TableCell>
                 <TableCell>
+                  <strong>{item.content}</strong>
+                  <br />
+                  <span style={{ color: "gray" }}>{item.action_plan}</span>
+                </TableCell>
+                <TableCell>
+                  <span style={{ color: item.delay > 5 ? "red" : "black" }}>
+                    {item.due_date} ({item.delay})
+                  </span>
+                </TableCell>
+                <TableCell style={{ width: "30%" }}>
                   {activeInput === item.id ? (
                     <input
                       type="text"
                       value={solutions[item.id] || ""}
                       onChange={(e) =>
-                        setSolutions((prev) => ({
-                          ...prev,
+                        setSolutions({
+                          ...solutions,
                           [item.id]: e.target.value,
-                        }))
+                        })
                       }
                       onBlur={() => setActiveInput(null)}
                       onKeyDown={(e) => {
@@ -253,27 +245,16 @@ const UncheckedTable = () => {
                   ) : (
                     <div
                       onClick={() => setActiveInput(item.id)}
-                      style={{
-                        cursor: "pointer",
-                        border: "1px solid #ccc",
-                        width: "200px",
-                      }}
+                      style={{ cursor: "pointer", border: "1px solid #ccc" }}
                     >
                       {solutions[item.id] || "해결 방안을 입력하세요"}
                     </div>
                   )}
                 </TableCell>
-
                 <TableCell>
                   <button
                     onClick={() => handleDeleteIssue(item.id)}
-                    style={{
-                      padding: "4px 8px",
-                      backgroundColor: "#ff4d4f",
-                      color: "#fff",
-                      border: "none",
-                      borderRadius: "4px",
-                    }}
+                    style={{ marginLeft: "10px", color: "red" }}
                   >
                     해결
                   </button>
@@ -283,7 +264,7 @@ const UncheckedTable = () => {
           </tbody>
         </Table>
       </TableWrapper>
-    </Container>
+    </UncheckedContainder>
   );
 };
 
