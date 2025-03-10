@@ -43,7 +43,7 @@ const DailyCheckList = ({ activeTab }) => {
   // ✅ 체크리스트 데이터를 가져오면서 localStorage 데이터도 반영
   // ✅ localStorage에서 username별 상태 저장 및 불러오기
   useEffect(() => {
-    if (!username) return; // username 없으면 실행하지 않음
+    // if (!username) return; // username 없으면 실행하지 않음
 
     const fetchChecklist = async () => {
       try {
