@@ -33,10 +33,16 @@ setInterval(resetLocalStorageAtSixAM, 60 * 1000);
  * @param {any} data 저장할 데이터
  */
 export const saveToLocalStorage = (key, data) => {
+  const username = sessionStorage.getItem("username"); // 사용자별 데이터 분리
+  if (!username) return;
+
   const now = new Date().getTime();
   const expirationTime = now + 24 * 60 * 60 * 1000; // 24시간 후
 
-  localStorage.setItem(key, JSON.stringify({ data, expirationTime }));
+  localStorage.setItem(
+    `${key}_${username}`,
+    JSON.stringify({ data, expirationTime })
+  );
 };
 
 /**
@@ -45,14 +51,17 @@ export const saveToLocalStorage = (key, data) => {
  * @returns {any | null} 만료되지 않은 데이터 반환, 만료되었으면 null
  */
 export const loadFromLocalStorage = (key) => {
-  const storedData = localStorage.getItem(key);
+  const username = sessionStorage.getItem("username");
+  if (!username) return null;
+
+  const storedData = localStorage.getItem(`${key}_${username}`);
   if (!storedData) return null;
 
   const { data, expirationTime } = JSON.parse(storedData);
   const now = new Date().getTime();
 
   if (now > expirationTime) {
-    localStorage.removeItem(key); // 만료된 데이터 삭제
+    localStorage.removeItem(`${key}_${username}`); // 만료된 데이터 삭제
     return null;
   }
 

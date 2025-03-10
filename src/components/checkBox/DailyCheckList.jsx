@@ -41,7 +41,10 @@ const DailyCheckList = ({ activeTab }) => {
   const [reasonInputState, setReasonInputState] = useState({});
 
   // ✅ 체크리스트 데이터를 가져오면서 localStorage 데이터도 반영
+  // ✅ localStorage에서 username별 상태 저장 및 불러오기
   useEffect(() => {
+    if (!username) return; // username 없으면 실행하지 않음
+
     const fetchChecklist = async () => {
       try {
         const response = await proPage.getDailyCheck();
@@ -49,8 +52,8 @@ const DailyCheckList = ({ activeTab }) => {
           const limitedCheckItems = response.data.data;
           setCheckItems(limitedCheckItems);
 
-          // ✅ localStorage에 저장된 데이터가 있으면 적용
-          const savedStates = loadFromLocalStorage("checkedStates");
+          // ✅ username 기반 localStorage 키 사용
+          const savedStates = loadFromLocalStorage(`${username}_checkedStates`);
           const initialCheckedStates = response.data.data.reduce(
             (acc, item) => {
               acc[item.id] = savedStates?.[item.id] ?? item.is_checked;
@@ -68,7 +71,7 @@ const DailyCheckList = ({ activeTab }) => {
     };
 
     fetchChecklist();
-  }, []);
+  }, [username]);
 
   useEffect(() => {
     const unresolvedItems = checkItems.filter(
@@ -77,7 +80,7 @@ const DailyCheckList = ({ activeTab }) => {
     setUncheckedItems(unresolvedItems);
   }, [checkItems, checkedStates]);
 
-  // ✅ 체크박스 상태 변경 및 localStorage 저장
+  // ✅ 체크박스 상태 변경 및 username별 localStorage 저장
   const handleCheckboxChange = async (id, checkedItem, isYesChecked) => {
     const newState = isYesChecked ? "yes" : "no";
     const updatedCheckedStates = { ...checkedStates, [id]: newState };
@@ -85,8 +88,8 @@ const DailyCheckList = ({ activeTab }) => {
     setCheckedStates(updatedCheckedStates);
     updateUncheckedItems(updatedCheckedStates, checkItems);
 
-    // ✅ 변경된 데이터 즉시 localStorage 저장
-    saveToLocalStorage("checkedStates", updatedCheckedStates);
+    // ✅ username 기반 localStorage 키 사용
+    saveToLocalStorage(`${username}_checkedStates`, updatedCheckedStates);
   };
 
   // ✅ 체크되지 않은 항목 업데이트 (useEffect 제거)
