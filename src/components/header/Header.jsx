@@ -22,7 +22,7 @@ const Header = () => {
 
   // 네비게이션 아이템 리스트 - /app 경로로 수정
   const menuItems = [
-    { id: "home", label: "홈", icon: <FiHome />, path: "/app" },
+    // { id: "home", label: "홈", icon: <FiHome />, path: "/app" },
     {
       id: "checklist",
       label: "체크리스트",
@@ -53,7 +53,7 @@ const Header = () => {
           onClick={() => navigate("/app")}
           style={{ cursor: "pointer" }}
         />
-        <Title>{username}님의 라이언헬퍼</Title>
+        {/* <Title>{username}님의 라이언헬퍼</Title> */}
         <NavList>
           {menuItems.map((item) => (
             <NavItem

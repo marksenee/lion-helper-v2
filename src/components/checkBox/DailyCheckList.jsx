@@ -10,8 +10,6 @@ import {
   CheckboxContainer,
   CheckboxLabel,
   ReasonInput,
-  UncheckedListContainer,
-  SaveButton,
   Circle,
   HiddenCheckbox,
   CategoryText,
@@ -146,7 +144,7 @@ const DailyCheckList = ({ activeTab }) => {
       console.error("Error saving checklist:", error);
     }
 
-    handleCommentSubmit();
+    // handleCommentSubmit();
   };
 
   const handleCommentChange = (id, value) => {
@@ -171,7 +169,7 @@ const DailyCheckList = ({ activeTab }) => {
     // }
 
     const issueData = {
-      issue: Object.values(reasonState).join(" "), // 이유값만 하나의 문자열로 결합
+      issue: Object.values(reasonInputState).join(" "), // 이유값만 하나의 문자열로 결합
       date: today,
       training_course: selectedCourse,
     };
@@ -182,7 +180,6 @@ const DailyCheckList = ({ activeTab }) => {
     }
 
     try {
-      console.log("dat", issueData);
       const response = await proPage.postIssues(issueData);
       if (response.status === 201) {
         alert("저장이 완료되었습니다 \n (어드민페이지에서 내용 확인 가능)");
@@ -196,28 +193,17 @@ const DailyCheckList = ({ activeTab }) => {
   };
 
   const handleCommentSubmit = async (id) => {
-    // if (!selectedCourse || selectedCourse === "과정 선택") {
-    //   alert("과정을 선택해 주세요!");
-    //   return;
-    // }
+    if (!selectedCourse || selectedCourse === "과정 선택") {
+      alert("과정을 선택해 주세요!");
+      return;
+    }
 
-    // if (!reasonState[id] || reasonState[id].trim() === "") {
-    //   alert("액션 플랜을 입력해주세요!");
-    //   return;
-    // }
-
-    // "no"로 체크된 항목 중에서 코멘트가 입력되지 않은 항목 찾기
-    const uncheckedItemsWithoutComment = checkItems.filter(
-      (item) => checkedStates[item.id] === "no" && !reasonState[item.id]?.trim()
-    );
-
-    // 미입력된 항목이 하나라도 있으면 알림 띄우고 제출 막기
-    if (uncheckedItemsWithoutComment.length > 0) {
+    // 현재 id에 해당하는 체크 상태만 검사
+    if ((checkedStates[id] ?? "yes") === "no" && !reasonState[id]?.trim()) {
       alert("미체크 사유를 입력해주세요!");
       return;
     }
 
-    // `description` 필드 설정 (예: task_name을 기반으로 설명 추가)
     const uncheckedTask = uncheckedItems.find((item) => item.id === id);
     const description = uncheckedTask
       ? `${uncheckedTask.task_name}에 대한 미체크 사유`
@@ -225,7 +211,7 @@ const DailyCheckList = ({ activeTab }) => {
 
     const commentData = {
       action_plan: reasonState[id],
-      description: description, // description 추가
+      description: description,
       training_course: selectedCourse,
     };
 
@@ -426,8 +412,8 @@ const DailyCheckList = ({ activeTab }) => {
           <ReasonInputContainer key={index}>
             <ReasonInput
               placeholder="이슈사항을 작성해주세요! 예) 취업으로 인한 중도퇴소자 연속 발생"
-              value={reasonState[index] || ""}
-              onChange={(e) => handleReasonChange(index, e.target.value)}
+              value={reasonInputState[index] || ""}
+              onChange={(e) => handleReasonInputChange(index, e.target.value)}
             />
             <SubmitButton onClick={() => handleSubmit(index)}>
               등록

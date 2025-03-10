@@ -13,6 +13,7 @@ const useAuthStore = create((set) => ({
     try {
       const response = await proPage.postLogin(loginData);
       if (response?.data?.success) {
+        console.log("asddaasd", response.data);
         const userName = response.data.user.username;
         sessionStorage.setItem("username", userName); // 세션에 username 저장
         set({ username: userName });

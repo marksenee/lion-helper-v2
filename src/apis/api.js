@@ -6,7 +6,7 @@ export const api = axios.create({
     "content-type": "application/json",
     accept: "application/json,",
   },
-  // withCredentials: true,
+  withCredentials: true,
 });
 
 export const proPage = {
@@ -62,15 +62,8 @@ export const proPage = {
   // 일일 업무 전송하기
   postDailyCheck: async (data) => {
     try {
-      console.log("data", data);
-      console.log("저장된 토큰:", localStorage.getItem("token"));
-
-      const response = await api.post("/tasks", data, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`, // 토큰이 있는지 확인
-          "Content-Type": "application/json",
-        },
-      });
+      console.log("data입니다.", data);
+      const response = await api.post("/tasks", data);
       return response;
     } catch (error) {
       return error.response;
@@ -267,15 +260,20 @@ export const proPage = {
           "Content-Type": "application/json",
         },
       });
-      // console.log("response", response.data.user.username);
-
-      console.log("받은 토큰:", response);
-      console.log("받은 토큰:", data.token);
-
-      sessionStorage.setItem("token", data.token);
       return response;
     } catch (error) {
       console.error("로그인 오류:", error.response || error);
+      return error.response;
+    }
+  },
+
+  //로그인 정보
+  getUserName: async () => {
+    try {
+      const response = await api.post("/me");
+      return response;
+    } catch (error) {
+      console.error(error.response || error);
       return error.response;
     }
   },
