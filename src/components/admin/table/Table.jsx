@@ -133,7 +133,7 @@ const TableComponents = () => {
               return (
                 <TableRow key={index}>
                   <TableCell>{item.training_course}</TableCell>
-                  <TableCell>{item.username}</TableCell>
+                  <TableCell>{item.manager_name}</TableCell>
                   {/* `matchingCheckRate`가 있으면 해당 `check_rate`를 보여주고, 없으면 기본값 표시 */}
                   <TableCell>{item.daily_check_rate}</TableCell>
                   <TableUrgencyCell>
