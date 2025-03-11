@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { proPage } from "../apis/api";
+import { useNavigate } from "react-router-dom";
 
 const useAuthStore = create((set) => ({
   username: sessionStorage.getItem("username") || null, // 세션에서 username 불러오기
@@ -12,16 +13,18 @@ const useAuthStore = create((set) => ({
   postLogin: async (loginData) => {
     try {
       const response = await proPage.postLogin(loginData);
-      if (response?.data?.success) {
-        console.log("asddaasd", response.data);
-        const userName = response.data.user.username;
-        sessionStorage.setItem("username", userName); // 세션에 username 저장
-        set({ username: userName });
+      if (response.data.success) {
+        // const userName = response.data.user.username;
+        // sessionStorage.setItem("username", userName); // 세션에 username 저장
+        // set({ username: userName });
+        alert("로그인 완료!");
+        return response.data;
       } else {
-        console.error("🚨 데이터 형식 오류: 예상된 데이터가 없습니다.");
+        alert("아이디와 비밀번호를 확인해주세요!");
       }
     } catch (error) {
       console.error("로그인 오류:", error.response || error);
+      // alert("아이디와 비밀번호를 확인해주세요!");
     }
   },
 
