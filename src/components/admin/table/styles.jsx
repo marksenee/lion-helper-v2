@@ -90,6 +90,28 @@ const UrgencyBadge = styled.span`
   background-color: ${({ urgent }) => (urgent ? "#8BD96C" : "#FF6767")};
 `;
 
+const SolveBox = styled.div`
+  cursor: pointer;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 5px;
+`;
+
+const SubmitButton = styled.button`
+  padding: 4px 8px;
+  background-color: #fff4eb;
+  color: #ff7710;
+  border: none;
+  border-radius: 4px;
+  font-family: "pretandard";
+  cursor: pointer;
+
+  /* & :hover {
+    background-color: #ff7710;
+    color: #fff;
+  } */
+`;
+
 export {
   TableWrapper,
   Title,
@@ -102,4 +124,6 @@ export {
   TableUrgencyCell,
   UrgencyBadge,
   UncheckedContainder,
+  SubmitButton,
+  SolveBox,
 };

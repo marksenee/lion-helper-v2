@@ -46,9 +46,12 @@ const GetIssuesComponent = () => {
         if (response?.data?.data && Array.isArray(response.data.data)) {
           setItems(response.data.data);
 
-          // ✅ "전체 과정" 선택 시 모든 이슈를 가져오도록 설정
-          const allIssues = response.data.data.flatMap(
-            (item) => item.issues || []
+          // ✅ "전체 과정" 선택 시 모든 이슈를 가져오면서 training_course 정보도 포함
+          const allIssues = response.data.data.flatMap((item) =>
+            (item.issues || []).map((issue) => ({
+              ...issue,
+              training_course: item.training_course, // training_course 정보 추가
+            }))
           );
           setFilteredIssues(allIssues);
         } else {
@@ -63,13 +66,23 @@ const GetIssuesComponent = () => {
 
   useEffect(() => {
     if (selectedCourse === "전체 과정") {
-      // ✅ "전체 과정"일 경우 모든 이슈 반영
-      const allIssues = items.flatMap((item) => item.issues || []);
+      // ✅ 모든 이슈에 training_course 정보 추가
+      const allIssues = items.flatMap((item) =>
+        (item.issues || []).map((issue) => ({
+          ...issue,
+          training_course: item.training_course, // training_course 정보 포함
+        }))
+      );
       setFilteredIssues(allIssues);
     } else {
       const selectedIssues = items
         .filter((item) => item.training_course === selectedCourse)
-        .flatMap((item) => item.issues || []);
+        .flatMap((item) =>
+          (item.issues || []).map((issue) => ({
+            ...issue,
+            training_course: item.training_course, // training_course 정보 포함
+          }))
+        );
       setFilteredIssues(selectedIssues);
     }
   }, [selectedCourse, items]); // ✅ `items` 변경 시 자동 반영
@@ -268,7 +281,9 @@ const GetIssuesComponent = () => {
           {filteredIssues.length > 0 ? (
             filteredIssues.map((item, index) => (
               <NoticeItem key={`${item.id}-${index}`}>
-                {item.content}
+                {selectedCourse === "전체 과정"
+                  ? `${item.training_course} - ${item.content}` // 전체 과정일 때만 과정명 추가
+                  : item.content}
                 {/* ✅ 버튼을 감싸는 div 추가 */}
                 <ButtonWrapper>
                   <CommentButton onClick={() => handleResolveIssue(item.id)}>

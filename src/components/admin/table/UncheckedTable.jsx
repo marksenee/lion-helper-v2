@@ -8,6 +8,8 @@ import {
   TableRow,
   TableCell,
   TableHeader,
+  SubmitButton,
+  SolveBox,
 } from "./styles";
 import { proPage } from "../../../apis/api";
 import {
@@ -211,18 +213,20 @@ const UncheckedTable = () => {
             {taskData.map((item) => (
               <TableRow key={item.id}>
                 <TableCell>{item.created_at}</TableCell>
-                <TableCell>{item.training_course}</TableCell>
+                <TableCell style={{ width: "15%" }}>
+                  {item.training_course}
+                </TableCell>
                 <TableCell>
                   <strong>{item.content}</strong>
                   <br />
                   <span style={{ color: "gray" }}>{item.action_plan}</span>
                 </TableCell>
-                <TableCell>
+                <TableCell style={{ width: "15%" }}>
                   <span style={{ color: item.delay > 5 ? "red" : "black" }}>
                     {item.due_date} ({item.delay})
                   </span>
                 </TableCell>
-                <TableCell style={{ width: "30%" }}>
+                <TableCell style={{ width: "10%" }}>
                   {activeInput === item.id ? (
                     <input
                       type="text"
@@ -243,29 +247,15 @@ const UncheckedTable = () => {
                       autoFocus
                     />
                   ) : (
-                    <div
-                      onClick={() => setActiveInput(item.id)}
-                      style={{ cursor: "pointer", border: "1px solid #ccc" }}
-                    >
+                    <SolveBox onClick={() => setActiveInput(item.id)}>
                       {solutions[item.id] || "해결 방안을 입력하세요"}
-                    </div>
+                    </SolveBox>
                   )}
                 </TableCell>
-                <TableCell>
-                  <button
-                    onClick={() => handleDeleteIssue(item.id)}
-                    style={{
-                      padding: "4px 8px",
-                      backgroundColor: "#FFCAA2",
-                      color: "#FFFFFF",
-                      border: "none",
-                      borderRadius: "4px",
-                      fontFamily: "pretandard",
-                      cursor: "pointer",
-                    }}
-                  >
+                <TableCell style={{ width: "10%" }}>
+                  <SubmitButton onClick={() => handleDeleteIssue(item.id)}>
                     해결
-                  </button>
+                  </SubmitButton>
                 </TableCell>
               </TableRow>
             ))}
