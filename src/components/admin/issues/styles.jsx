@@ -20,11 +20,11 @@ const Title = styled.h2`
 `;
 
 const NoticeBox = styled.div`
-  width: 95%;
-  background: #fff;
-  border: 1px solid #ccc;
-  padding: 24px;
-  border-radius: 10px;
+  width: 100%;
+  /* background: #fff; */
+  /* border: 1px solid #ccc; */
+  /* padding: 24px; */
+  /* border-radius: 10px; */
 `;
 
 const NoticeTitle = styled.h2`
@@ -35,37 +35,42 @@ const NoticeTitle = styled.h2`
 `;
 
 const NoticeList = styled.ul`
-  /* list-style-type: none; */
+  width: 100%;
   padding: 0;
-  margin-bottom: 2%;
+  margin: 0;
+  list-style: none; /* 목록 불릿 제거 */
 `;
 
-const CommentButton = styled.span`
-  color: #ff914d;
+const CommentButton = styled.button`
+  background: #fff4eb;
+  color: #ff7710;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
   cursor: pointer;
-  padding: 5px;
-  /* align-self: flex-end; */
-  /* display: flex; */
-  /* justify-content: end; */
-  /* align-items: center; */
+  font-size: 14px;
+  font-weight: bold;
+  transition: background 0.3s ease;
+
+  &:hover {
+    background: #ffcaa2;
+    color: #fff;
+  }
 `;
 
 const SubmitButton = styled.button`
-  padding: 8px 10px;
-  background-color: #adabab;
-  color: white;
+  background: transparent;
+  color: #ff7710;
   border: none;
-  border-radius: 4px;
+  padding: 8px 12px;
+  border-radius: 8px;
   cursor: pointer;
-  font-size: 12pt;
-  position: absolute; /* Position button absolutely within the container */
-  right: 0; /* Align to the right */
-  margin: 10px;
+  font-size: 14px;
+  transition: background 0.3s ease;
 
-  &:hover {
-    background-color: #ff7710;
-    color: white;
-  }
+  /* &:hover {
+    background: #ffcaa2;
+  } */
 `;
 
 const CommentBox = styled.div`
@@ -77,13 +82,11 @@ const CommentBox = styled.div`
 `;
 
 const TextArea = styled.textarea`
-  width: 90%; /* Adjust width to make space for the button */
-  height: 50px;
-  margin-top: 5px;
-  padding: 5px;
-  border: 1px solid #f9f9f9;
+  flex-grow: 1;
+  padding: 8px;
+  border: transparent;
+  border-radius: 8px;
   resize: none;
-  flex-grow: 1; /* Allow the textarea to take up available space */
 `;
 
 const MemoBox = styled.div`
@@ -113,22 +116,28 @@ const MemoInput = styled.textarea`
 `;
 
 const NoticeItem = styled.li`
-  /* padding: 12px 0; */
-  margin-left: 2%;
-  margin-bottom: 1%;
-  border-bottom: 1px solid #ccc;
-  /* display: flex; // 해당 부분 설정 시, 댓글 박스가 아래가 아닌 옆으로 됨 */
-  /* justify-content: space-between; */
-  /* align-items: center; */
-  font-size: 14pt;
-
+  background: #fff;
+  border: 1px solid #ffcaa2;
+  border-radius: 12px;
+  padding: 16px;
+  margin-bottom: 12px;
   position: relative;
-  padding-bottom: ${(props) => (props.hasMemoVisible ? "140px" : "12px")};
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  padding-right: 160px; /* 버튼 영역 확보 */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease-in-out;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
 `;
 
-const CommentText = styled.div`
-  font-size: 13pt;
-  padding: 10px;
+const CommentText = styled.p`
+  background: #fff;
+  padding: 8px;
+  border-radius: 8px;
+  margin-bottom: 8px;
 `;
 
 const DropdownContainer = styled.div`
@@ -193,19 +202,18 @@ const ButtonContainer = styled.div`
 
 const ButtonWrapper = styled.div`
   position: absolute;
-  /* padding-top: -30px; */
-  right: 0; /* 오른쪽 끝 정렬 */
-  top: 0; /* 상단 정렬 */
-
+  right: 16px;
+  top: 50%;
   display: flex;
-  /* gap: 10px; 버튼 간격 */
+  transform: translateY(-50%);
+  gap: 8px;
+  width: 120px; /* 버튼 영역 고정 */
 `;
 
 const TextAreaContainer = styled.div`
   display: flex;
   align-items: center;
-  width: 100%;
-  position: relative;
+  gap: 8px;
 `;
 
 export {

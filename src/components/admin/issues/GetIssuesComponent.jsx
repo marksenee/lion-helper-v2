@@ -241,7 +241,7 @@ const GetIssuesComponent = () => {
   return (
     <Container>
       <TitleWrapper>
-        <Title>이슈 사항</Title>
+        <Title>이슈사항</Title>
         <DropdownContainer onClick={() => setDropdownOpen(!dropdownOpen)}>
           {selectedCourse || "과정 선택"}
           <DropdownIcon />
@@ -269,7 +269,6 @@ const GetIssuesComponent = () => {
             filteredIssues.map((item, index) => (
               <NoticeItem key={`${item.id}-${index}`}>
                 {item.content}
-
                 {/* ✅ 버튼을 감싸는 div 추가 */}
                 <ButtonWrapper>
                   <CommentButton onClick={() => handleResolveIssue(item.id)}>
