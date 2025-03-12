@@ -28,6 +28,7 @@ const TabItem = styled.div`
   cursor: pointer;
   position: relative;
   font-weight: ${(props) => (props.active ? "bold" : "normal")};
+  font-family: "Suite";
 
   &:after {
     content: "";

@@ -55,7 +55,8 @@ const NavItem = styled.li`
   padding: 10px;
   cursor: pointer;
   border-radius: 8px;
-  font-family: "Pretandard";
+  font-family: "Suite";
+  font-weight: 500;
   font-size: 20px;
   margin-bottom: 5%;
   color: ${(props) =>
