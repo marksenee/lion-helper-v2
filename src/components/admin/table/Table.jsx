@@ -148,7 +148,6 @@ const TableComponents = () => {
           </tbody>
         </Table>
       </TableWrapper>
-      <GetIssuesComponent />
     </Container>
   );
 };

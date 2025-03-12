@@ -39,6 +39,7 @@ const AdminPage = () => {
       <ContentContainer>
         <AdminNavigationTabs />
         <TableComponents />
+        <GetIssuesComponent />
       </ContentContainer>
     </>
   );

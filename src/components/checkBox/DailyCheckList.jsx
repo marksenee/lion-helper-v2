@@ -18,6 +18,9 @@ import {
   StatusContainer,
   NoCount,
   YesCount,
+  CheckYesBox,
+  CheckNoBox,
+  CheckStatusText,
 } from "./styles";
 import useCourseStore from "../../\bstore/useCourseStore";
 import { SubmitButton } from "../issue/styles";
@@ -266,29 +269,15 @@ const DailyCheckList = ({ activeTab }) => {
                   <CheckboxContainer key={item.id}>
                     <div style={{ display: "flex", alignItems: "center" }}>
                       {/* YES 체크박스 */}
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          flexDirection: "column",
-                        }}
-                      >
-                        <span
-                          style={{
-                            fontSize: "12px",
-                            color: "#888",
-                            marginRight: "10px",
-                          }}
-                        >
-                          YES
-                        </span>
+                      <CheckYesBox>
+                        <CheckStatusText>YES</CheckStatusText>
                         <HiddenCheckbox
                           type="checkbox"
                           checked={checkedStates[item.id] === "yes"}
                           onChange={() =>
                             handleCheckboxChange(item.id, item, true)
                           }
-                          style={{ display: "none" }}
+                          // style={{ display: "none" }}
                         />
                         <Circle
                           checked={checkedStates[item.id] === "yes"}
@@ -300,26 +289,11 @@ const DailyCheckList = ({ activeTab }) => {
                             }));
                           }}
                         />
-                      </div>
+                      </CheckYesBox>
 
                       {/* NO 체크박스 */}
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          flexDirection: "column",
-                          marginLeft: "10px",
-                        }}
-                      >
-                        <span
-                          style={{
-                            fontSize: "12px",
-                            color: "#888",
-                            marginRight: "10px",
-                          }}
-                        >
-                          NO
-                        </span>
+                      <CheckNoBox>
+                        <CheckStatusText>NO</CheckStatusText>
                         <HiddenCheckbox
                           type="checkbox"
                           checked={checkedStates[item.id] === "no"}
@@ -338,65 +312,67 @@ const DailyCheckList = ({ activeTab }) => {
                             }));
                           }}
                         />
-                      </div>
-                      <CheckboxLabel
-                        style={{
-                          textDecoration:
-                            checkedStates[item.id] === "yes"
-                              ? "line-through"
-                              : "none",
-                          color:
-                            checkedStates[item.id] === "yes"
-                              ? "#888"
-                              : "inherit",
-                        }}
-                      >
-                        {item.task_name}
-                      </CheckboxLabel>
-                      <FiHelpCircle
-                        data-tooltip-id={`tooltip-${item.id}`}
-                        style={{
-                          marginLeft: "5px",
-                          cursor: "pointer",
-                          color: "#888",
-                        }}
-                      />
-                      <Tooltip
-                        id={`tooltip-${item.id}`}
-                        place="top"
-                        effect="solid"
-                      >
-                        {item.guide && item.guide !== "업무 가이드 없음"
-                          ? item.guide
-                          : "가이드 정보 없음"}
-                      </Tooltip>
-                      {(showInput[item.id] ||
-                        checkedStates[item.id] === "no") && (
-                        <div
+                      </CheckNoBox>
+                      <div style={{ display: "flex", flexDirection: "column" }}>
+                        <CheckboxLabel
                           style={{
-                            display: "flex",
-                            alignItems: "center",
+                            textDecoration:
+                              checkedStates[item.id] === "yes"
+                                ? "line-through"
+                                : "none",
+                            color:
+                              checkedStates[item.id] === "yes"
+                                ? "#888"
+                                : "inherit",
                           }}
                         >
-                          <UncheckedInputBox
-                            type="text"
-                            placeholder="사유 입력 후 엔터를 눌러주세요!"
-                            value={reasonState[item.id] || ""}
-                            onChange={(e) =>
-                              handleReasonChange(item.id, e.target.value)
-                            }
-                            onKeyDown={(e) => {
-                              if (e.key === "Enter") {
-                                e.preventDefault(); // 엔터 입력 시 새로고침 방지
-                                handleCommentSubmit(
-                                  item.id,
-                                  reasonState[item.id]
-                                );
-                              }
+                          {item.task_name}
+                          <FiHelpCircle
+                            data-tooltip-id={`tooltip-${item.id}`}
+                            style={{
+                              marginLeft: "5px",
+                              cursor: "pointer",
+                              color: "#888",
                             }}
                           />
-                        </div>
-                      )}
+                        </CheckboxLabel>
+                        <Tooltip
+                          id={`tooltip-${item.id}`}
+                          place="top"
+                          effect="solid"
+                        >
+                          {item.guide && item.guide !== "업무 가이드 없음"
+                            ? item.guide
+                            : "가이드 정보 없음"}
+                        </Tooltip>
+                        {(showInput[item.id] ||
+                          checkedStates[item.id] === "no") && (
+                          <div
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                            }}
+                          >
+                            <UncheckedInputBox
+                              type="text"
+                              placeholder="사유 입력 후 엔터를 눌러주세요!"
+                              value={reasonState[item.id] || ""}
+                              onChange={(e) =>
+                                handleReasonChange(item.id, e.target.value)
+                              }
+                              onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                  e.preventDefault(); // 엔터 입력 시 새로고침 방지
+                                  handleCommentSubmit(
+                                    item.id,
+                                    reasonState[item.id]
+                                  );
+                                }
+                              }}
+                            />
+                          </div>
+                        )}
+                      </div>
                     </div>
                     <div>
                       <CategoryText>

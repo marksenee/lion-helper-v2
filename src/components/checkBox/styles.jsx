@@ -59,12 +59,15 @@ const CheckboxContainer = styled.div`
 const CategoryText = styled.text`
   color: #ff7710;
   font-size: medium;
+  flex-shrink: 0; //고정된 크기 유지
 `;
 
 const CheckboxLabel = styled.div`
   color: #000000;
   margin-left: 10px;
-  font-size: large;
+  font-size: 15px;
+  /* word-break: break-all;
+  white-space: normal; */
 `;
 
 const Checkbox = styled.input`
@@ -225,12 +228,15 @@ const HiddenCheckbox = styled.input`
 `;
 
 const UncheckedInputBox = styled.input`
+  margin-top: 2%;
   margin-left: 10px;
   /* margin-bottom: 6px; */
   border-radius: 5px;
   padding: 5px;
-  border: 1px solid #ccc;
-  width: 250px;
+  border: 1px solid #f5f5f5;
+  width: 300px;
+  height: 20px;
+  box-shadow: 0px 3px 20px rgba(0, 0, 0, 0.1);
 `;
 
 const StatusContainer = styled.div`
@@ -258,6 +264,25 @@ const NoCount = styled.span`
   font-size: 18px;
 `;
 
+const CheckYesBox = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+`;
+
+const CheckNoBox = styled.div`
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-left: 10px;
+`;
+
+const CheckStatusText = styled.span`
+  font-size: 12px;
+  color: "#888";
+  margin-right: 10px;
+`;
+
 export {
   BoxContainer,
   Title,
@@ -281,4 +306,7 @@ export {
   StatusContainer,
   YesCount,
   NoCount,
+  CheckYesBox,
+  CheckNoBox,
+  CheckStatusText,
 };

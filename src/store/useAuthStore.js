@@ -1,6 +1,5 @@
 import { create } from "zustand";
 import { proPage } from "../apis/api";
-import { useNavigate } from "react-router-dom";
 
 const useAuthStore = create((set) => ({
   username: sessionStorage.getItem("username") || null, // 세션에서 username 불러오기
