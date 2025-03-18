@@ -197,13 +197,12 @@ const GetIssuesComponent = () => {
     }
   };
 
-  const formatDate = (dateString) => {
-    if (!dateString) return "날짜 없음"; // 빈 값 방지
-
-    const date = new Date(dateString);
-    if (isNaN(date.getTime())) return "유효하지 않은 날짜"; // 유효성 검사
-
-    return date.toISOString().split("T")[0]; // "YYYY-MM-DD" 형식 변환
+  // 날짜를 "3월 18일" 형식으로 변환하는 함수
+  const formatDate = (date) => {
+    return new Date(date)
+      .toLocaleDateString("ko-KR", { month: "long", day: "numeric" })
+      .replace("월", "월 ")
+      .replace("일", "일");
   };
 
   const handleResolveIssue = async (issueId) => {
@@ -281,9 +280,43 @@ const GetIssuesComponent = () => {
           {filteredIssues.length > 0 ? (
             filteredIssues.map((item, index) => (
               <NoticeItem key={`${item.id}-${index}`}>
-                {selectedCourse === "전체 과정"
-                  ? `${item.training_course} - ${item.content}` // 전체 과정일 때만 과정명 추가
-                  : item.content}
+                {selectedCourse === "전체 과정" ? (
+                  <>
+                    <strong>
+                      {"["}
+                      {item.training_course}
+                      {"]"}
+                    </strong>{" "}
+                    {item.content
+                      .replace(/-/g, "\n-")
+                      .split("\n")
+                      .map((line, index) => (
+                        <span key={index}>
+                          {line}
+                          <br />
+                        </span>
+                      ))}
+                    <span style={{ color: "#FF7710" }}>
+                      {formatDate(item.date)}
+                    </span>
+                  </>
+                ) : (
+                  <>
+                    {item.content
+                      .replace(/-/g, "\n-")
+                      .split("\n")
+                      .map((line, index) => (
+                        <span key={index}>
+                          {line}
+                          <br />
+                        </span>
+                      ))}
+                    <span style={{ color: "#FF7710" }}>
+                      {formatDate(item.date)}
+                    </span>
+                  </>
+                )}
+
                 {/* ✅ 버튼을 감싸는 div 추가 */}
                 <ButtonWrapper>
                   <CommentButton onClick={() => handleResolveIssue(item.id)}>
