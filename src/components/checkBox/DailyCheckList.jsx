@@ -134,10 +134,10 @@ const DailyCheckList = ({ activeTab }) => {
     }, {});
 
   const handleSaveChecklist = async () => {
-    if (!username) {
-      alert("로그인이 필요합니다!");
-      return;
-    }
+    // if (!username) {
+    //   alert("로그인이 필요합니다!");
+    //   return;
+    // }
     // Filter items based on activeTab and task_period
     const filteredItems = checkItems.filter(
       (item) => item.task_period === activeTab
