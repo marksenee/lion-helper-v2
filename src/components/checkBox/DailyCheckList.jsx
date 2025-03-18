@@ -402,9 +402,12 @@ const DailyCheckList = ({ activeTab }) => {
         {reasons.map((reason, index) => (
           <ReasonInputContainer key={index}>
             <ReasonInput
-              placeholder="이슈사항을 작성해주세요! 예) 취업으로 인한 중도퇴소자 연속 발생"
+              placeholder={`작성 예시 : 
+- 배경 : 이슈가 발생한 배경
+- 상황 : 이슈 상황`}
               value={reasonInputState[index] || ""}
               onChange={(e) => handleReasonInputChange(index, e.target.value)}
+              style={{ whiteSpace: "pre-line" }} // 줄바꿈을 적용
             />
             <SubmitButton onClick={() => handleSubmit(index)}>
               등록

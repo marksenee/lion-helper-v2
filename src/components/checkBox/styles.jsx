@@ -107,7 +107,7 @@ const ReasonInput = styled.textarea`
   padding: 7px;
   border: none;
   outline: none;
-  font-size: 13pt;
+  font-size: 10pt;
   color: #000000;
   resize: none;
   white-space: pre-line;
