@@ -25,7 +25,7 @@ import CheckListGuide from "../components/guide/CheckListGuide";
 const TodayCheckListPage = () => {
   return (
     <ContentContainer>
-      <NavigationTabs /> {/* 왼쪽 정렬 */}
+      <NavigationTabs />
       <CheckListGuide />
       <CourseDropDown />
       <AttendanceRecord />

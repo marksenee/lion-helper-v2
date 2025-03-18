@@ -17,7 +17,7 @@ const Router = () => {
 
         {/* 로그인 이후 접근 가능한 페이지들 */}
         <Route path="/app" element={<Layout />}>
-          <Route path="main" element={<MainPage />} />
+          {/* <Route path="main" element={<MainPage />} /> */}
           <Route path="checklist/*" element={<NavigationTabs />} />
           <Route path="admin/*" element={<AdminNavigationTabs />} />
           <Route path="dashboard/*" element={<DashBoardNavigationTabs />} />

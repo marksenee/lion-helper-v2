@@ -3,10 +3,16 @@ import { Wrapper, TabContainer, TabItem } from "./styles";
 import TodayCheckListPage from "../../pages/TodayCheckListPage";
 import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import WeeklyCheckListPage from "../../pages/WeeklyCheckListPage";
+import StartSchoolCheckListPage from "../../pages/StartSchoolCheckListPage";
+import RecruitCheckListPage from "../../pages/RecruitCheckListPage";
+import CompletionCheckListPage from "../../pages/CompletionCheckListPage";
 
 const tabs = [
   { name: "오늘", path: "/app/checklist/today" },
   { name: "주간", path: "/app/checklist/weekly" },
+  { name: "개강2주", path: "/app/checklist/2weeks" },
+  { name: "모집", path: "/app/checklist/recruit" },
+  { name: "수료", path: "/app/checklist/completion" },
   // { name: "미체크 항목", path: "/checklist/unchecked" },
 ];
 
@@ -22,10 +28,27 @@ const NavigationTabs = () => {
       setSelectedTab("오늘");
     } else if (currentPath.includes("weekly")) {
       setSelectedTab("주간");
+    } else if (currentPath.includes("2weeks")) {
+      setSelectedTab("개강2주");
+    } else if (currentPath.includes("recruit")) {
+      setSelectedTab("모집");
+    } else if (currentPath.includes("completion")) {
+      setSelectedTab("수료");
     }
     // else if (currentPath.includes("unchecked")) {
     //   setSelectedTab("미체크 항목");
     // }
+
+    const matchedTab = tabs.find((tab) =>
+      currentPath.includes(tab.path.split("/").pop())
+    );
+
+    console.log("현재 경로:", currentPath);
+    console.log("매칭된 탭:", matchedTab?.name); // 디버깅 로그 추가
+
+    if (matchedTab) {
+      setSelectedTab(matchedTab.name);
+    }
   }, [location.pathname]); // 경로가 바뀔 때마다 실행
 
   return (
@@ -58,6 +81,10 @@ const NavigationTabs = () => {
       <Routes>
         <Route path="today" element={<TodayCheckListPage />} />
         <Route path="weekly" element={<WeeklyCheckListPage />} />
+        <Route path="2weeks" element={<StartSchoolCheckListPage />} />
+        <Route path="recruit" element={<RecruitCheckListPage />} />
+        <Route path="completion" element={<CompletionCheckListPage />} />
+
         {/* <Route path="unchecked" element={<ProUncheckedPage />} /> */}
       </Routes>
     </>

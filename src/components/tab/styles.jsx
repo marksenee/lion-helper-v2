@@ -11,6 +11,7 @@ const Wrapper = styled.div`
   max-width: 900px;
   display: flex;
   justify-content: flex-start; /* 왼쪽 정렬 */
+  overflow: hidden; /* 초과되는 UI 숨김 */
 `;
 
 // 네비게이션 탭 스타일
