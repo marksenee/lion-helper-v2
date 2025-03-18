@@ -9,6 +9,7 @@ import {
   Input,
   LoginButton,
 } from "./styles";
+import { proPage } from "/Users/parkseeun/Projects/lion-helper-v2/src/apis/api";
 
 const LoginComponent = () => {
   const [id, setId] = useState("");
@@ -29,12 +30,15 @@ const LoginComponent = () => {
     };
 
     try {
-      const response = await postLogin(loginData); // Zustand의 postLogin 호출
-      if (response.success) {
+      const response = await proPage.postLogin(loginData); // Zustand의 postLogin 호출
+      if (response) {
+        // const { username } = response.data;
+        // useAuthStore.getState().setUsername(username);
         navigate("/app/checklist/today");
+        return response;
       }
-      //   alert("로그인 완료!");
-      //   navigate("/app/checklist/today");
+      // alert("로그인 완료!");
+      // navigate("/app/checklist/today");
     } catch (error) {
       console.error("로그인 오류:", error);
       //   alert("로그인 실패. 다시 시도해주세요.");

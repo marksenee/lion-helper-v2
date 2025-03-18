@@ -46,7 +46,17 @@ const DailyCheckList = ({ activeTab }) => {
   // ✅ 체크리스트 데이터를 가져오면서 localStorage 데이터도 반영
   // ✅ localStorage에서 username별 상태 저장 및 불러오기
   useEffect(() => {
+    console.log("username", username);
     // if (!username) return; // username 없으면 실행하지 않음
+    // const getUserName = async () => {
+    //   try {
+    //     const response = await proPage.getUserName();
+
+    //     console.log("respoonse", response);
+    //   } catch (err) {
+    //     return err;
+    //   }
+    // };
 
     const fetchChecklist = async () => {
       try {
@@ -74,6 +84,7 @@ const DailyCheckList = ({ activeTab }) => {
     };
 
     fetchChecklist();
+    // getUserName();
   }, [username]);
 
   useEffect(() => {
@@ -122,6 +133,10 @@ const DailyCheckList = ({ activeTab }) => {
     }, {});
 
   const handleSaveChecklist = async () => {
+    if (!username) {
+      alert("로그인이 필요합니다!");
+      return;
+    }
     // Filter items based on activeTab and task_period
     const filteredItems = checkItems.filter(
       (item) => item.task_period === activeTab

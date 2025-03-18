@@ -7,7 +7,7 @@ export const api = axios.create({
     "content-type": "application/json",
     accept: "application/json,",
   },
-  withCredentials: true,
+  // withCredentials: true,
 });
 
 export const proPage = {

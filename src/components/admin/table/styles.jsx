@@ -1,40 +1,38 @@
 import styled from "styled-components";
 
 const Container = styled.div`
-  width: 900px;
-  min-height: 250px; /* 최소 높이를 지정하여, 콘텐츠가 많으면 늘어날 수 있도록 */
-  background: #fff;
-  border-radius: 10px;
-  /* padding: 20px; */
+  width: 100%;
+  max-width: 1200px;
+  min-height: 300px;
+  border-radius: 16px;
+  padding: 24px;
   font-family: Pretendard, sans-serif;
-  margin-top: 1%;
-  margin-bottom: 2%;
-  flex-grow: 1; //데이터가 많을 때 자동으로 공간을 차지하도록 함
+  margin: 2% auto;
+  flex-grow: 1;
 `;
 
-const UncheckedContainder = styled.div`
-  width: 1000px;
-  min-height: 250px; /* 최소 높이를 지정하여, 콘텐츠가 많으면 늘어날 수 있도록 */
-  background: #fff;
-  border-radius: 10px;
-  /* padding: 20px; */
+const UncheckedContainer = styled.div`
+  width: 100%;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
   font-family: Pretendard, sans-serif;
-  margin-top: 1%;
+  margin-top: 2%;
   margin-bottom: 2%;
-  flex-grow: 1; //데이터가 많을 때 자동으로 공간을 차지하도록 함
+  flex-grow: 1;
 `;
 
 const Title = styled.h2`
-  font-size: 20pt;
-  font-weight: semibold;
-  font-family: pretandard;
-  margin-bottom: 16px;
+  font-size: 24pt;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 24px;
 `;
 
 const TableWrapper = styled.div`
   width: 100%;
-  border: 1px solid #ccc;
-  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
   overflow: hidden;
 `;
 
@@ -42,74 +40,84 @@ const Table = styled.table`
   width: 100%;
   text-align: left;
   border-collapse: collapse;
+  background: #ffffff;
 `;
 
 const TableHead = styled.thead`
-  /* background-color: #f3f3f3; */
-  color: #444;
-  text-align: center;
+  background-color: #f3f4f6;
+  color: #111827;
 `;
 
 const TableRow = styled.tr`
-  border-top: 1px solid #ccc;
-  text-align: center;
+  &:nth-child(even) {
+    background-color: #f9fafb;
+  }
+  &:hover {
+    background-color: #eef2ff;
+    transition: background-color 0.2s ease-in-out;
+  }
 `;
 
 const TableHeader = styled.th`
   padding: 12px;
   text-align: center;
+  font-size: 14pt;
+  font-weight: 500;
+  border-bottom: 2px solid #e5e7eb;
 `;
 
 const TableCell = styled.td`
   padding: 12px;
   text-align: center;
+  font-size: 12pt;
+  color: #374151;
+  border-bottom: 1px solid #e5e7eb;
 `;
 
-// 테이블 셀 스타일 추가
 const TableUrgencyCell = styled.td`
-  /* text-align: center;  */
-  /* vertical-align: middle; //세로 정렬  */
   padding: 10px;
-
-  /* flex를 사용하여 완전히 중앙 정렬 */
   display: flex;
   justify-content: center;
+  align-items: center;
 `;
 
 const UrgencyBadge = styled.span`
-  display: inline-block;
-  width: 70px;
-  height: 30px;
-  border-radius: 20px;
-  font-size: 13pt;
-  font-family: pretandard;
-  color: white;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  background-color: ${({ urgent }) => (urgent ? "#8BD96C" : "#FF6767")};
+  width: 80px;
+  height: 32px;
+  border-radius: 16px;
+  font-size: 12pt;
+  font-weight: 500;
+  color: white;
+  background-color: ${({ urgent }) => (urgent ? "#FF6767" : "#8BD96C")};
 `;
 
 const SolveBox = styled.div`
   cursor: pointer;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 5px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 8px;
+  text-align: center;
+  background: #ffffff;
+  &:hover {
+    background: #f3f4f6;
+  }
 `;
 
 const SubmitButton = styled.button`
-  padding: 4px 8px;
-  background-color: #fff4eb;
-  color: #ff7710;
+  padding: 8px 16px;
+  background-color: #ffedd5;
+  color: #f97316;
   border: none;
-  border-radius: 4px;
-  font-family: "pretandard";
+  border-radius: 8px;
+  font-weight: 500;
   cursor: pointer;
-
-  /* & :hover {
-    background-color: #ff7710;
-    color: #fff;
-  } */
+  &:hover {
+    background-color: #f97316;
+    color: #ffffff;
+  }
 `;
 
 export {
@@ -123,7 +131,7 @@ export {
   TableHeader,
   TableUrgencyCell,
   UrgencyBadge,
-  UncheckedContainder,
+  UncheckedContainer,
   SubmitButton,
   SolveBox,
 };

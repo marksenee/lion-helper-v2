@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import {
   TableWrapper,
   Container,
-  UncheckedContainder,
+  UncheckedContainer,
   Table,
   TableHead,
   TableRow,
@@ -168,13 +168,13 @@ const UncheckedTable = () => {
 
   const uniqueDepts = [
     "전체 보기",
-    ...new Set(allTaskData.map((item) => item.dept)),
+    ...new Set(taskData.map((item) => item.dept)),
   ];
 
   const filteredCheckRate =
     selectedDept !== "전체 보기"
-      ? allTaskData.filter((item) => item.dept === selectedDept)
-      : allTaskData;
+      ? taskData.filter((item) => item.dept === selectedDept)
+      : taskData;
 
   // ✅ 미체크 이슈 삭제
   const handleDeleteIssue = async (id) => {
@@ -196,7 +196,18 @@ const UncheckedTable = () => {
   };
 
   return (
-    <UncheckedContainder>
+    <UncheckedContainer>
+      <DropdownContainer onClick={() => setDropdownOpen(!dropdownOpen)}>
+        {selectedDept}
+        <DropdownIcon />
+        <DropdownList isOpen={dropdownOpen}>
+          {uniqueDepts.map((dept) => (
+            <DropdownItem key={dept} onClick={() => handleDeptSelect(dept)}>
+              {dept}
+            </DropdownItem>
+          ))}
+        </DropdownList>
+      </DropdownContainer>
       <TableWrapper>
         <Table>
           <TableHead>
@@ -210,7 +221,7 @@ const UncheckedTable = () => {
             </TableRow>
           </TableHead>
           <tbody>
-            {taskData.map((item) => (
+            {filteredCheckRate.map((item) => (
               <TableRow key={item.id}>
                 <TableCell>{item.created_at}</TableCell>
                 <TableCell style={{ width: "15%" }}>
@@ -230,6 +241,13 @@ const UncheckedTable = () => {
                   {activeInput === item.id ? (
                     <input
                       type="text"
+                      style={{
+                        width: "100%",
+                        padding: "8px",
+                        fontSize: "1rem",
+                        borderRadius: "5px",
+                        border: "1px solid #007bff", // 활성화 시 파란 테두리
+                      }}
                       value={solutions[item.id] || ""}
                       onChange={(e) =>
                         setSolutions({
@@ -262,7 +280,7 @@ const UncheckedTable = () => {
           </tbody>
         </Table>
       </TableWrapper>
-    </UncheckedContainder>
+    </UncheckedContainer>
   );
 };
 

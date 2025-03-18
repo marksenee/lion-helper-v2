@@ -5,6 +5,8 @@ import LoginPage from "./pages/LoginPage";
 import MainPage from "./pages/MainPage";
 import NavigationTabs from "./components/tab/Tab";
 import AdminNavigationTabs from "./components/tab/AdminTab";
+import DashBoardComponents from "./components/dashBoard/DashBoardComponents";
+import DashBoardNavigationTabs from "./components/tab/DashBoardTab";
 
 const Router = () => {
   return (
@@ -18,6 +20,7 @@ const Router = () => {
           <Route path="main" element={<MainPage />} />
           <Route path="checklist/*" element={<NavigationTabs />} />
           <Route path="admin/*" element={<AdminNavigationTabs />} />
+          <Route path="dashboard/*" element={<DashBoardNavigationTabs />} />
         </Route>
       </Routes>
     </BrowserRouter>

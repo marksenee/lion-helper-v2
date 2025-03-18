@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { FiHome } from "react-icons/fi";
 import { MdDashboard, MdAdminPanelSettings } from "react-icons/md";
+import { BiBarChart } from "react-icons/bi";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   Layout,
@@ -35,6 +36,12 @@ const Header = () => {
       icon: <MdAdminPanelSettings />,
       path: "/app/admin/teamTask",
     },
+    {
+      id: "dashboard",
+      label: "대시보드",
+      icon: <BiBarChart />,
+      path: "/app/dashboard/weekly",
+    },
   ];
 
   const currentMenuItem = menuItems.find((item) =>
@@ -53,7 +60,7 @@ const Header = () => {
           onClick={() => navigate("/app")}
           style={{ cursor: "pointer" }}
         />
-        {/* <Title>{username}님의 라이언헬퍼</Title> */}
+        <Title>{username}님의 라이언헬퍼</Title>
         <NavList>
           {menuItems.map((item) => (
             <NavItem

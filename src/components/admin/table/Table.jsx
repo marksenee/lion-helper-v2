@@ -125,6 +125,7 @@ const TableComponents = () => {
               <TableHeader>담당자</TableHeader>
               <TableHeader>오늘 체크율</TableHeader>
               <TableHeader>오늘의 완수여부</TableHeader>
+              <TableHeader>전일 체크율</TableHeader>
               <TableHeader>월별 누적 체크율</TableHeader>
             </TableRow>
           </TableHead>
@@ -141,6 +142,7 @@ const TableComponents = () => {
                       {item.daily_check_rate === "100.0%" ? "완수" : "미완수"}
                     </UrgencyBadge>
                   </TableUrgencyCell>
+                  <TableCell>{item.daily_check_rate}</TableCell>
                   <TableCell>{item.overall_check_rate}</TableCell>
                 </TableRow>
               );
