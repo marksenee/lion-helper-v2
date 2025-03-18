@@ -9,7 +9,8 @@ import {
   Input,
   LoginButton,
 } from "./styles";
-import { proPage } from "/Users/parkseeun/Projects/lion-helper-v2/src/apis/api";
+import { proPage } from "../../apis/api";
+// import { proPage } from "/Users/parkseeun/Projects/lion-helper-v2/src/apis/api";
 
 const LoginComponent = () => {
   const [id, setId] = useState("");
