@@ -13,7 +13,6 @@ import {
 } from "./styles";
 
 const DashBoardComponents = () => {
-  console.log("asdfasdfasdfadf");
   const [currentDate, setCurrentDate] = useState(new Date());
   const [activeTab, setActiveTab] = useState("daily");
 
@@ -36,7 +35,6 @@ const DashBoardComponents = () => {
   };
 
   const tasks = ["강사일지 작성 여부", "과제 제출 여부", "출석 체크 여부"];
-
   const days = ["월", "화", "수", "목", "금"];
 
   return (
@@ -64,18 +62,26 @@ const DashBoardComponents = () => {
         <Row>
           <TaskName></TaskName>
           {days.map((day) => (
-            <TaskName key={day}>{day}</TaskName>
+            <TaskName key={day} style={{ textAlign: "center" }}>
+              {day}
+            </TaskName>
           ))}
         </Row>
         {tasks.map((task, index) => (
-          <Row key={index}>
-            <TaskName>{task}</TaskName>
-            <CircleContainer>
-              {days.map((_, dayIndex) => (
-                <Circle key={dayIndex} completed={Math.random() > 0.5} />
-              ))}
-            </CircleContainer>
-          </Row>
+          <>
+            <Row key={`task-${index}`}>
+              <TaskName>{task}</TaskName>
+            </Row>
+            <Row key={`circles-${index}`}>
+              <CircleContainer
+                style={{ justifyContent: "center", width: "100%" }}
+              >
+                {days.map((_, dayIndex) => (
+                  <Circle key={dayIndex} completed={Math.random() > 0.5} />
+                ))}
+              </CircleContainer>
+            </Row>
+          </>
         ))}
       </TaskTable>
     </div>

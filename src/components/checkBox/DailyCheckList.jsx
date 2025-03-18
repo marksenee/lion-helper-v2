@@ -21,6 +21,7 @@ import {
   CheckYesBox,
   CheckNoBox,
   CheckStatusText,
+  CategoryDiv,
 } from "./styles";
 import useCourseStore from "../../\bstore/useCourseStore";
 import { SubmitButton } from "../issue/styles";
@@ -46,7 +47,7 @@ const DailyCheckList = ({ activeTab }) => {
   // ✅ 체크리스트 데이터를 가져오면서 localStorage 데이터도 반영
   // ✅ localStorage에서 username별 상태 저장 및 불러오기
   useEffect(() => {
-    console.log("username", username);
+    // console.log("username", username);
     // if (!username) return; // username 없으면 실행하지 않음
     // const getUserName = async () => {
     //   try {
@@ -280,6 +281,13 @@ const DailyCheckList = ({ activeTab }) => {
           <ChecklistContainer>
             {Object.entries(groupedTasks).map(([category, tasks]) => (
               <div key={category}>
+                <CategoryDiv>
+                  <CategoryText>
+                    {"#"}
+                    {category.replace("관련", "").trim()}
+                  </CategoryText>
+                </CategoryDiv>
+
                 {tasks.map((item) => (
                   <CheckboxContainer key={item.id}>
                     <div style={{ display: "flex", alignItems: "center" }}>
@@ -292,7 +300,6 @@ const DailyCheckList = ({ activeTab }) => {
                           onChange={() =>
                             handleCheckboxChange(item.id, item, true)
                           }
-                          // style={{ display: "none" }}
                         />
                         <Circle
                           checked={checkedStates[item.id] === "yes"}
@@ -315,7 +322,6 @@ const DailyCheckList = ({ activeTab }) => {
                           onChange={() =>
                             handleCheckboxChange(item.id, item, false)
                           }
-                          style={{ display: "none" }}
                         />
                         <Circle
                           checked={checkedStates[item.id] === "no"}
@@ -363,10 +369,7 @@ const DailyCheckList = ({ activeTab }) => {
                         {(showInput[item.id] ||
                           checkedStates[item.id] === "no") && (
                           <div
-                            style={{
-                              display: "flex",
-                              alignItems: "center",
-                            }}
+                            style={{ display: "flex", alignItems: "center" }}
                           >
                             <UncheckedInputBox
                               type="text"
@@ -377,7 +380,7 @@ const DailyCheckList = ({ activeTab }) => {
                               }
                               onKeyDown={(e) => {
                                 if (e.key === "Enter") {
-                                  e.preventDefault(); // 엔터 입력 시 새로고침 방지
+                                  e.preventDefault();
                                   handleCommentSubmit(
                                     item.id,
                                     reasonState[item.id]
@@ -388,12 +391,6 @@ const DailyCheckList = ({ activeTab }) => {
                           </div>
                         )}
                       </div>
-                    </div>
-                    <div>
-                      <CategoryText>
-                        {"#"}
-                        {category}
-                      </CategoryText>
                     </div>
                   </CheckboxContainer>
                 ))}
@@ -414,72 +411,8 @@ const DailyCheckList = ({ activeTab }) => {
             </SubmitButton>
           </ReasonInputContainer>
         ))}
-
-        {/* <div
-          style={{
-            marginTop: "3%",
-            marginBottom: "3%",
-            border: "1px solid #ecebeb",
-            borderRadius: "5px",
-            padding: "10px",
-          }}
-        >
-          {filteredUncheckedItems.length > 0 ? (
-            <UncheckedListContainer>
-              {filteredUncheckedItems.map((item) => (
-                <div
-                  key={item.id}
-                  style={{
-                    display: "flex",
-                    alignItems: "flex-start", // 여러 줄일 때도 균형 잡힌 정렬
-                    gap: "10px", // 요소 간 간격 추가
-                    marginBottom: "10px",
-                  }}
-                >
-                  <div
-                    style={{
-                      width: "500px",
-                      minHeight: "40px", // 최소 높이 지정 (줄바꿈 시 UI 안정성 확보)
-                      display: "flex",
-                      alignItems: "center",
-                    }}
-                  >
-                    <div
-                      style={{
-                        fontSize: "13pt",
-                        marginLeft: "10%",
-                        whiteSpace: "normal",
-                        wordBreak: "break-word", // 긴 텍스트 줄바꿈 처리
-                        lineHeight: "1.5", // 줄 간격 조절
-                      }}
-                    >
-                      {item.task_name}
-                    </div>
-                  </div>
-                  <ReasonInput
-                    placeholder="액션플랜을 입력하세요"
-                    value={reasonState[item.id] || ""}
-                    onChange={(e) =>
-                      handleCommentChange(item.id, e.target.value)
-                    }
-                  />
-                  <SaveButton onClick={() => handleCommentSubmit(item.id)}>
-                    등록
-                  </SaveButton>
-                </div>
-              ))}
-            </UncheckedListContainer>
-          ) : (
-            <p>미체크된 항목이 없습니다.</p>
-          )}
-        </div> */}
-        {/* 왼쪽 정렬된 버튼 */}
         <div
-          style={{
-            display: "flex",
-            justifyContent: "flex-end",
-            width: "100%",
-          }}
+          style={{ display: "flex", justifyContent: "flex-end", width: "100%" }}
         >
           <CheckListSaveButton onClick={handleSaveChecklist}>
             체크리스트 저장

@@ -4,7 +4,6 @@ import DashBoardNavigationTabs from "../components/tab/DashBoardTab";
 import DashBoardComponents from "../components/dashBoard/DashBoardComponents";
 
 const DashBoardPage = () => {
-  console.log("Asdfasdfadfasd");
   //   const { fetchCourseItems } = useCourseStore();
 
   //   useEffect(() => {

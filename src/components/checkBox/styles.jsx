@@ -56,10 +56,16 @@ const CheckboxContainer = styled.div`
   padding: 15px;
 `;
 
+const CategoryDiv = styled.div`
+  /* width: 100px; */
+  margin-top: 30px;
+  margin-left: 1%;
+`;
+
 const CategoryText = styled.text`
   color: #ff7710;
   font-size: medium;
-  flex-shrink: 0; //고정된 크기 유지
+  /* flex-shrink: 0; //고정된 크기 유지 */
 `;
 
 const CheckboxLabel = styled.div`
@@ -309,4 +315,5 @@ export {
   CheckYesBox,
   CheckNoBox,
   CheckStatusText,
+  CategoryDiv,
 };
