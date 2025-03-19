@@ -76,6 +76,7 @@ const TableComponents = () => {
         const response = await proPage.getAllCheckRate();
 
         if (response && response.data) {
+          console.log("asdfasdfaf", response.data.data);
           setAllCheckRate(response.data.data);
         }
       } catch (error) {
@@ -142,7 +143,7 @@ const TableComponents = () => {
                       {item.daily_check_rate === "100.0%" ? "완수" : "미완수"}
                     </UrgencyBadge>
                   </TableUrgencyCell>
-                  <TableCell>{item.daily_check_rate}</TableCell>
+                  <TableCell>{item.yesterday_check_rate}</TableCell>
                   <TableCell>{item.overall_check_rate}</TableCell>
                 </TableRow>
               );
