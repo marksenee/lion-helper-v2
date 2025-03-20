@@ -215,29 +215,31 @@ const UncheckedTable = () => {
               <TableHeader>일자</TableHeader>
               <TableHeader>과정명</TableHeader>
               <TableHeader>미체크 항목 & 사유</TableHeader>
-              <TableHeader>해결 기한 & 지연</TableHeader>
-              <TableHeader style={{ width: "30%" }}>해결 방안</TableHeader>
+              <TableHeader>
+                해결 기한 <br></br> & 지연
+              </TableHeader>
+              <TableHeader>해결 방안</TableHeader>
               <TableHeader>해결 여부</TableHeader>
             </TableRow>
           </TableHead>
           <tbody>
             {filteredCheckRate.map((item) => (
               <TableRow key={item.id}>
-                <TableCell style={{ width: "5%" }}>{item.created_at}</TableCell>
-                <TableCell style={{ width: "18%" }}>
+                <TableCell style={{ width: "6%" }}>{item.created_at}</TableCell>
+                <TableCell style={{ width: "13%" }}>
                   {item.training_course}
                 </TableCell>
-                <TableCell>
+                <TableCell style={{ width: "25%" }}>
                   <strong>{item.content}</strong>
                   <br />
                   <span style={{ color: "gray" }}>{item.action_plan}</span>
                 </TableCell>
-                <TableCell style={{ width: "15%" }}>
+                <TableCell style={{ width: "10%" }}>
                   <span style={{ color: item.delay > 5 ? "red" : "black" }}>
                     {item.due_date} ({item.delay})
                   </span>
                 </TableCell>
-                <TableCell style={{ width: "1%" }}>
+                <TableCell>
                   {activeInput === item.id ? (
                     <input
                       type="text"
@@ -270,7 +272,7 @@ const UncheckedTable = () => {
                     </SolveBox>
                   )}
                 </TableCell>
-                <TableCell style={{ width: "9%" }}>
+                <TableCell style={{ width: "10%" }}>
                   <SubmitButton onClick={() => handleDeleteIssue(item.id)}>
                     해결
                   </SubmitButton>

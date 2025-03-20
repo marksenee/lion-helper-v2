@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 const Container = styled.div`
   width: 100%;
-  max-width: 1200px; /* 최대 너비 설정 */
+  max-width: 1000px; /* 최대 너비 설정 */
   min-height: 300px;
   border-radius: 16px;
   padding: 24px;
@@ -16,7 +16,7 @@ const UncheckedContainer = styled.div`
   width: 100%;
   background: #ffffff;
   border-radius: 16px;
-  max-width: 1300px;
+  max-width: 1000px;
   padding: 24px;
   font-family: Pretendard, sans-serif;
   margin-top: 2%;

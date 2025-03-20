@@ -3,7 +3,7 @@ import { IoIosArrowDown } from "react-icons/io"; // 토글 아이콘
 
 const Container = styled.div`
   width: 100%; /* 화면의 100% 너비를 차지 */
-  max-width: 886px; /* 최대 너비를 886px로 제한 */
+  max-width: 1000px; /* 최대 너비를 886px로 제한 */
   min-height: 250px;
   background: #fff;
   border-radius: 10px;
