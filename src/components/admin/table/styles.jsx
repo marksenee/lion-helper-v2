@@ -15,6 +15,7 @@ const UncheckedContainer = styled.div`
   width: 100%;
   background: #ffffff;
   border-radius: 16px;
+  max-width: 1200px;
   padding: 24px;
   font-family: Pretendard, sans-serif;
   margin-top: 2%;
