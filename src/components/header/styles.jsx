@@ -2,7 +2,6 @@ import styled from "styled-components";
 
 const Layout = styled.div`
   display: flex;
-  /* min-height: 100vh; */
   position: relative; /* 레이아웃 컨테이너는 상대 위치 */
 `;
 
@@ -21,9 +20,11 @@ const Sidebar = styled.div`
 
 const Content = styled.div`
   flex: 1;
-  margin-left: 400px;
+  margin-left: 270px; /* 사이드바 너비만큼 왼쪽 여백 추가 */
   padding: 20px;
-  overflow-x: hidden; /* 가로 스크롤 방지 */
+  overflow-x: hidden;
+  max-width: 100%;
+  box-sizing: border-box; /* 패딩을 너비에 포함시켜서 더 나은 레이아웃 유지 */
 `;
 
 const Logo = styled.img`

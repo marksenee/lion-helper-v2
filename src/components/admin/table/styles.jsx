@@ -2,13 +2,14 @@ import styled from "styled-components";
 
 const Container = styled.div`
   width: 100%;
-  max-width: 1200px;
+  max-width: 1200px; /* 최대 너비 설정 */
   min-height: 300px;
   border-radius: 16px;
   padding: 24px;
   font-family: Pretendard, sans-serif;
   margin: 2% auto;
   flex-grow: 1;
+  box-sizing: border-box; /* padding이 너비에 포함되도록 설정 */
 `;
 
 const UncheckedContainer = styled.div`
@@ -21,6 +22,7 @@ const UncheckedContainer = styled.div`
   margin-top: 2%;
   margin-bottom: 2%;
   flex-grow: 1;
+  box-sizing: border-box;
 `;
 
 const Title = styled.h2`

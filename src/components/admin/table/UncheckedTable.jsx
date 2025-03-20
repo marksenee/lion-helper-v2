@@ -237,12 +237,12 @@ const UncheckedTable = () => {
                     {item.due_date} ({item.delay})
                   </span>
                 </TableCell>
-                <TableCell style={{ width: "10%" }}>
+                <TableCell style={{ width: "1%" }}>
                   {activeInput === item.id ? (
                     <input
                       type="text"
                       style={{
-                        width: "100%",
+                        width: "90%",
                         padding: "8px",
                         fontSize: "1rem",
                         borderRadius: "5px",
@@ -270,7 +270,7 @@ const UncheckedTable = () => {
                     </SolveBox>
                   )}
                 </TableCell>
-                <TableCell style={{ width: "10%" }}>
+                <TableCell style={{ width: "9%" }}>
                   <SubmitButton onClick={() => handleDeleteIssue(item.id)}>
                     해결
                   </SubmitButton>

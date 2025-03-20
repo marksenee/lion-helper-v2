@@ -2,14 +2,16 @@ import styled from "styled-components";
 import { IoIosArrowDown } from "react-icons/io"; // 토글 아이콘
 
 const Container = styled.div`
-  width: 886px;
-  min-height: 250px; /* 최소 높이를 지정하여, 콘텐츠가 많으면 늘어날 수 있도록 */
+  width: 100%; /* 화면의 100% 너비를 차지 */
+  max-width: 886px; /* 최대 너비를 886px로 제한 */
+  min-height: 250px;
   background: #fff;
   border-radius: 10px;
-  /* padding: 20px; */
   font-family: Pretendard, sans-serif;
   margin-top: 1%;
-  flex-grow: 1; //데이터가 많을 때 자동으로 공간을 차지하도록 함
+  flex-grow: 1;
+  padding: 0 20px; /* 패딩을 통해 내부 여백 추가 */
+  box-sizing: border-box; /* 패딩이 너비에 포함되도록 설정 */
 `;
 
 const Title = styled.h2`
@@ -141,7 +143,8 @@ const CommentText = styled.p`
 `;
 
 const DropdownContainer = styled.div`
-  width: 15%;
+  width: 20%; /* 상대적인 너비 설정, 화면 크기에 따라 유동적으로 조정 */
+  min-width: 150px; /* 최소 너비를 설정하여 너무 작아지지 않도록 함 */
   height: 30px;
   background-color: white;
   border: 2px solid #dcdcdc;
@@ -189,9 +192,9 @@ const DropdownItem = styled.li`
 const TitleWrapper = styled.div`
   display: flex;
   align-items: center;
-  gap: 16px; /* 제목과 드롭다운 사이 간격 */
+  gap: 16px;
   justify-content: space-between;
-  width: 900px;
+  width: 100%; /* 너비를 100%로 설정하여 화면 크기에 맞게 확장 */
 `;
 
 const ButtonContainer = styled.div`

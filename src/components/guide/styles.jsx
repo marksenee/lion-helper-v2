@@ -12,13 +12,13 @@ const GuideContainer = styled.div`
 `;
 
 const GuideText = styled.div`
-  font-size: 15pt;
+  font-size: 13pt;
   margin-bottom: 3%;
   margin: 5px;
 
   color: #ff6767;
   font-family: "Pretendard", sans-serif;
-  font-weight: 600;
+  font-weight: 500;
 `;
 
 export { GuideContainer, GuideText };
