@@ -223,8 +223,8 @@ const UncheckedTable = () => {
           <tbody>
             {filteredCheckRate.map((item) => (
               <TableRow key={item.id}>
-                <TableCell>{item.created_at}</TableCell>
-                <TableCell style={{ width: "15%" }}>
+                <TableCell style={{ width: "5%" }}>{item.created_at}</TableCell>
+                <TableCell style={{ width: "18%" }}>
                   {item.training_course}
                 </TableCell>
                 <TableCell>
