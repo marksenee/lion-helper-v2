@@ -46,9 +46,15 @@ const LoginComponent = () => {
     }
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter" && isFormValid) {
+      handleLogin();
+    }
+  };
+
   return (
     <Container>
-      <LoginBox>
+      <LoginBox onKeyDown={handleKeyDown}>
         <Logo>멋쟁이사자처럼 라이언헬퍼</Logo>
         <SubText>아이디와 비밀번호를 입력해주세요</SubText>
         <Input
