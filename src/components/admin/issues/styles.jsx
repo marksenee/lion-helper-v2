@@ -191,7 +191,7 @@ const TitleWrapper = styled.div`
   align-items: center;
   gap: 16px; /* 제목과 드롭다운 사이 간격 */
   justify-content: space-between;
-  width: 100%;
+  width: 900px;
 `;
 
 const ButtonContainer = styled.div`
