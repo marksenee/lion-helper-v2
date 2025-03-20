@@ -1,5 +1,6 @@
 import { Outlet, useLocation } from "react-router-dom";
 import Header from "./components/header/Header";
+import NavigationTabs from "./components/tab/Tab";
 
 const Layout = () => {
   const location = useLocation();
@@ -7,7 +8,7 @@ const Layout = () => {
 
   return (
     <>
-      {!hideHeaderRoutes.includes(location.pathname) && <Header />}
+      <Header />
       <Outlet />
     </>
   );

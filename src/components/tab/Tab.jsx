@@ -49,11 +49,10 @@ const NavigationTabs = () => {
     if (matchedTab) {
       setSelectedTab(matchedTab.name);
     }
-  }, [location.pathname]); // 경로가 바뀔 때마다 실행
+  }, []); // 경로가 바뀔 때마다 실행
 
   return (
     <>
-      {/* 네비게이션 탭 */}
       <Wrapper>
         <TabContainer>
           {tabs.map((tab) => (

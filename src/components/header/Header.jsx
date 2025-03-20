@@ -15,6 +15,7 @@ import {
   Icon,
 } from "./styles";
 import useAuthStore from "../../\bstore/useAuthStore";
+import { Outlet } from "react-router-dom"; // ✅ Outlet을 가져오기!
 
 const Header = () => {
   const navigate = useNavigate();
@@ -36,12 +37,12 @@ const Header = () => {
       icon: <MdAdminPanelSettings />,
       path: "/app/admin/teamTask",
     },
-    {
-      id: "dashboard",
-      label: "대시보드",
-      icon: <BiBarChart />,
-      path: "/app/dashboard/weekly",
-    },
+    // {
+    //   id: "dashboard",
+    //   label: "대시보드",
+    //   icon: <BiBarChart />,
+    //   path: "/app/dashboard/weekly",
+    // },
   ];
 
   const currentMenuItem = menuItems.find((item) =>
