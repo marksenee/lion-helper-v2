@@ -15,7 +15,7 @@ const UncheckedContainer = styled.div`
   width: 100%;
   background: #ffffff;
   border-radius: 16px;
-  max-width: 1200px;
+  max-width: 1300px;
   padding: 24px;
   font-family: Pretendard, sans-serif;
   margin-top: 2%;
@@ -92,7 +92,7 @@ const UrgencyBadge = styled.span`
   font-size: 12pt;
   font-weight: 500;
   color: white;
-  background-color: ${({ urgent }) => (urgent ? "#FF6767" : "#8BD96C")};
+  background-color: ${({ urgent }) => (urgent ? "#8BD96C" : "#FF6767")};
 `;
 
 const SolveBox = styled.div`
