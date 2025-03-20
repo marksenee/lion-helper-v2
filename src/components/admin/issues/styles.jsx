@@ -141,7 +141,7 @@ const CommentText = styled.p`
 `;
 
 const DropdownContainer = styled.div`
-  width: 27%;
+  width: 15%;
   height: 30px;
   background-color: white;
   border: 2px solid #dcdcdc;
