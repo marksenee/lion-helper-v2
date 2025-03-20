@@ -61,7 +61,7 @@ const Header = () => {
           onClick={() => navigate("/app")}
           style={{ cursor: "pointer" }}
         />
-        <Title>{username}님의 라이언헬퍼</Title>
+        {/* <Title>{username}님의 라이언헬퍼</Title> */}
         <NavList>
           {menuItems.map((item) => (
             <NavItem

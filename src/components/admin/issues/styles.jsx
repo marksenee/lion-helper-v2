@@ -207,7 +207,7 @@ const ButtonWrapper = styled.div`
   display: flex;
   transform: translateY(-50%);
   gap: 8px;
-  width: 120px; /* 버튼 영역 고정 */
+  width: 150px; /* 버튼 영역 고정 */
 `;
 
 const TextAreaContainer = styled.div`

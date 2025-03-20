@@ -7,7 +7,7 @@ const Layout = styled.div`
 `;
 
 const Sidebar = styled.div`
-  width: 280px;
+  width: 270px;
   height: 100vh;
   background-color: #fffaf5;
   position: fixed; /* 화면에 고정 */
@@ -16,7 +16,7 @@ const Sidebar = styled.div`
   /* display: flex; */
   /* flex-direction: column; */
   padding: 20px;
-  z-index: 1;
+  z-index: 5;
 `;
 
 const Content = styled.div`

@@ -323,7 +323,13 @@ const GetIssuesComponent = () => {
                     해결
                   </CommentButton>
                   <CommentButton onClick={() => toggleMemo(index, item.id)}>
-                    {memoVisible[index] ? "- 닫기" : "+ 댓글"}
+                    {memoVisible[index]
+                      ? "- 닫기"
+                      : `+ 댓글${
+                          item.comments?.length
+                            ? ` (${item.comments.length})`
+                            : ""
+                        }`}
                   </CommentButton>
                 </ButtonWrapper>
 
