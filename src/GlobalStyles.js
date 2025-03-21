@@ -1,7 +1,7 @@
 import { createGlobalStyle } from "styled-components";
 
 const GlobalStyle = createGlobalStyle`
-  @import url('https://cdn.jsdelivr.net/npm/pretendard/dist/web/static/pretendard.css');
+  /* @import url('https://cdn.jsdelivr.net/npm/pretendard/dist/web/static/pretendard.css');
 
   * {
     font-family: 'Pretendard', sans-serif;
@@ -10,7 +10,7 @@ const GlobalStyle = createGlobalStyle`
   body {
     margin: 0;
     padding: 0;
-  }
+  } */
 
   @font-face {
     font-family: 'Pretendard';
@@ -23,13 +23,13 @@ const GlobalStyle = createGlobalStyle`
   * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    /* box-sizing: border-box; */
   }
 
   body {
     font-family: 'Pretendard', Arial, sans-serif;
     line-height: 1.6;
-    background-color: #f9f9f9;
+    background-color: #ffffff; 
     color: #333;
   }
 
@@ -44,7 +44,7 @@ const GlobalStyle = createGlobalStyle`
   body {
     font-family: 'SUIT', Arial, sans-serif;
     line-height: 1.6;
-    background-color: #f9f9f9;
+    background-color: #ffffff; 
     color: #333;
   }
 `;
