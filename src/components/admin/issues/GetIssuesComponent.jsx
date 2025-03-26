@@ -338,13 +338,12 @@ const GetIssuesComponent = () => {
                     {item.comments &&
                       item.comments.map((comment, i) => (
                         <CommentText key={i}>
-                          작성자 : {comment.comment} (
-                          {formatDate(comment.created_at)})
+                          {comment.comment} ({formatDate(comment.created_at)})
                         </CommentText>
                       ))}
                     <TextAreaContainer>
                       <TextArea
-                        placeholder="댓글을 입력하세요"
+                        placeholder="작성자명과 댓글을 입력하세요 예) 김멋사: 1:1상담 진행"
                         value={comments[index] || ""}
                         onChange={(event) => handleCommentChange(index, event)}
                       />
