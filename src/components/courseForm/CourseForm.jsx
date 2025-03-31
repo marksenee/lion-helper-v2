@@ -60,6 +60,7 @@ const CourseForm = () => {
       )} ${selectedBatch.replace("📑 ", "")}`,
       start_date: startDate.toISOString().split("T")[0], // yyyy-mm-dd 포맷
       end_date: endDate.toISOString().split("T")[0],
+      manager_name: name,
     };
 
     try {
