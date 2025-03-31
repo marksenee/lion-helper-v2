@@ -28,7 +28,7 @@ const CourseForm = () => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
-  const dept = ["Pilot", "TechSolLab", "DevLab"];
+  const dept = ["Pilot", "TechSol", "Dev"];
 
   const courses = [
     "데이터 분석",
