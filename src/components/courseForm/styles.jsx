@@ -8,7 +8,8 @@ const Container = styled.div`
   align-items: center;
   justify-content: center;
   height: 100vh;
-  width: 100%;
+  width: calc(100% - 270px); /* 사이드바를 제외한 나머지 영역을 사용 */
+  margin-left: 270px; /* 사이드바 크기만큼 여백 추가 */
   background-color: #fff;
 `;
 
