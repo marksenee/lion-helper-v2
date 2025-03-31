@@ -10,6 +10,7 @@ import DailyCheckList from "../components/checkBox/DailyCheckList";
 import Header from "../components/header/Header";
 import NavigationTabs from "../components/tab/Tab";
 import CheckListGuide from "../components/guide/CheckListGuide";
+import TrainRegistrationButton from "../components/button/TrainRegistrationButton";
 // const LayoutContainer = styled.div`
 //   display: flex;
 //   /* min-height: 100vh; */
@@ -28,6 +29,7 @@ const TodayCheckListPage = () => {
       <NavigationTabs />
       <CheckListGuide />
       <CourseDropDown />
+      {/* <TrainRegistrationButton /> */}
       <AttendanceRecord />
       <DailyCheckList activeTab="daily" />
     </ContentContainer>

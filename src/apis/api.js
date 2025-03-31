@@ -268,6 +268,20 @@ export const proPage = {
     }
   },
 
+  // 과정 등록
+  postCourse: async (data) => {
+    try {
+      console.log("data", data);
+
+      const response = await api.post("/training_info", data);
+      console.log("data", data);
+      return response;
+    } catch (error) {
+      console.log("error:", error.response || error);
+      return error;
+    }
+  },
+
   //로그인 정보
   getUserName: async () => {
     try {

@@ -26,6 +26,12 @@ const Header = () => {
   const menuItems = [
     // { id: "home", label: "홈", icon: <FiHome />, path: "/app" },
     {
+      id: "trainRegistration",
+      label: "훈련과정 등록",
+      icon: <MdDashboard />,
+      path: "/app/registration",
+    },
+    {
       id: "checklist",
       label: "체크리스트",
       icon: <MdDashboard />,

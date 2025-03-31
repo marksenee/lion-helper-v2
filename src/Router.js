@@ -7,6 +7,7 @@ import NavigationTabs from "./components/tab/Tab";
 import AdminNavigationTabs from "./components/tab/AdminTab";
 import DashBoardComponents from "./components/dashBoard/DashBoardComponents";
 import DashBoardNavigationTabs from "./components/tab/DashBoardTab";
+import CourseRegistrationPage from "./pages/CourseRegistrationPage";
 
 const Router = () => {
   return (
@@ -18,6 +19,7 @@ const Router = () => {
         {/* 로그인 이후 접근 가능한 페이지들 */}
         <Route path="/app" element={<Layout />}>
           {/* <Route path="main" element={<MainPage />} /> */}
+          <Route path="registration" element={<CourseRegistrationPage />} />
           <Route
             path="checklist/*"
             element={
