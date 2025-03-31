@@ -25,6 +25,7 @@ const CourseForm = () => {
   const [isDeptOpen, setIsDeptOpen] = useState(false);
   const [isCourseOpen, setIsCourseOpen] = useState(false);
   const [isNumberOpen, setIsNumberOpen] = useState(false);
+  const [name, setName] = useState();
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
@@ -141,6 +142,11 @@ const CourseForm = () => {
             </DropdownList>
           )}
         </DropdownWrapper>
+        <InputField
+          placeholder="🧑🏻 담당자명을 작성해주세요"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+        />
         {/* 날짜 입력 필드 */}
         <StyledDatePicker
           selected={startDate}

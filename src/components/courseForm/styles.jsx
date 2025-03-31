@@ -33,8 +33,9 @@ const FormContainer = styled.div`
   width: 320px;
 `;
 
-const InputField = styled.div`
+const InputField = styled.input`
   background: #fdf6f0;
+  border-color: transparent;
   padding: 12px;
   border-radius: 8px;
   display: flex;
