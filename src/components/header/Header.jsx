@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { FiHome } from "react-icons/fi";
 import { MdDashboard, MdAdminPanelSettings } from "react-icons/md";
+import { IoIosAddCircle } from "react-icons/io";
 import { BiBarChart } from "react-icons/bi";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
@@ -28,7 +29,7 @@ const Header = () => {
     {
       id: "trainRegistration",
       label: "훈련과정 등록",
-      icon: <MdDashboard />,
+      icon: <IoIosAddCircle />,
       path: "/app/registration",
     },
     {
