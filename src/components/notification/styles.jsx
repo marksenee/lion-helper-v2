@@ -16,8 +16,8 @@ const Title = styled.h1`
 const SearchBox = styled.div`
   display: flex;
   align-items: center;
-  width: 730px;
-  height: 69px;
+  width: ${(props) => props.width || "730px"}; /* 기본값을 730px로 설정 */
+  height: ${(props) => props.height || "70px"};
   background-color: white;
   border: 1px solid #d3d3d3; /* 연한 회색 테두리 */
   border-radius: 30px;

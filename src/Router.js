@@ -8,6 +8,8 @@ import AdminNavigationTabs from "./components/tab/AdminTab";
 import DashBoardComponents from "./components/dashBoard/DashBoardComponents";
 import DashBoardNavigationTabs from "./components/tab/DashBoardTab";
 import CourseRegistrationPage from "./pages/CourseRegistrationPage";
+import NoticePage from "./pages/NoticePage";
+import CreateNoticeForm from "./components/notice/CreateNoticeForm";
 
 const Router = () => {
   return (
@@ -33,6 +35,8 @@ const Router = () => {
           {/* <Route path="checklist/*" element={<NavigationTabs />} /> */}
           <Route path="admin/*" element={<AdminNavigationTabs />} />
           {/* <Route path="dashboard/*" element={<DashBoardNavigationTabs />} /> */}
+          <Route path="notice" element={<NoticePage />} />
+          <Route path="notice/create" element={<CreateNoticeForm />} />
         </Route>
       </Routes>
     </BrowserRouter>

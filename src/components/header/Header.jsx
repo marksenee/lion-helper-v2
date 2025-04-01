@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { FiHome } from "react-icons/fi";
+import { RiNotification2Fill } from "react-icons/ri";
 import { MdDashboard, MdAdminPanelSettings } from "react-icons/md";
 import { IoIosAddCircle } from "react-icons/io";
 import { BiBarChart } from "react-icons/bi";
@@ -43,6 +44,12 @@ const Header = () => {
       label: "어드민",
       icon: <MdAdminPanelSettings />,
       path: "/app/admin/teamTask",
+    },
+    {
+      id: "notice",
+      label: "공지사항",
+      icon: <RiNotification2Fill />,
+      path: "/app/notice/",
     },
     // {
     //   id: "dashboard",
