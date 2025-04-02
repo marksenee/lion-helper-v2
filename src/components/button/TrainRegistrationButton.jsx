@@ -5,21 +5,22 @@ const TrainRegisButton = styled.button`
   background: #fff4eb;
   color: #ff7710;
   border: none;
-  padding: 8px 12px;
+  padding: 10px 20px;
+  width: 180px;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 18px;
   font-weight: bold;
   transition: background 0.3s ease;
 
   &:hover {
-    background: #ffcaa2;
+    background: #ff7710;
     color: #fff;
   }
 `;
 
-const TrainRegistrationButton = () => {
-  return <TrainRegisButton>훈련과정 등록</TrainRegisButton>;
+const TrainRegistrationButton = ({ onClick }) => {
+  return <TrainRegisButton onClick={onClick}>+ 훈련과정 등록</TrainRegisButton>;
 };
 
 export default TrainRegistrationButton;

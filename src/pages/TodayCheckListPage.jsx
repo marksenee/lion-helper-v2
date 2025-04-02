@@ -11,25 +11,31 @@ import Header from "../components/header/Header";
 import NavigationTabs from "../components/tab/Tab";
 import CheckListGuide from "../components/guide/CheckListGuide";
 import TrainRegistrationButton from "../components/button/TrainRegistrationButton";
-// const LayoutContainer = styled.div`
-//   display: flex;
-//   /* min-height: 100vh; */
-// `;
+import { useNavigate } from "react-router-dom";
 
-// const Wrapper = styled.div`
-//   width: 100%;
-//   max-width: 900px;
-//   display: flex;
-//   justify-content: flex-start; /* 왼쪽 정렬 */
-// `;
+const ButtonContainer = styled.div`
+  display: flex;
+  align-items: center;
+  /* justify-content: space-between; */
+  width: 886px;
+  margin-bottom: 20px;
+`;
 
 const TodayCheckListPage = () => {
+  const navigate = useNavigate();
+
+  const handleRegistrationClick = () => {
+    navigate("/app/registration");
+  };
+
   return (
     <ContentContainer>
       <NavigationTabs />
       <CheckListGuide />
-      <CourseDropDown />
-      {/* <TrainRegistrationButton /> */}
+      <ButtonContainer>
+        <CourseDropDown />
+        <TrainRegistrationButton onClick={handleRegistrationClick} />
+      </ButtonContainer>
       <AttendanceRecord />
       <DailyCheckList activeTab="daily" />
     </ContentContainer>

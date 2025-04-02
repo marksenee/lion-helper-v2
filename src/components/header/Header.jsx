@@ -27,12 +27,12 @@ const Header = () => {
   // 네비게이션 아이템 리스트 - /app 경로로 수정
   const menuItems = [
     // { id: "home", label: "홈", icon: <FiHome />, path: "/app" },
-    {
-      id: "trainRegistration",
-      label: "훈련과정 등록",
-      icon: <IoIosAddCircle />,
-      path: "/app/registration",
-    },
+    // {
+    //   id: "trainRegistration",
+    //   label: "훈련과정 등록",
+    //   icon: <IoIosAddCircle />,
+    //   path: "/app/registration",
+    // },
     {
       id: "checklist",
       label: "체크리스트",
