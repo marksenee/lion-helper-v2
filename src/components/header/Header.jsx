@@ -72,7 +72,10 @@ const Header = () => {
         <Logo
           src={process.env.PUBLIC_URL + "/likelion_logo.png"}
           alt="Logo"
-          onClick={() => navigate("/app")}
+          onClick={() => {
+            setActive("checklist");
+            navigate("/app/checklist/today");
+          }}
           style={{ cursor: "pointer" }}
         />
         {/* <Title>{username}님의 라이언헬퍼</Title> */}

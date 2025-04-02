@@ -21,6 +21,10 @@ import {
   TitleWrapper,
   TextAreaContainer,
   ButtonWrapper,
+  NoticeContent,
+  NoticeText,
+  ContentWrapper,
+  ContentLine,
 } from "./styles";
 
 const GetIssuesComponent = () => {
@@ -280,65 +284,71 @@ const GetIssuesComponent = () => {
           {filteredIssues.length > 0 ? (
             filteredIssues.map((item, index) => (
               <NoticeItem key={`${item.id}-${index}`}>
-                {selectedCourse === "전체 과정" ? (
-                  <>
-                    <strong>
-                      {"["}
-                      {item.training_course}
-                      {"]"}
-                    </strong>{" "}
-                    {item.content
-                      .replace(/-/g, "\n-")
-                      .split("\n")
-                      .map((line, index) => (
-                        <span key={index}>
-                          {line}
-                          <br />
-                        </span>
-                      ))}
-                    <span style={{ color: "#FF7710" }}>
-                      {formatDate(item.date)}
-                    </span>
-                  </>
-                ) : (
-                  <>
-                    {item.content
-                      .replace(/-/g, "\n-")
-                      .split("\n")
-                      .map((line, index) => (
-                        <span key={index}>
-                          {line}
-                          <br />
-                        </span>
-                      ))}
-                    <span style={{ color: "#FF7710" }}>
-                      {formatDate(item.date)}
-                    </span>
-                  </>
-                )}
+                <NoticeContent>
+                  <NoticeText>
+                    {selectedCourse === "전체 과정" && (
+                      <strong>{item.training_course}</strong>
+                    )}
+                    <ContentWrapper>
+                      {item.content
+                        .replace(/-/g, "\n-")
+                        .split("\n")
+                        .map((line, index) => {
+                          const trimmedLine = line.trim();
+                          const isBullet = trimmedLine.startsWith("-");
+                          const content = isBullet
+                            ? trimmedLine.substring(1).trim()
+                            : trimmedLine;
 
-                {/* ✅ 버튼을 감싸는 div 추가 */}
-                <ButtonWrapper>
-                  <CommentButton onClick={() => handleResolveIssue(item.id)}>
-                    해결
-                  </CommentButton>
-                  <CommentButton onClick={() => toggleMemo(index, item.id)}>
-                    {memoVisible[index]
-                      ? "- 닫기"
-                      : `+ 댓글${
-                          item.comments?.length
-                            ? ` (${item.comments.length})`
-                            : ""
-                        }`}
-                  </CommentButton>
-                </ButtonWrapper>
+                          return (
+                            <ContentLine key={index} isBullet={isBullet}>
+                              {content}
+                            </ContentLine>
+                          );
+                        })}
+                    </ContentWrapper>
+                    <span
+                      style={{
+                        color: "#FF7710",
+                        fontSize: "13px",
+                        marginTop: "8px",
+                      }}
+                    >
+                      {formatDate(item.date)}
+                    </span>
+                  </NoticeText>
+                  <ButtonWrapper>
+                    <CommentButton onClick={() => handleResolveIssue(item.id)}>
+                      해결
+                    </CommentButton>
+                    <CommentButton onClick={() => toggleMemo(index, item.id)}>
+                      {memoVisible[index]
+                        ? "댓글 닫기"
+                        : `댓글 ${
+                            item.comments?.length
+                              ? `(${item.comments.length})`
+                              : ""
+                          }`}
+                    </CommentButton>
+                  </ButtonWrapper>
+                </NoticeContent>
 
                 {memoVisible[index] && (
                   <CommentBox>
                     {item.comments &&
                       item.comments.map((comment, i) => (
                         <CommentText key={i}>
-                          {comment.comment} ({formatDate(comment.created_at)})
+                          {comment.comment}
+                          <span
+                            style={{
+                              color: "#999",
+                              fontSize: "12px",
+                              marginTop: "4px",
+                              display: "block",
+                            }}
+                          >
+                            {formatDate(comment.created_at)}
+                          </span>
                         </CommentText>
                       ))}
                     <TextAreaContainer>
@@ -350,7 +360,7 @@ const GetIssuesComponent = () => {
                       <SubmitButton
                         onClick={() => handleSubmitComment(index, item.id)}
                       >
-                        제출
+                        댓글 작성
                       </SubmitButton>
                     </TextAreaContainer>
                   </CommentBox>
@@ -358,8 +368,9 @@ const GetIssuesComponent = () => {
               </NoticeItem>
             ))
           ) : (
-            // 🔹 이슈가 없을 때 메시지 출력
-            <NoticeItem>이슈 사항이 없습니다.</NoticeItem>
+            <NoticeItem style={{ textAlign: "center", color: "#666" }}>
+              이슈 사항이 없습니다.
+            </NoticeItem>
           )}
         </NoticeList>
       </NoticeBox>
