@@ -1,4 +1,5 @@
 import axios from "axios";
+import useLoadingStore from "../store/useLoadingStore";
 
 export const api = axios.create({
   baseURL: "https://mvp-dashboard.onrender.com", //실서버
@@ -9,6 +10,30 @@ export const api = axios.create({
   },
   // withCredentials: true,
 });
+
+// 요청 인터셉터
+api.interceptors.request.use(
+  (config) => {
+    useLoadingStore.getState().setIsLoading(true);
+    return config;
+  },
+  (error) => {
+    useLoadingStore.getState().setIsLoading(false);
+    return Promise.reject(error);
+  }
+);
+
+// 응답 인터셉터
+api.interceptors.response.use(
+  (response) => {
+    useLoadingStore.getState().setIsLoading(false);
+    return response;
+  },
+  (error) => {
+    useLoadingStore.getState().setIsLoading(false);
+    return Promise.reject(error);
+  }
+);
 
 export const proPage = {
   getTasks: async () => {
