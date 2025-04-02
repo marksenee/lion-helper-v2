@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { SearchBox, SearchInput, SearchIcon } from "../notification/styles";
 import { FaSearch } from "react-icons/fa";
 import { FiMoreVertical } from "react-icons/fi"; // 세로 점 아이콘
+import { IoMdAdd } from "react-icons/io"; // 추가 아이콘
 import { useNavigate } from "react-router-dom";
 
 import {
@@ -34,6 +35,7 @@ const NoticeBoard = () => {
   const [query, setQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [showMenuIndex, setShowMenuIndex] = useState(null);
+  const [activeFilter, setActiveFilter] = useState("전체");
 
   const notices = Array.from({ length: 25 }, (_, index) => ({
     id: index + 1,
@@ -49,7 +51,22 @@ const NoticeBoard = () => {
     setOpenIndex(openIndex === index ? null : index);
   };
 
-  const toggleMenu = (index) => {
+  // 메뉴 외부 클릭 시 닫기 처리
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (!event.target.closest(".menu-wrapper")) {
+        setShowMenuIndex(null);
+      }
+    };
+
+    document.addEventListener("click", handleClickOutside);
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
+
+  const toggleMenu = (index, e) => {
+    e.stopPropagation();
     setShowMenuIndex(showMenuIndex === index ? null : index);
   };
 
@@ -68,7 +85,13 @@ const NoticeBoard = () => {
 
   return (
     <Container>
-      <Title>공지사항</Title>
+      <Title>
+        공지사항
+        <RegisterButton onClick={handleButtonClick}>
+          <IoMdAdd />
+          공지 등록
+        </RegisterButton>
+      </Title>
       <SearchBox width="400px" height="50px">
         <SearchInput
           placeholder="검색어를 입력하세요"
@@ -81,14 +104,40 @@ const NoticeBoard = () => {
         </SearchIcon>
       </SearchBox>{" "}
       <FilterButtons>
-        <FilterButton>출결</FilterButton>
-        <FilterButton>공결</FilterButton>
-        <FilterButton>훈련장려금</FilterButton>
-        <FilterButton>내일배움카드</FilterButton>
+        <FilterButton
+          active={activeFilter === "전체"}
+          onClick={() => setActiveFilter("전체")}
+        >
+          전체
+        </FilterButton>
+        <FilterButton
+          active={activeFilter === "출결"}
+          onClick={() => setActiveFilter("출결")}
+        >
+          출결
+        </FilterButton>
+        <FilterButton
+          active={activeFilter === "공결"}
+          onClick={() => setActiveFilter("공결")}
+        >
+          공결
+        </FilterButton>
+        <FilterButton
+          active={activeFilter === "훈련장려금"}
+          onClick={() => setActiveFilter("훈련장려금")}
+        >
+          훈련장려금
+        </FilterButton>
+        <FilterButton
+          active={activeFilter === "내일배움카드"}
+          onClick={() => setActiveFilter("내일배움카드")}
+        >
+          내일배움카드
+        </FilterButton>
       </FilterButtons>
       <NoticeList>
         {currentNotices.map((notice, index) => (
-          <NoticeItem key={notice.id}>
+          <NoticeItem key={notice.id} active={showMenuIndex === index}>
             <NoticeHeader onClick={() => toggleDetails(index)}>
               {index + 1}. <Badge>출결</Badge>
               <NoticeTitle>{notice.title}</NoticeTitle>
@@ -97,17 +146,27 @@ const NoticeBoard = () => {
                 <Button
                   onClick={(e) => {
                     e.stopPropagation();
-                    toggleMenu(index);
+                    toggleMenu(index, e);
                   }}
                 >
                   <FiMoreVertical size={24} />
                 </Button>
                 {showMenuIndex === index && (
                   <Menu>
-                    <MenuButton onClick={() => handleEdit(notice.id)}>
+                    <MenuButton
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleEdit(notice.id);
+                      }}
+                    >
                       수정
                     </MenuButton>
-                    <MenuButton onClick={() => handleDelete(notice.id)}>
+                    <MenuButton
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDelete(notice.id);
+                      }}
+                    >
                       삭제
                     </MenuButton>
                   </Menu>
@@ -140,7 +199,6 @@ const NoticeBoard = () => {
           다음 ▶
         </PageButton>
       </PaginationWrapper>
-      <RegisterButton onClick={handleButtonClick}>공지 등록</RegisterButton>
     </Container>
   );
 };
