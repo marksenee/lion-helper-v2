@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { GoChevronLeft } from "react-icons/go";
 
 const Container = styled.div`
@@ -124,25 +124,66 @@ const BackButton = styled(GoChevronLeft)`
 `;
 
 const CreateNoticeForm = () => {
+  const location = useLocation();
   const navigate = useNavigate();
-  const [isMouseHovered, setIsMouseHovered] = useState(false);
+  const isEdit = location.state?.isEdit;
+  const noticeData = location.state?.noticeData;
 
-  const handleSumbit = () => {};
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [category, setCategory] = useState("카테고리 선택");
+
+  useEffect(() => {
+    if (isEdit && noticeData) {
+      setTitle(noticeData.title);
+      setContent(noticeData.content);
+      setCategory(noticeData.category);
+    }
+  }, [isEdit, noticeData]);
+
+  const handleSubmit = () => {
+    // 여기에 등록/수정 API 호출 로직 구현
+    if (isEdit) {
+      // 수정 API 호출
+      console.log("수정 요청:", {
+        id: noticeData.id,
+        title,
+        content,
+        category,
+      });
+    } else {
+      // 등록 API 호출
+      console.log("등록 요청:", { title, content, category });
+    }
+  };
 
   return (
     <Container>
       <BackButton size={40} onClick={() => navigate(-1)} />
 
       <FlexContainer>
-        <Select>
-          <option>카테고리 선택</option>
-          <option>옵션 1</option>
-          <option>옵션 2</option>
+        <Select value={category} onChange={(e) => setCategory(e.target.value)}>
+          <option value="카테고리 선택">카테고리 선택</option>
+          <option value="출결">출결</option>
+          <option value="공결">공결</option>
+          <option value="훈련장려금">훈련장려금</option>
+          <option value="내일배움카드">내일배움카드</option>
         </Select>
-        <Button>등록하기</Button>
+        <Button onClick={handleSubmit}>
+          {isEdit ? "수정하기" : "등록하기"}
+        </Button>
       </FlexContainer>
-      <TitleInput placeholder="제목을 입력하세요" />
-      <ContentInput placeholder="내용을 입력하세요" />
+
+      <TitleInput
+        placeholder="제목을 입력하세요"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+      />
+      <ContentInput
+        placeholder="내용을 입력하세요"
+        value={content}
+        onChange={(e) => setContent(e.target.value)}
+      />
     </Container>
   );
 };
