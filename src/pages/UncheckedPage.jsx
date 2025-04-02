@@ -23,10 +23,10 @@ const AdminPageContainer = styled.div`
 `;
 
 const UncheckedPage = () => {
-  const { fetchCourseItems } = useCourseStore();
+  // const { fetchCourseItems } = useCourseStore();
 
   useEffect(() => {
-    fetchCourseItems(); // 페이지가 로드될 때 과정 데이터 가져오기
+    // fetchCourseItems(); // 페이지가 로드될 때 과정 데이터 가져오기
   }, []); // Zustand에서 상태 가져오기
 
   return (

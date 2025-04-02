@@ -223,62 +223,75 @@ const UncheckedTable = () => {
             </TableRow>
           </TableHead>
           <tbody>
-            {filteredCheckRate.map((item) => (
-              <TableRow key={item.id}>
-                <TableCell style={{ width: "6%" }}>{item.created_at}</TableCell>
-                <TableCell style={{ width: "13%" }}>
-                  {item.training_course}
-                </TableCell>
-                <TableCell style={{ width: "25%" }}>
-                  <strong>{item.content}</strong>
-                  <br />
-                  <span style={{ color: "gray" }}>{item.action_plan}</span>
-                </TableCell>
-                <TableCell style={{ width: "10%" }}>
-                  <span style={{ color: item.delay > 5 ? "red" : "black" }}>
-                    {item.due_date} ({item.delay})
-                  </span>
-                </TableCell>
-                <TableCell>
-                  {activeInput === item.id ? (
-                    <input
-                      type="text"
-                      style={{
-                        width: "90%",
-                        padding: "8px",
-                        fontSize: "1rem",
-                        borderRadius: "5px",
-                        border: "1px solid #007bff", // 활성화 시 파란 테두리
-                      }}
-                      value={solutions[item.id] || ""}
-                      onChange={(e) =>
-                        setSolutions({
-                          ...solutions,
-                          [item.id]: e.target.value,
-                        })
-                      }
-                      onBlur={() => setActiveInput(null)}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                          handleSolutionSubmit(item.id);
-                          setActiveInput(null);
+            {filteredCheckRate.length > 0 ? (
+              filteredCheckRate.map((item) => (
+                <TableRow key={item.id}>
+                  <TableCell style={{ width: "6%" }}>
+                    {item.created_at}
+                  </TableCell>
+                  <TableCell style={{ width: "13%" }}>
+                    {item.training_course}
+                  </TableCell>
+                  <TableCell style={{ width: "25%" }}>
+                    <strong>{item.content}</strong>
+                    <br />
+                    <span style={{ color: "gray" }}>{item.action_plan}</span>
+                  </TableCell>
+                  <TableCell style={{ width: "10%" }}>
+                    <span style={{ color: item.delay > 5 ? "red" : "black" }}>
+                      {item.due_date} ({item.delay})
+                    </span>
+                  </TableCell>
+                  <TableCell>
+                    {activeInput === item.id ? (
+                      <input
+                        type="text"
+                        style={{
+                          width: "90%",
+                          padding: "8px",
+                          fontSize: "1rem",
+                          borderRadius: "5px",
+                          border: "1px solid #007bff",
+                        }}
+                        value={solutions[item.id] || ""}
+                        onChange={(e) =>
+                          setSolutions({
+                            ...solutions,
+                            [item.id]: e.target.value,
+                          })
                         }
-                      }}
-                      autoFocus
-                    />
-                  ) : (
-                    <SolveBox onClick={() => setActiveInput(item.id)}>
-                      {solutions[item.id] || "해결 방안을 입력하세요"}
-                    </SolveBox>
-                  )}
-                </TableCell>
-                <TableCell style={{ width: "10%" }}>
-                  <SubmitButton onClick={() => handleDeleteIssue(item.id)}>
-                    해결
-                  </SubmitButton>
+                        onBlur={() => setActiveInput(null)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            handleSolutionSubmit(item.id);
+                            setActiveInput(null);
+                          }
+                        }}
+                        autoFocus
+                      />
+                    ) : (
+                      <SolveBox onClick={() => setActiveInput(item.id)}>
+                        {solutions[item.id] || "해결 방안을 입력하세요"}
+                      </SolveBox>
+                    )}
+                  </TableCell>
+                  <TableCell style={{ width: "10%" }}>
+                    <SubmitButton onClick={() => handleDeleteIssue(item.id)}>
+                      해결
+                    </SubmitButton>
+                  </TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={6}
+                  style={{ textAlign: "center", padding: "40px 0" }}
+                >
+                  미체크항목이 없습니다
                 </TableCell>
               </TableRow>
-            ))}
+            )}
           </tbody>
         </Table>
       </TableWrapper>

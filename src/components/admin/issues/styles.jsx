@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { IoIosArrowDown } from "react-icons/io"; // 토글 아이콘
 
 const Container = styled.div`
-  width: 100%;
+  /* width: 100%;
   max-width: 1000px;
   min-height: 250px;
   background: #fff;
@@ -12,6 +12,17 @@ const Container = styled.div`
   flex-grow: 1;
   padding: 24px;
   box-sizing: border-box;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05); */
+  width: 100%;
+  max-width: 1100px;
+  min-height: 300px;
+  border-radius: 16px;
+  padding: 24px;
+  font-family: Pretendard, sans-serif;
+  margin: 2% auto;
+  flex-grow: 1;
+  box-sizing: border-box;
+  background: #ffffff;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 `;
 
@@ -174,12 +185,12 @@ const DropdownContainer = styled.div`
   position: relative;
   cursor: pointer;
   border-radius: 8px;
-  font-size: 14px;
+  font-size: 18px;
   color: #333;
   transition: all 0.2s ease;
 
   &:hover {
-    border-color: #ff7710;
+    /* border-color: #ff7710; */
   }
 `;
 
@@ -209,7 +220,7 @@ const DropdownList = styled.ul`
 
 const DropdownItem = styled.li`
   padding: 8px 16px;
-  font-size: 14px;
+  font-size: 18px;
   cursor: pointer;
   transition: all 0.2s ease;
 
