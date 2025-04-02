@@ -4,16 +4,25 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { GoChevronLeft } from "react-icons/go";
 
 const Container = styled.div`
-  width: 100%;
-  /* width: calc(100% - 270px);  */
-  max-width: 970px;
+  width: calc(100% - 270px);
+  max-width: 800px;
   height: calc(100vh - 100px);
   margin: 0 auto;
-  padding: 50px 20px;
+  padding: 30px 20px;
   background: white;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
   border-radius: 12px;
-  /* overflow-y: auto; */
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-left: 135px;
+
+  @media screen and (max-width: 768px) {
+    width: 100%;
+    left: 0;
+    transform: none;
+    margin-left: 0;
+  }
 `;
 
 const FlexContainer = styled.div`
@@ -45,9 +54,9 @@ const Select = styled.select`
 
 const TitleInput = styled.input`
   width: 95%;
-  padding: 20px;
-  font-size: 28px;
-  margin-top: 50px;
+  padding: 15px;
+  font-size: 24px;
+  margin-top: 30px;
   border: none;
   border-bottom: 2px solid #ffefe0;
   outline: none;
@@ -64,10 +73,10 @@ const TitleInput = styled.input`
 
 const ContentInput = styled.textarea`
   width: 95%;
-  height: 600px;
-  margin-top: 30px;
-  padding: 20px;
-  font-size: 18px;
+  height: 500px;
+  margin-top: 20px;
+  padding: 15px;
+  font-size: 16px;
   border: 2px solid #ffefe0;
   border-radius: 12px;
   resize: none;
@@ -76,8 +85,6 @@ const ContentInput = styled.textarea`
 
   &:focus {
     outline: none;
-    /* border-color: #ff7710; */
-    /* box-shadow: 0 0 0 3px rgba(255, 119, 16, 0.1); */
   }
 
   &::placeholder {
