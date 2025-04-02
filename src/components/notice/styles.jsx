@@ -140,15 +140,26 @@ const PageButton = styled.button`
   }
 `;
 
+const MenuWrapper = styled.div`
+  position: relative;
+  display: inline-block;
+`;
+
 const Menu = styled.div`
   position: absolute;
-  right: 0;
-  margin-top: 0.5rem;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
   width: 6rem;
   background-color: white;
   border: 1px solid #e0e0e0;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   border-radius: 0.375rem;
+  z-index: 10;
+  white-space: nowrap;
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem 0;
 `;
 
 const MenuButton = styled.button`
@@ -169,6 +180,7 @@ const Button = styled.button`
   background: none;
   border: none;
   cursor: pointer;
+  position: relative;
 `;
 
 export {
@@ -192,4 +204,5 @@ export {
   Menu,
   MenuButton,
   Button,
+  MenuWrapper,
 };

@@ -24,6 +24,7 @@ import {
   MenuButton,
   Menu,
   Button,
+  MenuWrapper,
 } from "./styles";
 
 const NoticeBoard = () => {
@@ -61,7 +62,6 @@ const NoticeBoard = () => {
   };
 
   const navigate = useNavigate();
-
   const handleButtonClick = () => {
     navigate("create");
   };
@@ -90,24 +90,29 @@ const NoticeBoard = () => {
         {currentNotices.map((notice, index) => (
           <NoticeItem key={notice.id}>
             <NoticeHeader onClick={() => toggleDetails(index)}>
-              {index + 1}
-              {"."}
-              <Badge>출결</Badge>
+              {index + 1}. <Badge>출결</Badge>
               <NoticeTitle>{notice.title}</NoticeTitle>
               <ToggleButton>{openIndex === index ? "▲" : "▼"}</ToggleButton>
-
-              {/* 버튼 클릭 시 메뉴 토글 */}
-              <Button onClick={() => setIsOpen(!isOpen)}>
-                <FiMoreVertical size={24} />
-              </Button>
-
-              {/* 옵션 메뉴 */}
-              {isOpen && (
-                <Menu>
-                  <MenuButton>수정</MenuButton>
-                  <MenuButton>삭제</MenuButton>
-                </Menu>
-              )}
+              <MenuWrapper>
+                <Button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleMenu(index);
+                  }}
+                >
+                  <FiMoreVertical size={24} />
+                </Button>
+                {showMenuIndex === index && (
+                  <Menu>
+                    <MenuButton onClick={() => handleEdit(notice.id)}>
+                      수정
+                    </MenuButton>
+                    <MenuButton onClick={() => handleDelete(notice.id)}>
+                      삭제
+                    </MenuButton>
+                  </Menu>
+                )}
+              </MenuWrapper>
             </NoticeHeader>
             {openIndex === index && (
               <NoticeDetails>
