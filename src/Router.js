@@ -33,7 +33,7 @@ const Router = () => {
         {/* ✅ Outlet을 사용하여 동적 렌더링 */}
         {/* <Route path="checklist/*" element={<NavigationTabs />} /> */}
         <Route path="admin/*" element={<AdminNavigationTabs />} />
-        {/* <Route path="dashboard/*" element={<DashBoardNavigationTabs />} /> */}
+        <Route path="dashboard/*" element={<DashBoardNavigationTabs />} />
         <Route path="notice" element={<NoticePage />} />
         <Route path="notice/create" element={<CreateNoticeForm />} />
       </Route>
