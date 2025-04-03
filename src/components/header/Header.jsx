@@ -5,6 +5,7 @@ import { RiNotification2Fill } from "react-icons/ri";
 import { MdDashboard, MdAdminPanelSettings } from "react-icons/md";
 import { IoIosAddCircle } from "react-icons/io";
 import { BiBarChart } from "react-icons/bi";
+import { ImLab } from "react-icons/im";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   Layout,
@@ -56,6 +57,12 @@ const Header = () => {
       label: "대시보드",
       icon: <BiBarChart />,
       path: "/app/dashboard/weekly",
+    },
+    {
+      id: "laboratory",
+      label: "AI 실험실",
+      icon: <ImLab />,
+      path: "/app/laboratory",
     },
   ];
 

@@ -10,6 +10,7 @@ import DashBoardNavigationTabs from "./components/tab/DashBoardTab";
 import CourseRegistrationPage from "./pages/CourseRegistrationPage";
 import NoticePage from "./pages/NoticePage";
 import CreateNoticeForm from "./components/notice/CreateNoticeForm";
+import LaboratoryPage from "./pages/LaboratoryPage";
 
 const Router = () => {
   return (
@@ -36,6 +37,8 @@ const Router = () => {
         <Route path="dashboard/*" element={<DashBoardNavigationTabs />} />
         <Route path="notice" element={<NoticePage />} />
         <Route path="notice/create" element={<CreateNoticeForm />} />
+        <Route path="notice/create" element={<CreateNoticeForm />} />
+        <Route path="laboratory" element={<LaboratoryPage />} />
       </Route>
     </Routes>
   );
