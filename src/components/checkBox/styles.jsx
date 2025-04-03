@@ -15,29 +15,47 @@ const BoxContainer = styled.div`
 `;
 
 const Title = styled.div`
-  font-size: 18pt;
-  font-weight: bold;
-  color: #000000;
-  margin-top: 5%;
-  /* margin-left: 1%; */
+  font-size: 16px;
+  font-weight: 600;
+  color: #1e293b;
+  margin-top: 24px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 4px;
+
+  &:before {
+    content: "📝";
+    font-size: 14px;
+  }
 `;
 
 const CheckListSaveButton = styled.button`
-  width: 150px;
-  height: 40px;
-  font-size: 13pt;
-  /* margin-left: 1%; */
-  margin-top: 2%;
+  width: 120px;
+  height: 36px;
+  font-size: 13px;
+  font-weight: 500;
+  margin-top: 16px;
   background-color: #f5f5f5;
-  border-radius: 5px;
-  border: 1px solid transparent;
-  color: gray;
+  border: none;
+  border-radius: 6px;
+  color: #888888;
   cursor: pointer;
-  transition: color 0.3s ease;
-  /* justify-content: flex-end; */
+  transition: all 0.2s ease;
+  align-self: flex-end;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   &:hover {
-    color: #ff7710;
+    background-color: #ff7710;
+    color: white;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
   }
 `;
 
@@ -83,59 +101,76 @@ const Checkbox = styled.input`
 `;
 
 const ReasonInputContainer = styled.div`
-  width: 98%;
-  height: 50px;
-  background-color: #f5f5f5;
-  border: 1px solid #ecebeb;
-  border-radius: 5px;
-  padding: 10px;
-  margin-top: 20px;
-  display: flex;
-  align-items: center; /* 세로 중앙 정렬 */
-  position: relative;
-`;
-
-const ReasonInputWrapper = styled.div`
-  position: relative;
   width: 100%;
-  height: 100%;
+  min-height: 70px;
+  background-color: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 12px;
+  margin-top: 8px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 8px;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border-color: #cbd5e1;
+    background-color: #f1f5f9;
+  }
 `;
 
 const ReasonInput = styled.textarea`
-  width: 100%;
-  height: 100%;
-  padding: 7px;
-  border: none;
-  outline: none;
-  font-size: 10pt;
-  color: #000000;
+  flex: 1;
+  min-height: 70px;
+  padding: 8px 12px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #334155;
   resize: none;
-  white-space: pre-line;
-  border-radius: 5px;
-  background-color: #f5f5f5;
-  box-sizing: border-box;
+  background-color: white;
+  transition: all 0.2s ease;
+
+  &:focus {
+    outline: none;
+    border-color: #ff7710;
+    box-shadow: 0 0 0 2px rgba(255, 119, 16, 0.1);
+  }
 
   &::placeholder {
-    color: #adabab;
+    color: #94a3b8;
+    font-size: 12px;
   }
 `;
 
 const SubmitButton = styled.button`
   position: absolute;
-  bottom: 10px; /* 입력창 하단에 위치 */
-  right: 10px; /* 입력창 오른쪽에 위치 */
+  right: 12px;
+  bottom: 20px;
   width: 50px;
   height: 30px;
-  background-color: white;
-  border: 1px solid #ff7710;
+  background-color: #fff4eb;
   color: #ff7710;
+  border: none;
+  border-radius: 4px;
   font-size: 13px;
+  font-weight: 500;
   cursor: pointer;
-  border-radius: 5px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   &:hover {
     background-color: #ff7710;
     color: white;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
   }
 `;
 
@@ -289,6 +324,150 @@ const CheckStatusText = styled.span`
   margin-right: 10px;
 `;
 
+const IssueContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  /* gap: 5px;
+  margin-top: 1px; */
+`;
+
+const IssueInputWrapper = styled.div`
+  display: flex;
+  align-items: flex-start;
+  /* gap: 8px; */
+  position: relative;
+  margin-bottom: 2px;
+`;
+
+const IssueInput = styled.textarea`
+  flex: 1;
+  min-height: 90px;
+  padding: 12px 16px;
+  padding-right: 48px;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #334155;
+  resize: none;
+  background-color: white;
+  transition: all 0.2s ease;
+  width: 93%;
+
+  &:focus {
+    outline: none;
+    border-color: #ff7710;
+    box-shadow: 0 0 0 2px rgba(255, 119, 16, 0.1);
+  }
+
+  &::placeholder {
+    color: #94a3b8;
+    font-size: 12px;
+  }
+`;
+
+const IssueTextarea = styled.textarea`
+  width: 100%;
+  min-height: 70px;
+  padding: 8px 12px;
+  padding-right: 48px;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #334155;
+  resize: none;
+  background-color: transparent;
+
+  &:focus {
+    outline: none;
+  }
+
+  &::placeholder {
+    color: #94a3b8;
+    font-size: 12px;
+  }
+`;
+
+const IssueTitleContainer = styled.div`
+  display: flex;
+  align-items: center;
+  margin-top: 24px;
+  margin-bottom: 12px;
+`;
+
+const IssueTitle = styled.div`
+  font-size: 20px;
+  font-weight: 600;
+  color: #1e293b;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 4px;
+
+  &:before {
+    /* content: "📝"; */
+    font-size: 14px;
+  }
+`;
+
+const IssueButtonGroup = styled.div`
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  margin-left: 8px;
+`;
+
+const AddIssueButton = styled.button`
+  width: 24px;
+  height: 24px;
+  background-color: #fff4eb;
+  color: #ff7710;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background-color: #ff7710;
+    color: white;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+`;
+
+const RemoveIssueButton = styled.button`
+  width: 24px;
+  height: 24px;
+  background-color: #ffe8e8;
+  color: #ff4747;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    background-color: #ff4747;
+    color: white;
+    transform: translateY(-1px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+`;
+
 export {
   BoxContainer,
   Title,
@@ -316,4 +495,13 @@ export {
   CheckNoBox,
   CheckStatusText,
   CategoryDiv,
+  IssueContainer,
+  IssueInputWrapper,
+  IssueInput,
+  IssueTextarea,
+  IssueButtonGroup,
+  AddIssueButton,
+  RemoveIssueButton,
+  IssueTitleContainer,
+  IssueTitle,
 };

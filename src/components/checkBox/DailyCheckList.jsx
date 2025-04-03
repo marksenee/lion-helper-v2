@@ -22,9 +22,24 @@ import {
   CheckNoBox,
   CheckStatusText,
   CategoryDiv,
+  IssueContainer,
+  IssueInputWrapper,
+  IssueInput,
+  IssueTextarea,
+  IssueButtonGroup,
+  AddIssueButton,
+  RemoveIssueButton,
+  SubmitButton,
+  UncheckedListContainer,
+  TabContainer,
+  Tab,
+  TabWrapper,
+  SaveButton,
+  IssueTitleContainer,
+  IssueTitle,
 } from "./styles";
 import useCourseStore from "../../\bstore/useCourseStore";
-import { SubmitButton } from "../issue/styles";
+import { SubmitButton as IssueSubmitButton } from "../issue/styles";
 import {
   loadFromLocalStorage,
   saveToLocalStorage,
@@ -43,6 +58,7 @@ const DailyCheckList = ({ activeTab }) => {
   const [reason, setReason] = useState("");
   const [reasons, setReasons] = useState(Array(5).fill(""));
   const [reasonInputState, setReasonInputState] = useState({});
+  const [issueInputs, setIssueInputs] = useState([""]); // 이슈사항 입력창 상태 추가
 
   // ✅ 체크리스트 데이터를 가져오면서 localStorage 데이터도 반영
   // ✅ localStorage에서 username별 상태 저장 및 불러오기
@@ -178,39 +194,33 @@ const DailyCheckList = ({ activeTab }) => {
 
   const today = new Date();
 
-  const handleSubmit = async () => {
-    // "no"로 체크된 항목 중에서 코멘트가 입력되지 않은 항목 찾기
-    // const uncheckedItemsWithoutComment = checkItems.filter(
-    //   (item) => checkedStates[item.id] === "no" && !reasonState[item.id]?.trim()
-    // );
+  const handleSubmit = async (index) => {
+    const issue = issueInputs[index];
+    if (issue.trim() !== "") {
+      const issueData = {
+        issue: issue,
+        date: today,
+        training_course: selectedCourse,
+      };
 
-    // // 미입력된 항목이 하나라도 있으면 알림 띄우고 제출 막기
-    // if (uncheckedItemsWithoutComment.length > 0) {
-    //   alert("이슈사항을 입력해주세요!");
-    //   return;
-    // }
-
-    const issueData = {
-      issue: Object.values(reasonInputState).join(" "), // 이유값만 하나의 문자열로 결합
-      date: today,
-      training_course: selectedCourse,
-    };
-
-    if (!selectedCourse || selectedCourse === "과정 선택") {
-      alert("과정을 선택해주세요!");
-      return;
-    }
-
-    try {
-      const response = await proPage.postIssues(issueData);
-      if (response.status === 201) {
-        alert("저장이 완료되었습니다 \n (어드민페이지에서 내용 확인 가능)");
-        setReason("");
-      } else if (response.status === 400) {
-        alert("이슈 사항을 입력해주세요!");
+      if (!selectedCourse || selectedCourse === "과정 선택") {
+        alert("과정을 선택해주세요!");
+        return;
       }
-    } catch (error) {
-      console.error("Error posting issue:", error);
+
+      try {
+        const response = await proPage.postIssues(issueData);
+        if (response.status === 201) {
+          alert("저장이 완료되었습니다 \n (어드민페이지에서 내용 확인 가능)");
+          const newInputs = [...issueInputs];
+          newInputs[index] = "";
+          setIssueInputs(newInputs);
+        } else if (response.status === 400) {
+          alert("이슈 사항을 입력해주세요!");
+        }
+      } catch (error) {
+        console.error("Error posting issue:", error);
+      }
     }
   };
 
@@ -266,6 +276,23 @@ const DailyCheckList = ({ activeTab }) => {
       ...prev,
       [index]: value, // index로 state 관리
     }));
+  };
+
+  const handleIssueInputChange = (index, value) => {
+    const newInputs = [...issueInputs];
+    newInputs[index] = value;
+    setIssueInputs(newInputs);
+  };
+
+  const handleAddIssueInput = () => {
+    setIssueInputs([...issueInputs, ""]);
+  };
+
+  const handleRemoveIssueInput = (index) => {
+    if (issueInputs.length > 1) {
+      const newInputs = issueInputs.filter((_, i) => i !== index);
+      setIssueInputs(newInputs);
+    }
   };
 
   return (
@@ -398,22 +425,39 @@ const DailyCheckList = ({ activeTab }) => {
             ))}
           </ChecklistContainer>
         </div>
-        <Title>이슈사항</Title>
-        {reasons.map((reason, index) => (
-          <ReasonInputContainer key={index}>
-            <ReasonInput
-              placeholder={`작성 예시 : 
-- 배경 : 이슈가 발생한 배경
-- 상황 : 이슈 상황`}
-              value={reasonInputState[index] || ""}
-              onChange={(e) => handleReasonInputChange(index, e.target.value)}
-              style={{ whiteSpace: "pre-line" }} // 줄바꿈을 적용
-            />
-            <SubmitButton onClick={() => handleSubmit(index)}>
-              등록
-            </SubmitButton>
-          </ReasonInputContainer>
-        ))}
+        <IssueTitleContainer>
+          <IssueTitle>
+            이슈사항
+            <IssueButtonGroup>
+              <AddIssueButton onClick={handleAddIssueInput}>+</AddIssueButton>
+              {issueInputs.length > 1 && (
+                <RemoveIssueButton
+                  onClick={() => handleRemoveIssueInput(issueInputs.length - 1)}
+                >
+                  -
+                </RemoveIssueButton>
+              )}
+            </IssueButtonGroup>
+          </IssueTitle>
+        </IssueTitleContainer>
+        <IssueContainer>
+          {issueInputs.map((issue, index) => (
+            <IssueInputWrapper key={index}>
+              <div style={{ position: "relative", width: "100%" }}>
+                <IssueInput
+                  value={issue}
+                  onChange={(e) =>
+                    handleIssueInputChange(index, e.target.value)
+                  }
+                  placeholder="이슈사항을 입력해주세요&#10;작성 예시:&#10;- 배경: 이슈가 발생한 배경&#10;- 상황: 이슈 상황"
+                />
+                <SubmitButton onClick={() => handleSubmit(index)}>
+                  등록
+                </SubmitButton>
+              </div>
+            </IssueInputWrapper>
+          ))}
+        </IssueContainer>
         <div
           style={{ display: "flex", justifyContent: "flex-end", width: "100%" }}
         >

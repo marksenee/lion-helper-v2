@@ -3,7 +3,7 @@ import { IoIosArrowDown } from "react-icons/io"; // 토글 아이콘
 
 const Wrapper = styled.div`
   width: 100%;
-  max-width: 900px;
+  max-width: 887px;
   display: flex;
   justify-content: flex-start; /* 왼쪽 정렬 */
 `;

@@ -31,7 +31,7 @@ const Subtitle = styled.div`
 
 const Label = styled.div`
   width: 80px;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 500;
   color: #475569;
 `;
@@ -39,9 +39,9 @@ const Label = styled.div`
 const TimeInputContainer = styled.div`
   display: flex;
   align-items: center;
-  gap: 12px;
-  width: 95%;
-  margin-bottom: 16px;
+  gap: 10px;
+  width: 98%;
+  margin-bottom: 10px;
   padding: 13px;
   /* background: #f8fafc; */
   border-radius: 12px;
@@ -61,21 +61,21 @@ const TimeInputWrapper = styled.div`
 `;
 
 const TimeInput = styled.input`
-  width: 120px;
+  width: 100px;
   height: 36px;
   border: 1px solid #e2e8f0;
-  padding: 0 12px;
-  font-size: 14px;
+  padding: 0 10px;
+  font-size: 15px;
   background: white;
   text-align: center;
-  padding-right: 32px;
+  padding-right: 15px;
   border-radius: 8px;
   transition: all 0.2s ease;
 
   &:focus {
     outline: none;
     border-color: #ff7710;
-    box-shadow: 0 0 0 2px rgba(255, 119, 16, 0.1);
+    /* box-shadow: 0 0 0 2px rgba(255, 119, 16, 0.1); */
   }
 
   &::placeholder {
@@ -92,7 +92,7 @@ const ClockIcon = styled(FiClock)`
 const SubmitButton = styled.button`
   width: 64px;
   height: 36px;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 500;
   border: none;
   cursor: pointer;
@@ -112,7 +112,7 @@ const SubmitButton = styled.button`
 `;
 
 const Message = styled.div`
-  font-size: 13px;
+  font-size: 15px;
   color: ${(props) => (props.error ? "#ef4444" : "#ff7710")};
   margin-left: 12px;
   font-weight: 500;
