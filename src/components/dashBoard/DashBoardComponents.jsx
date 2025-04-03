@@ -12,15 +12,23 @@ import {
   DayContainer,
   TabContainer,
   Tab,
+  GridContainer,
+  Card,
+  CardHeader,
+  Tag,
+  CardTitle,
+  CardContent,
+  CheckIcon,
+  Progress,
 } from "./styles";
 
-const DashBoardComponents = () => {
+const DashBoardComponents = ({ viewMode }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [activeTab, setActiveTab] = useState("daily"); // daily 또는 weekly
+  const [activeTab, setActiveTab] = useState("daily");
 
   const getWeekRange = (date) => {
     const start = new Date(date);
-    start.setDate(start.getDate() - start.getDay()); // 일요일부터 시작
+    start.setDate(start.getDate() - start.getDay());
     const end = new Date(start);
     end.setDate(end.getDate() + 6);
     return `${start.getMonth() + 1}월 ${start.getDate()}일 - ${
@@ -28,15 +36,22 @@ const DashBoardComponents = () => {
     }월 ${end.getDate()}일`;
   };
 
-  const changeWeek = (direction) => {
-    setCurrentDate((prev) => {
-      const newDate = new Date(prev);
-      newDate.setDate(newDate.getDate() + direction * 7);
-      return newDate;
-    });
+  const getCurrentMonth = (date) => {
+    return `${date.getMonth() + 1}월`;
   };
 
-  // 데일리와 위클리 데이터 분리
+  const changeWeek = (offset) => {
+    const newDate = new Date(currentDate);
+    newDate.setDate(currentDate.getDate() + offset * 7);
+    setCurrentDate(newDate);
+  };
+
+  const changeMonth = (offset) => {
+    const newDate = new Date(currentDate);
+    newDate.setMonth(currentDate.getMonth() + offset);
+    setCurrentDate(newDate);
+  };
+
   const dailyTasks = [
     "강사일지 작성 여부",
     "출석체크 완료 여부",
@@ -44,25 +59,90 @@ const DashBoardComponents = () => {
     "학습자료 업로드 여부",
   ];
 
-  const weeklyTasks = [
-    "주간 보고서 작성",
-    "주간 미팅 참석",
-    "주간 과제 검토",
-    "주간 커리큘럼 검토",
-    "주간 학습 진도 확인",
+  const monthlyTasks = [
+    { title: "강사 일지 작성", tag: "강사", progress: "20/28" },
+    { title: "강사 일지 작성", tag: "운영", progress: "20/28" },
+    { title: "강사 일지 작성", progress: "20/28" },
+    { title: "강사 일지 작성", progress: "20/28" },
+    { title: "강사 일지 작성", progress: "20/28" },
+    { title: "강사 일지 작성", progress: "20/28" },
+    { title: "강사 일지 작성", progress: "20/28" },
+    { title: "강사 일지 작성", progress: "20/28" },
+    { title: "강사 일지 작성", progress: "20/28" },
   ];
 
   const days = ["월", "화", "수", "목", "금"];
 
-  // 현재 활성화된 탭에 따라 표시할 태스크 선택
-  const currentTasks = activeTab === "daily" ? dailyTasks : weeklyTasks;
+  const renderWeeklyView = () => {
+    return (
+      <TaskTable>
+        <DayContainer>
+          <TaskName></TaskName>
+          <CircleContainer>
+            {days.map((day) => (
+              <DayLabel key={day}>{day}</DayLabel>
+            ))}
+          </CircleContainer>
+        </DayContainer>
+        {dailyTasks.map((task, index) => (
+          <Row key={`task-${index}`}>
+            <TaskName>{task}</TaskName>
+            <CircleContainer>
+              {days.map((_, dayIndex) => (
+                <Circle
+                  key={dayIndex}
+                  completed={Math.random() > 0.5}
+                  onClick={() => {
+                    console.log(`Clicked ${task} for ${days[dayIndex]}`);
+                  }}
+                />
+              ))}
+            </CircleContainer>
+          </Row>
+        ))}
+      </TaskTable>
+    );
+  };
+
+  const renderMonthlyView = () => {
+    return (
+      <GridContainer>
+        {monthlyTasks.map((task, index) => (
+          <Card key={index}>
+            <CardHeader>
+              {task.tag && <Tag>{task.tag}</Tag>}
+              <CardTitle>{task.title}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CheckIcon>✓</CheckIcon>
+              <Progress>{task.progress}</Progress>
+            </CardContent>
+          </Card>
+        ))}
+      </GridContainer>
+    );
+  };
 
   return (
-    <div>
+    <div style={{ marginLeft: "120px", paddingTop: "20px" }}>
       <CalendarContainer>
-        <Button onClick={() => changeWeek(-1)}>&lt;</Button>
-        <WeekDisplay>{getWeekRange(currentDate)}</WeekDisplay>
-        <Button onClick={() => changeWeek(1)}>&gt;</Button>
+        <Button
+          onClick={() =>
+            viewMode === "week" ? changeWeek(-1) : changeMonth(-1)
+          }
+        >
+          &lt;
+        </Button>
+        <WeekDisplay>
+          {viewMode === "week"
+            ? getWeekRange(currentDate)
+            : getCurrentMonth(currentDate)}
+        </WeekDisplay>
+        <Button
+          onClick={() => (viewMode === "week" ? changeWeek(1) : changeMonth(1))}
+        >
+          &gt;
+        </Button>
       </CalendarContainer>
       <TabContainer>
         <Tab
@@ -78,33 +158,7 @@ const DashBoardComponents = () => {
           위클리 업무 현황
         </Tab>
       </TabContainer>
-      <TaskTable>
-        <DayContainer>
-          <TaskName></TaskName>
-          <CircleContainer>
-            {days.map((day) => (
-              <DayLabel key={day}>{day}</DayLabel>
-            ))}
-          </CircleContainer>
-        </DayContainer>
-        {currentTasks.map((task, index) => (
-          <Row key={`task-${index}`}>
-            <TaskName>{task}</TaskName>
-            <CircleContainer>
-              {days.map((_, dayIndex) => (
-                <Circle
-                  key={dayIndex}
-                  completed={Math.random() > 0.5}
-                  onClick={() => {
-                    // 여기에 상태 토글 로직 추가 가능
-                    console.log(`Clicked ${task} for ${days[dayIndex]}`);
-                  }}
-                />
-              ))}
-            </CircleContainer>
-          </Row>
-        ))}
-      </TaskTable>
+      {viewMode === "week" ? renderWeeklyView() : renderMonthlyView()}
     </div>
   );
 };

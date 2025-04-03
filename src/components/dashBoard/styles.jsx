@@ -82,7 +82,7 @@ const Tab = styled.button`
 `;
 
 const TaskTable = styled.div`
-  width: 90%;
+  width: 60%;
   margin: 20px auto;
   background: #ffffff;
   border-radius: 16px;
@@ -155,6 +155,107 @@ const Circle = styled.div`
   }
 `;
 
+const GridContainer = styled.div`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  padding: 20px;
+  width: 60%;
+  margin: 0 auto;
+`;
+
+const Card = styled.div`
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+  transition: all 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+`;
+
+const CardHeader = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+`;
+
+const Tag = styled.span`
+  background: #fff3ec;
+  color: #ff7710;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 500;
+`;
+
+const CardTitle = styled.h3`
+  margin: 0;
+  font-size: 16px;
+  color: #333;
+  font-weight: 500;
+`;
+
+const CardContent = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+`;
+
+const CheckIcon = styled.div`
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #ffe5d6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ff7710;
+`;
+
+const Progress = styled.div`
+  font-size: 14px;
+  color: #666;
+  font-weight: 500;
+`;
+
+const ViewModeContainer = styled.div`
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  display: flex;
+  width: 200px;
+  border-bottom: 1px solid #e0e0e0;
+  background: white;
+  z-index: 1000;
+`;
+
+const ViewModeButton = styled.button`
+  padding: 8px 16px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 14px;
+  color: ${(props) => (props.active ? "#FF7710" : "#666")};
+  font-weight: ${(props) => (props.active ? "600" : "400")};
+  width: 100px;
+  text-align: center;
+  border-bottom: ${(props) =>
+    props.active ? "2px solid #FF7710" : "2px solid transparent"};
+
+  &:hover {
+    color: #ff7710;
+  }
+`;
+
+const MainContent = styled.div`
+  margin-top: 60px; // ViewModeContainer의 높이만큼 여백 추가
+`;
+
 export {
   CalendarContainer,
   Button,
@@ -168,4 +269,15 @@ export {
   Circle,
   DayLabel,
   DayContainer,
+  GridContainer,
+  Card,
+  CardHeader,
+  Tag,
+  CardTitle,
+  CardContent,
+  CheckIcon,
+  Progress,
+  ViewModeContainer,
+  ViewModeButton,
+  MainContent,
 };

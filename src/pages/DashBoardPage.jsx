@@ -1,27 +1,31 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import { ContentContainer } from "../components/content_layout/styles";
-import DashBoardNavigationTabs from "../components/tab/DashBoardTab";
 import DashBoardComponents from "../components/dashBoard/DashBoardComponents";
+import DashTab from "../components/tab/DashTab";
+import styled from "styled-components";
+
+const PageContainer = styled.div`
+  position: relative;
+  width: 100%;
+  padding: 20px;
+`;
+
+const MainContentWrapper = styled.div`
+  position: relative;
+  margin-left: 250px;
+  width: calc(100% - 250px);
+`;
 
 const DashBoardPage = () => {
-  //   const { fetchCourseItems } = useCourseStore();
-
-  //   useEffect(() => {
-  //     fetchCourseItems(); // 페이지가 로드될 때 과정 데이터 가져오기
-  //   }, []); // Zustand에서 상태 가져오기
+  const [viewMode, setViewMode] = useState("week");
 
   return (
-    <>
-      {/* <GetUnCheckedComponent
-          fetchData={proPage.getUnCheckedDescriptions}
-          title="📌 미체크 항목"
-        /> */}
-      {/* <GetIssuesComponent /> */}
-      <ContentContainer>
-        <DashBoardNavigationTabs />
-        <DashBoardComponents />
-      </ContentContainer>
-    </>
+    <PageContainer>
+      <MainContentWrapper>
+        <DashTab viewMode={viewMode} onViewModeChange={setViewMode} />
+        <DashBoardComponents viewMode={viewMode} />
+      </MainContentWrapper>
+    </PageContainer>
   );
 };
 
