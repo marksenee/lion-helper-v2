@@ -14,11 +14,15 @@ const LaboratoryComponents = () => {
     window.open("https://bootcamp-3hm5.onrender.com", "_blank");
   };
 
+  const handleAnalysisClick = () => {
+    window.open("https://zoomdiscord-ai.onrender.com", "_blank");
+  };
+
   return (
     <PageContainer>
       {/* <Title>AI 실험실</Title> */}
       <Container>
-        <Button>
+        <Button onClick={handleAnalysisClick}>
           <IconWrapper>
             <FaGraduationCap />
           </IconWrapper>
