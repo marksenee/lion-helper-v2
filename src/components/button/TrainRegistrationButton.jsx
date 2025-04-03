@@ -6,10 +6,10 @@ const TrainRegisButton = styled.button`
   color: #ff7710;
   border: none;
   padding: 10px 20px;
-  width: 180px;
+  width: 170px;
   border-radius: 5px;
   cursor: pointer;
-  font-size: 18px;
+  font-size: 15px;
   font-weight: bold;
   transition: background 0.3s ease;
 

@@ -65,7 +65,7 @@ const TimeInput = styled.input`
   height: 36px;
   border: 1px solid #e2e8f0;
   padding: 0 10px;
-  font-size: 15px;
+  font-size: 14px;
   background: white;
   text-align: center;
   padding-right: 15px;
@@ -92,7 +92,7 @@ const ClockIcon = styled(FiClock)`
 const SubmitButton = styled.button`
   width: 64px;
   height: 36px;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 500;
   border: none;
   cursor: pointer;
@@ -112,7 +112,7 @@ const SubmitButton = styled.button`
 `;
 
 const Message = styled.div`
-  font-size: 15px;
+  font-size: 14px;
   color: ${(props) => (props.error ? "#ef4444" : "#ff7710")};
   margin-left: 12px;
   font-weight: 500;
