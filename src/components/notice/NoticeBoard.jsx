@@ -112,10 +112,16 @@ const NoticeBoard = () => {
       try {
         const response = await proPage.getNotice();
         console.log("API 응답:", response);
+        console.log("공지사항 데이터 구조:", response.data);
 
         // API 응답 구조에 맞게 데이터 설정
         if (response && response.data && response.data.data) {
-          setNotices(response.data.data);
+          // 각 공지사항의 날짜 필드 확인
+          const noticesWithDates = response.data.data.map((notice) => {
+            console.log("공지사항 데이터:", notice);
+            return notice;
+          });
+          setNotices(noticesWithDates);
         } else {
           setError("데이터를 불러오는데 실패했습니다.");
           setNotices([]); // 빈 배열로 초기화
@@ -236,6 +242,23 @@ const NoticeBoard = () => {
     setCurrentPage(1);
   };
 
+  // 날짜 포맷팅 함수 추가 (컴포넌트 내부에 추가)
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+
+    try {
+      const date = new Date(dateString);
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, "0");
+      const day = String(date.getDate()).padStart(2, "0");
+
+      return `${year}-${month}-${day}`;
+    } catch (error) {
+      console.error("날짜 포맷팅 오류:", error);
+      return dateString; // 오류 발생 시 원본 문자열 반환
+    }
+  };
+
   return (
     <Container>
       <Title>
@@ -339,7 +362,37 @@ const NoticeBoard = () => {
               </NoticeHeader>
               {openIndex === index && (
                 <NoticeDetails className="notice-details-content">
-                  {notice.content}
+                  <div>{notice.content}</div>
+                  <div
+                    style={{
+                      marginTop: "10px",
+                      fontSize: "14px",
+                      color: "#666",
+                      textAlign: "right",
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      gap: "15px",
+                    }}
+                  >
+                    {notice.created_by && (
+                      <span>작성자: {notice.created_by}</span>
+                    )}
+                    {(notice.created_at ||
+                      notice.createdAt ||
+                      notice.date ||
+                      notice.created_date) && (
+                      <span>
+                        (
+                        {formatDate(
+                          notice.created_at ||
+                            notice.createdAt ||
+                            notice.date ||
+                            notice.created_date
+                        )}
+                        )
+                      </span>
+                    )}
+                  </div>
                 </NoticeDetails>
               )}
             </NoticeItem>
