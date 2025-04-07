@@ -195,33 +195,36 @@ const DailyCheckList = ({ activeTab }) => {
   const today = new Date();
 
   const handleSubmit = async (index) => {
+    // 과정 선택 검증
+    if (!selectedCourse || selectedCourse === "과정 선택") {
+      alert("과정을 선택해주세요!");
+      return;
+    }
+
+    // 이슈사항 입력 검증
     const issue = issueInputs[index];
-    if (issue.trim() !== "") {
-      const issueData = {
-        issue: issue,
-        date: today,
-        training_course: selectedCourse,
-        username: username,
-      };
+    if (!issue || issue.trim() === "") {
+      alert("이슈사항을 입력해주세요!");
+      return;
+    }
 
-      if (!selectedCourse || selectedCourse === "과정 선택") {
-        alert("과정을 선택해주세요!");
-        return;
-      }
+    const issueData = {
+      issue: issue,
+      date: today,
+      training_course: selectedCourse,
+      username: username,
+    };
 
-      try {
-        const response = await proPage.postIssues(issueData);
-        if (response.status === 201) {
-          alert("저장이 완료되었습니다 \n (어드민페이지에서 내용 확인 가능)");
-          const newInputs = [...issueInputs];
-          newInputs[index] = "";
-          setIssueInputs(newInputs);
-        } else if (response.status === 400) {
-          alert("이슈 사항을 입력해주세요!");
-        }
-      } catch (error) {
-        console.error("Error posting issue:", error);
+    try {
+      const response = await proPage.postIssues(issueData);
+      if (response.status === 201) {
+        alert("저장이 완료되었습니다 \n (어드민페이지에서 내용 확인 가능)");
+        const newInputs = [...issueInputs];
+        newInputs[index] = "";
+        setIssueInputs(newInputs);
       }
+    } catch (error) {
+      console.error("Error posting issue:", error);
     }
   };
 
