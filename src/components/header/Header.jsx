@@ -46,18 +46,18 @@ const Header = () => {
       icon: <MdAdminPanelSettings />,
       path: "/app/admin/teamTask",
     },
-    // {
-    //   id: "notice",
-    //   label: "공지사항",
-    //   icon: <RiNotification2Fill />,
-    //   path: "/app/notice/",
-    // },
-    // {
-    //   id: "dashboard",
-    //   label: "대시보드",
-    //   icon: <BiBarChart />,
-    //   path: "/app/dashboard/weekly",
-    // },
+    {
+      id: "notice",
+      label: "공지사항",
+      icon: <RiNotification2Fill />,
+      path: "/app/notice/",
+    },
+    {
+      id: "dashboard",
+      label: "대시보드",
+      icon: <BiBarChart />,
+      path: "/app/dashboard/weekly",
+    },
     {
       id: "laboratory",
       label: "AI 실험실",
