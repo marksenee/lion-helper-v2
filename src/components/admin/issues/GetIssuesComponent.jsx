@@ -151,9 +151,10 @@ const GetIssuesComponent = () => {
     }
 
     const newComment = {
-      author: "작성자", // 실제 사용자 정보로 변경 가능
+      author: username, // 실제 사용자 이름으로 변경
       comment: comments[index],
       created_at: new Date().toISOString(),
+      created_by: username, // 작성자명 추가
     };
 
     try {
@@ -196,6 +197,9 @@ const GetIssuesComponent = () => {
           newComments[index] = "";
           return newComments;
         });
+
+        // ✅ 댓글 목록 새로고침
+        fetchComments(issueId);
       } else {
         alert("댓글 저장에 실패했습니다.");
       }
