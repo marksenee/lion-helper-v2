@@ -5,6 +5,7 @@ import { FiMoreVertical } from "react-icons/fi"; // 세로 점 아이콘
 import { IoMdAdd } from "react-icons/io"; // 추가 아이콘
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { proPage } from "../../apis/api";
 
 import {
   Container,
@@ -95,21 +96,66 @@ const DeleteConfirmModal = ({ isOpen, onClose, onConfirm }) => {
 const NoticeBoard = () => {
   const [openIndex, setOpenIndex] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [notices, setNotices] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const [query, setQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [showMenuIndex, setShowMenuIndex] = useState(null);
   const [activeFilter, setActiveFilter] = useState("전체");
 
-  const notices = Array.from({ length: 25 }, (_, index) => ({
-    id: index + 1,
-    title: `공지사항 제목 ${index + 1}`,
-  }));
+  // 공지사항 데이터 가져오기
+  useEffect(() => {
+    const fetchNotices = async () => {
+      setLoading(true);
+      try {
+        const response = await proPage.getNotice();
+        console.log("API 응답:", response);
+
+        // API 응답 구조에 맞게 데이터 설정
+        if (response && response.data && response.data.data) {
+          setNotices(response.data.data);
+        } else {
+          setError("데이터를 불러오는데 실패했습니다.");
+          setNotices([]); // 빈 배열로 초기화
+        }
+      } catch (error) {
+        console.error("공지사항 데이터 가져오기 오류:", error);
+        setError("데이터를 불러오는데 실패했습니다.");
+        setNotices([]); // 오류 발생 시 빈 배열로 초기화
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchNotices();
+  }, []);
+
+  // 필터링된 공지사항
+  const filteredNotices = Array.isArray(notices)
+    ? notices.filter((notice) => {
+        // 검색어 필터링
+        const matchesSearch =
+          notice.title.toLowerCase().includes(query.toLowerCase()) ||
+          (notice.content &&
+            notice.content.toLowerCase().includes(query.toLowerCase()));
+
+        // 카테고리 필터링
+        const matchesCategory =
+          activeFilter === "전체" || notice.type === activeFilter;
+
+        return matchesSearch && matchesCategory;
+      })
+    : [];
 
   const noticesPerPage = 6;
-  const totalPages = Math.ceil(notices.length / noticesPerPage);
+  const totalPages = Math.ceil(filteredNotices.length / noticesPerPage);
   const startIndex = (currentPage - 1) * noticesPerPage;
-  const currentNotices = notices.slice(startIndex, startIndex + noticesPerPage);
+  const currentNotices = filteredNotices.slice(
+    startIndex,
+    startIndex + noticesPerPage
+  );
 
   const toggleDetails = (index) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -137,21 +183,20 @@ const NoticeBoard = () => {
   const navigate = useNavigate();
 
   const handleEdit = (id) => {
-    const notice = currentNotices.find((notice) => notice.id === id);
-    navigate("create", {
-      state: {
-        isEdit: true,
-        noticeData: {
-          id: notice.id,
-          title: notice.title,
-          content:
-            openIndex === id
-              ? document.querySelector(".notice-details-content").textContent
-              : "",
-          category: "출결", // 현재는 하드코딩되어 있으므로 실제 카테고리 데이터로 변경 필요
+    const notice = notices.find((notice) => notice.id === id);
+    if (notice) {
+      navigate("create", {
+        state: {
+          isEdit: true,
+          noticeData: {
+            id: notice.id,
+            title: notice.title,
+            content: notice.content,
+            category: notice.type,
+          },
         },
-      },
-    });
+      });
+    }
   };
 
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -180,6 +225,17 @@ const NoticeBoard = () => {
     navigate("create");
   };
 
+  // 검색 처리
+  const handleSearch = () => {
+    setCurrentPage(1); // 검색 시 첫 페이지로 이동
+  };
+
+  // 필터 변경 시 페이지 초기화
+  const handleFilterChange = (filter) => {
+    setActiveFilter(filter);
+    setCurrentPage(1);
+  };
+
   return (
     <Container>
       <Title>
@@ -194,108 +250,122 @@ const NoticeBoard = () => {
           placeholder="검색어를 입력하세요"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          onKeyDown={(e) => e.key === "Enter"} // Enter 키 입력 처리
+          onKeyDown={(e) => e.key === "Enter" && handleSearch()} // Enter 키 입력 처리
         />
-        <SearchIcon>
+        <SearchIcon onClick={handleSearch}>
           <FaSearch />
         </SearchIcon>
       </SearchBox>{" "}
       <FilterButtons>
         <FilterButton
           active={activeFilter === "전체"}
-          onClick={() => setActiveFilter("전체")}
+          onClick={() => handleFilterChange("전체")}
         >
           전체
         </FilterButton>
         <FilterButton
           active={activeFilter === "출결"}
-          onClick={() => setActiveFilter("출결")}
+          onClick={() => handleFilterChange("출결")}
         >
           출결
         </FilterButton>
         <FilterButton
           active={activeFilter === "공결"}
-          onClick={() => setActiveFilter("공결")}
+          onClick={() => handleFilterChange("공결")}
         >
           공결
         </FilterButton>
         <FilterButton
           active={activeFilter === "훈련장려금"}
-          onClick={() => setActiveFilter("훈련장려금")}
+          onClick={() => handleFilterChange("훈련장려금")}
         >
           훈련장려금
         </FilterButton>
         <FilterButton
           active={activeFilter === "내일배움카드"}
-          onClick={() => setActiveFilter("내일배움카드")}
+          onClick={() => handleFilterChange("내일배움카드")}
         >
           내일배움카드
         </FilterButton>
       </FilterButtons>
-      <NoticeList>
-        {currentNotices.map((notice, index) => (
-          <NoticeItem key={notice.id} active={showMenuIndex === index}>
-            <NoticeHeader onClick={() => toggleDetails(index)}>
-              {index + 1}. <Badge>출결</Badge>
-              <NoticeTitle>{notice.title}</NoticeTitle>
-              <ToggleButton>{openIndex === index ? "▲" : "▼"}</ToggleButton>
-              <MenuWrapper>
-                <Button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    toggleMenu(index, e);
-                  }}
-                >
-                  <FiMoreVertical size={24} />
-                </Button>
-                {showMenuIndex === index && (
-                  <Menu>
-                    <MenuButton
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleEdit(notice.id);
-                      }}
-                    >
-                      수정
-                    </MenuButton>
-                    <MenuButton
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDelete(notice.id);
-                      }}
-                    >
-                      삭제
-                    </MenuButton>
-                  </Menu>
-                )}
-              </MenuWrapper>
-            </NoticeHeader>
-            {openIndex === index && (
-              <NoticeDetails>
-                공지사항에 대한 상세 내용 {notice.id}
-              </NoticeDetails>
-            )}
-          </NoticeItem>
-        ))}
-      </NoticeList>
+      {loading ? (
+        <div style={{ textAlign: "center", padding: "20px" }}>로딩 중...</div>
+      ) : error ? (
+        <div style={{ textAlign: "center", padding: "20px", color: "red" }}>
+          {error}
+        </div>
+      ) : currentNotices.length === 0 ? (
+        <div style={{ textAlign: "center", padding: "20px" }}>
+          등록된 공지사항이 없습니다.
+        </div>
+      ) : (
+        <NoticeList>
+          {currentNotices.map((notice, index) => (
+            <NoticeItem key={notice.id} active={showMenuIndex === index}>
+              <NoticeHeader onClick={() => toggleDetails(index)}>
+                {index + 1}. <Badge>{notice.type}</Badge>
+                <NoticeTitle>{notice.title}</NoticeTitle>
+                <ToggleButton>{openIndex === index ? "▲" : "▼"}</ToggleButton>
+                <MenuWrapper className="menu-wrapper">
+                  <Button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleMenu(index, e);
+                    }}
+                  >
+                    <FiMoreVertical size={24} />
+                  </Button>
+                  {showMenuIndex === index && (
+                    <Menu>
+                      <MenuButton
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleEdit(notice.id);
+                        }}
+                      >
+                        수정
+                      </MenuButton>
+                      <MenuButton
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDelete(notice.id);
+                        }}
+                      >
+                        삭제
+                      </MenuButton>
+                    </Menu>
+                  )}
+                </MenuWrapper>
+              </NoticeHeader>
+              {openIndex === index && (
+                <NoticeDetails className="notice-details-content">
+                  {notice.content}
+                </NoticeDetails>
+              )}
+            </NoticeItem>
+          ))}
+        </NoticeList>
+      )}
       {/* 페이지네이션 */}
-      <PaginationWrapper>
-        <PageButton
-          onClick={() => setCurrentPage(currentPage - 1)}
-          disabled={currentPage === 1}
-        >
-          ◀ 이전
-        </PageButton>
-        <span>
-          {currentPage} / {totalPages}
-        </span>
-        <PageButton
-          onClick={() => setCurrentPage(currentPage + 1)}
-          disabled={currentPage === totalPages}
-        >
-          다음 ▶
-        </PageButton>
-      </PaginationWrapper>
+      {!loading && !error && filteredNotices.length > 0 && (
+        <PaginationWrapper>
+          <PageButton
+            onClick={() => setCurrentPage(currentPage - 1)}
+            disabled={currentPage === 1}
+          >
+            ◀ 이전
+          </PageButton>
+          <span>
+            {currentPage} / {totalPages}
+          </span>
+          <PageButton
+            onClick={() => setCurrentPage(currentPage + 1)}
+            disabled={currentPage === totalPages}
+          >
+            다음 ▶
+          </PageButton>
+        </PaginationWrapper>
+      )}
       {/* 모달 추가 */}
       <DeleteConfirmModal
         isOpen={isDeleteModalOpen}

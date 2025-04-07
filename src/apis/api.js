@@ -320,4 +320,25 @@ export const proPage = {
       return error.response;
     }
   },
+
+  // 공지사항 데이터 불러오기
+  getNotice: async () => {
+    try {
+      const response = await api.get("/notices");
+      return response;
+    } catch (error) {
+      console.error(error.response || error);
+      return error.response;
+    }
+  },
+
+  // 공지사항 저장하기
+  postNotice: async (data) => {
+    try {
+      const response = await api.post("/notices", data);
+      return response;
+    } catch (error) {
+      return error.response;
+    }
+  },
 };

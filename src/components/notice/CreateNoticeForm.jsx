@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { useLocation, useNavigate } from "react-router-dom";
 import { GoChevronLeft } from "react-icons/go";
+import useAuthStore from "../../\bstore/useAuthStore";
+import { proPage } from "../../apis/api";
 
 const Container = styled.div`
   width: calc(100% - 270px);
@@ -135,10 +137,12 @@ const CreateNoticeForm = () => {
   const navigate = useNavigate();
   const isEdit = location.state?.isEdit;
   const noticeData = location.state?.noticeData;
+  const { username, logout } = useAuthStore();
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [category, setCategory] = useState("카테고리 선택");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (isEdit && noticeData) {
@@ -148,19 +152,47 @@ const CreateNoticeForm = () => {
     }
   }, [isEdit, noticeData]);
 
-  const handleSubmit = () => {
-    // 여기에 등록/수정 API 호출 로직 구현
-    if (isEdit) {
-      // 수정 API 호출
-      console.log("수정 요청:", {
-        id: noticeData.id,
-        title,
-        content,
-        category,
-      });
-    } else {
-      // 등록 API 호출
-      console.log("등록 요청:", { title, content, category });
+  const handleSubmit = async () => {
+    if (category === "카테고리 선택") {
+      alert("카테고리를 선택해주세요.");
+      return;
+    }
+
+    if (!title.trim()) {
+      alert("제목을 입력해주세요.");
+      return;
+    }
+
+    if (!content.trim()) {
+      alert("내용을 입력해주세요.");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const noticeData = {
+        title: title,
+        content: content,
+        username: username,
+        type: category,
+      };
+
+      const response = await proPage.postNotice(noticeData);
+
+      if (response.status === 200 || response.status === 201) {
+        alert(
+          isEdit ? "공지사항이 수정되었습니다." : "공지사항이 등록되었습니다."
+        );
+        navigate(-1); // 이전 페이지로 이동
+      } else {
+        alert("공지사항 등록에 실패했습니다. 다시 시도해주세요.");
+      }
+    } catch (error) {
+      console.error("공지사항 등록 오류:", error);
+      alert("공지사항 등록 중 오류가 발생했습니다. 다시 시도해주세요.");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -176,8 +208,8 @@ const CreateNoticeForm = () => {
           <option value="훈련장려금">훈련장려금</option>
           <option value="내일배움카드">내일배움카드</option>
         </Select>
-        <Button onClick={handleSubmit}>
-          {isEdit ? "수정하기" : "등록하기"}
+        <Button onClick={handleSubmit} disabled={isSubmitting}>
+          {isSubmitting ? "처리 중..." : isEdit ? "수정하기" : "등록하기"}
         </Button>
       </FlexContainer>
 
