@@ -26,9 +26,11 @@ import {
   ContentWrapper,
   ContentLine,
 } from "./styles";
+import useAuthStore from "../../../\bstore/useAuthStore";
 
 const GetIssuesComponent = () => {
   const { courseItems } = useCourseStore();
+  const { username, logout } = useAuthStore();
 
   const [items, setItems] = useState([]); // API 데이터 상태
   const [filteredIssues, setFilteredIssues] = useState([]); // 필터링된 이슈
@@ -158,6 +160,7 @@ const GetIssuesComponent = () => {
       const response = await proPage.postComments({
         issue_id: issueId,
         comment: comments[index],
+        username: username,
       });
 
       if (response.status === 200 || response.status === 201) {
@@ -341,6 +344,8 @@ const GetIssuesComponent = () => {
                     {item.comments &&
                       item.comments.map((comment, i) => (
                         <CommentText key={i}>
+                          {comment.created_by}
+                          {" : "}
                           {comment.comment}
                           <span
                             style={{

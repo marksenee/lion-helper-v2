@@ -230,6 +230,7 @@ export const proPage = {
   // 댓글 작성
   postComments: async (data) => {
     try {
+      console.log("data", data);
       const response = await api.post("/issues/comments", data);
       return response;
     } catch (error) {
