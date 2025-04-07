@@ -286,6 +286,7 @@ export const proPage = {
           "Content-Type": "application/json",
         },
       });
+      console.log("response", response);
       return response;
     } catch (error) {
       console.error("로그인 오류:", error.response || error);

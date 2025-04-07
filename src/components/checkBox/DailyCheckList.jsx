@@ -201,6 +201,7 @@ const DailyCheckList = ({ activeTab }) => {
         issue: issue,
         date: today,
         training_course: selectedCourse,
+        username: username,
       };
 
       if (!selectedCourse || selectedCourse === "과정 선택") {
@@ -245,6 +246,7 @@ const DailyCheckList = ({ activeTab }) => {
       action_plan: reasonState[id],
       description: description,
       training_course: selectedCourse,
+      username: username,
     };
 
     try {

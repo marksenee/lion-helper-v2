@@ -35,6 +35,18 @@ const LoginComponent = () => {
       if (response) {
         // const { username } = response.data;
         // useAuthStore.getState().setUsername(username);
+
+        // 로그인 성공 시 username을 sessionStorage에 저장
+        if (
+          response.data &&
+          response.data.user &&
+          response.data.user.username
+        ) {
+          const username = response.data.user.username;
+          sessionStorage.setItem("username", username);
+          useAuthStore.getState().setUsername(username);
+        }
+
         navigate("/app/checklist/today");
         return response;
       }
