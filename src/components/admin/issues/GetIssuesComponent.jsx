@@ -47,6 +47,7 @@ const GetIssuesComponent = () => {
     const fetchIssuesList = async () => {
       try {
         const response = await proPage.getIssues();
+        console.log("response", response);
         if (response?.data?.data && Array.isArray(response.data.data)) {
           setItems(response.data.data);
 
@@ -287,7 +288,9 @@ const GetIssuesComponent = () => {
                 <NoticeContent>
                   <NoticeText>
                     {selectedCourse === "전체 과정" && (
-                      <strong>{item.training_course}</strong>
+                      <strong>
+                        {item.training_course} ({item.created_by})
+                      </strong>
                     )}
                     <ContentWrapper>
                       {item.content
