@@ -351,4 +351,14 @@ export const proPage = {
       return error.response;
     }
   },
+
+  // 비밀번호 변경하기
+  changePassword: async (data) => {
+    try {
+      const response = await api.post("/user/change-password", data);
+      return response;
+    } catch (error) {
+      return error.response;
+    }
+  },
 };
