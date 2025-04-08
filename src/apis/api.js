@@ -341,4 +341,14 @@ export const proPage = {
       return error.response;
     }
   },
+
+  // 공지사항 삭제하기
+  deleteNotice: async (notice_id) => {
+    try {
+      const response = await api.delete(`/notices/${notice_id}`);
+      return response;
+    } catch (error) {
+      return error.response;
+    }
+  },
 };

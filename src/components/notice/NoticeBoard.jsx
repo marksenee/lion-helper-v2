@@ -214,12 +214,33 @@ const NoticeBoard = () => {
     setShowMenuIndex(null);
   };
 
-  const handleDeleteConfirm = () => {
-    // 여기에 삭제 API 호출 로직 구현
-    console.log(`Delete notice with ID: ${deleteTargetId}`);
-    alert("삭제되었습니다.");
-    setIsDeleteModalOpen(false);
-    setDeleteTargetId(null);
+  const handleDeleteConfirm = async () => {
+    try {
+      const response = await proPage.deleteNotice(deleteTargetId);
+      console.log("삭제 응답:", response);
+
+      // 응답 구조에 관계없이 성공 여부 확인
+      if (
+        response &&
+        (response.status === 200 || response.status === 204 || response.data)
+      ) {
+        // 삭제 성공 시 목록 새로고침
+        const updatedNotices = notices.filter(
+          (notice) => notice.id !== deleteTargetId
+        );
+        setNotices(updatedNotices);
+        alert("공지사항이 삭제되었습니다.");
+      } else {
+        console.error("삭제 실패 응답:", response);
+        alert("삭제에 실패했습니다. 다시 시도해주세요.");
+      }
+    } catch (error) {
+      console.error("삭제 오류:", error);
+      alert("삭제 중 오류가 발생했습니다.");
+    } finally {
+      setIsDeleteModalOpen(false);
+      setDeleteTargetId(null);
+    }
   };
 
   const handleDeleteCancel = () => {
