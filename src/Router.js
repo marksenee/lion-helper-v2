@@ -37,7 +37,6 @@ const Router = () => {
         <Route path="dashboard/*" element={<DashBoardNavigationTabs />} />
         <Route path="notice" element={<NoticePage />} />
         <Route path="notice/create" element={<CreateNoticeForm />} />
-        <Route path="notice/create" element={<CreateNoticeForm />} />
         <Route path="laboratory" element={<LaboratoryPage />} />
       </Route>
     </Routes>

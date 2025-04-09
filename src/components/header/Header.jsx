@@ -50,7 +50,7 @@ const Header = () => {
       id: "notice",
       label: "공지사항",
       icon: <RiNotification2Fill />,
-      path: "/app/notice/",
+      path: "/app/notice",
     },
     // {
     //   id: "dashboard",
@@ -66,8 +66,10 @@ const Header = () => {
     },
   ];
 
-  const currentMenuItem = menuItems.find((item) =>
-    location.pathname.startsWith(item.path)
+  const currentMenuItem = menuItems.find(
+    (item) =>
+      location.pathname === item.path ||
+      (item.id !== "notice" && location.pathname.startsWith(item.path))
   );
   const [active, setActive] = useState(
     currentMenuItem ? currentMenuItem.id : "home"
