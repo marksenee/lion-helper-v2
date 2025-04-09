@@ -73,6 +73,10 @@ const Header = () => {
   useEffect(() => {
     // 현재 경로에 맞는 메뉴 아이템 찾기
     const findActiveMenuItem = () => {
+      // 체크리스트 관련 경로인 경우
+      if (location.pathname.startsWith("/app/checklist")) return "checklist";
+      if (location.pathname.startsWith("/app/admin")) return "admin";
+
       // 정확히 일치하는 경로 찾기
       const exactMatch = menuItems.find(
         (item) => location.pathname === item.path
