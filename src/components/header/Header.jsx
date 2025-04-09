@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { FiHome } from "react-icons/fi";
 import { RiNotification2Fill } from "react-icons/ri";
@@ -66,14 +66,35 @@ const Header = () => {
     },
   ];
 
-  const currentMenuItem = menuItems.find(
-    (item) =>
-      location.pathname === item.path ||
-      (item.id !== "notice" && location.pathname.startsWith(item.path))
-  );
-  const [active, setActive] = useState(
-    currentMenuItem ? currentMenuItem.id : "home"
-  );
+  // 초기 active 상태 설정
+  const [active, setActive] = useState("home");
+
+  // location이 변경될 때마다 active 상태 업데이트
+  useEffect(() => {
+    // 현재 경로에 맞는 메뉴 아이템 찾기
+    const findActiveMenuItem = () => {
+      // 정확히 일치하는 경로 찾기
+      const exactMatch = menuItems.find(
+        (item) => location.pathname === item.path
+      );
+      if (exactMatch) return exactMatch.id;
+
+      // 경로가 시작하는 경우 찾기 (공지사항 제외)
+      const startsWithMatch = menuItems.find(
+        (item) =>
+          item.id !== "notice" && location.pathname.startsWith(item.path)
+      );
+      if (startsWithMatch) return startsWithMatch.id;
+
+      // 공지사항 관련 경로인 경우
+      if (location.pathname.startsWith("/app/notice")) return "notice";
+
+      return "home";
+    };
+
+    const activeId = findActiveMenuItem();
+    setActive(activeId);
+  }, [location.pathname]);
 
   return (
     <Layout>

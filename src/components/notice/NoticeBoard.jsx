@@ -194,7 +194,16 @@ const NoticeBoard = () => {
   // 메뉴 외부 클릭 시 닫기 처리
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (!event.target.closest(".menu-wrapper")) {
+      // 메뉴 버튼이나 메뉴 자체를 클릭한 경우는 무시
+      if (
+        event.target.closest(".menu-wrapper") ||
+        event.target.closest(".menu-button")
+      ) {
+        return;
+      }
+
+      // 메뉴가 열려있는 경우에만 닫기
+      if (showMenuIndex !== null) {
         setShowMenuIndex(null);
       }
     };
@@ -203,7 +212,7 @@ const NoticeBoard = () => {
     return () => {
       document.removeEventListener("click", handleClickOutside);
     };
-  }, []);
+  }, [showMenuIndex]);
 
   const toggleMenu = (index, e) => {
     e.stopPropagation();
