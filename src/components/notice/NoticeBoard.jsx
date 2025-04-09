@@ -6,6 +6,7 @@ import { IoMdAdd } from "react-icons/io"; // 추가 아이콘
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { proPage } from "../../apis/api";
+import useAuthStore from "../../store/useAuthStore";
 
 import {
   Container,
@@ -99,6 +100,33 @@ const NoticeBoard = () => {
   const [notices, setNotices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  // Zustand에서 username 가져오기
+  const username = useAuthStore((state) => state.username);
+  // 세션 스토리지에서 직접 username 가져오기 (백업)
+  const [sessionUsername, setSessionUsername] = useState(null);
+
+  // 컴포넌트 마운트 시 세션 스토리지에서 username 가져오기
+  useEffect(() => {
+    const storedUsername = sessionStorage.getItem("username");
+    if (storedUsername) {
+      setSessionUsername(storedUsername);
+      // Zustand 스토어에도 업데이트
+      useAuthStore.getState().setUsername(storedUsername);
+    }
+  }, []);
+
+  // username 또는 sessionUsername 중 하나를 사용
+  const currentUsername = username || sessionUsername;
+  const isAdmin = currentUsername === "장지연" || currentUsername === "김은지";
+
+  // 디버깅을 위한 콘솔 로그 추가
+  useEffect(() => {
+    // console.log("현재 로그인한 사용자 (Zustand):", username);
+    // console.log("현재 로그인한 사용자 (세션):", sessionUsername);
+    // console.log("최종 사용자 이름:", currentUsername);
+    // console.log("관리자 권한 여부:", isAdmin);
+  }, [username, sessionUsername, currentUsername, isAdmin]);
 
   const [query, setQuery] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
@@ -280,10 +308,12 @@ const NoticeBoard = () => {
     <Container>
       <Title>
         공지사항
-        <RegisterButton onClick={handleButtonClick}>
-          <IoMdAdd />
-          공지 등록
-        </RegisterButton>
+        {isAdmin && (
+          <RegisterButton onClick={handleButtonClick}>
+            <IoMdAdd />
+            공지 등록
+          </RegisterButton>
+        )}
       </Title>
       <SearchBox width="400px" height="50px">
         <SearchInput
@@ -352,36 +382,38 @@ const NoticeBoard = () => {
                 {index + 1}. <Badge>{notice.type}</Badge>
                 <NoticeTitle>{notice.title}</NoticeTitle>
                 <ToggleButton>{openIndex === index ? "▲" : "▼"}</ToggleButton>
-                <MenuWrapper className="menu-wrapper">
-                  <Button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      toggleMenu(index, e);
-                    }}
-                  >
-                    <FiMoreVertical size={24} />
-                  </Button>
-                  {showMenuIndex === index && (
-                    <Menu>
-                      <MenuButton
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleEdit(notice.id);
-                        }}
-                      >
-                        수정
-                      </MenuButton>
-                      <MenuButton
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleDelete(notice.id);
-                        }}
-                      >
-                        삭제
-                      </MenuButton>
-                    </Menu>
-                  )}
-                </MenuWrapper>
+                {isAdmin && (
+                  <MenuWrapper className="menu-wrapper">
+                    <Button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        toggleMenu(index, e);
+                      }}
+                    >
+                      <FiMoreVertical size={24} />
+                    </Button>
+                    {showMenuIndex === index && (
+                      <Menu>
+                        <MenuButton
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleEdit(notice.id);
+                          }}
+                        >
+                          수정
+                        </MenuButton>
+                        <MenuButton
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDelete(notice.id);
+                          }}
+                        >
+                          삭제
+                        </MenuButton>
+                      </Menu>
+                    )}
+                  </MenuWrapper>
+                )}
               </NoticeHeader>
               {openIndex === index && (
                 <NoticeDetails className="notice-details-content">

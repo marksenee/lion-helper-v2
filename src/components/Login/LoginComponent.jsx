@@ -30,7 +30,7 @@ const LoginComponent = () => {
   const [passwordSuccess, setPasswordSuccess] = useState("");
 
   const navigate = useNavigate();
-  const { postLogin } = useAuthStore(); // Zustand에서 postLogin 가져오기
+  const { postLogin, setUsername } = useAuthStore(); // Zustand에서 postLogin과 setUsername 가져오기
   const isFormValid = id.trim() !== "" && pw.trim() !== "";
 
   // 비밀번호 유효성 검사 함수
@@ -65,18 +65,13 @@ const LoginComponent = () => {
     try {
       const response = await proPage.postLogin(loginData); // Zustand의 postLogin 호출
       if (response) {
-        // const { username } = response.data;
-        // useAuthStore.getState().setUsername(username);
-
         // 로그인 성공 시 username을 sessionStorage에 저장
-        if (
-          response.data &&
-          response.data.user &&
-          response.data.user.username
-        ) {
-          const username = response.data.user.username;
+        if (response.data && response.data.success) {
+          // 로그인한 사용자의 username을 직접 저장
+          const username = id; // 로그인에 사용한 id를 username으로 사용
           sessionStorage.setItem("username", username);
-          useAuthStore.getState().setUsername(username);
+          setUsername(username); // Zustand store에 username 저장
+          console.log("로그인 성공, 저장된 username:", username);
         }
 
         navigate("/app/checklist/today");
