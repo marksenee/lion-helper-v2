@@ -1,4 +1,4 @@
-const RESET_HOUR = 23; // 리셋할 시간 (14:00)
+const RESET_HOUR = 14; // 리셋할 시간 (14:00)
 
 /**
  * ✅ 매일 오후 2시(14:00)에 localStorage 데이터 삭제

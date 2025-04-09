@@ -107,15 +107,18 @@ const DailyCheckList = ({ activeTab }) => {
   // ✅ 오후 2시에 체크박스 상태 초기화
   useEffect(() => {
     const checkResetTime = () => {
+      // 테스트용 시간 설정 (실제 배포 시에는 아래 주석 처리된 코드로 변경)
       const now = new Date();
+      // const testHour = 14; // 오후 2시
+      // const testMinute = 0; // 0분
       const currentHour = now.getHours();
       const currentMinutes = now.getMinutes();
 
-      // 현재 시간이 오후 23시면 체크박스 상태 초기화
-      if (currentHour === 23 && currentMinutes === 0) {
+      // 현재 시간이 오후 2시(14:00)이면 체크박스 상태 초기화
+      if (currentHour === 14 && currentMinutes === 0) {
         // 체크박스 상태 초기화
         const initialCheckedStates = checkItems.reduce((acc, item) => {
-          acc[item.id] = item.is_checked;
+          acc[item.id] = false; // 모든 체크박스를 미체크 상태로 초기화
           return acc;
         }, {});
         setCheckedStates(initialCheckedStates);
@@ -127,6 +130,9 @@ const DailyCheckList = ({ activeTab }) => {
         console.log("🔄 체크박스 상태가 오후 2시(14:00)에 초기화되었습니다.");
       }
     };
+
+    // 컴포넌트 마운트 시 즉시 체크
+    checkResetTime();
 
     // 1분마다 시간 체크
     const interval = setInterval(checkResetTime, 60 * 1000);
