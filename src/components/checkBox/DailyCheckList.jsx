@@ -104,6 +104,37 @@ const DailyCheckList = ({ activeTab }) => {
     // getUserName();
   }, [username]);
 
+  // ✅ 오후 2시에 체크박스 상태 초기화
+  useEffect(() => {
+    const checkResetTime = () => {
+      const now = new Date();
+      const currentHour = now.getHours();
+      const currentMinutes = now.getMinutes();
+
+      // 현재 시간이 오후 23시면 체크박스 상태 초기화
+      if (currentHour === 23 && currentMinutes === 0) {
+        // 체크박스 상태 초기화
+        const initialCheckedStates = checkItems.reduce((acc, item) => {
+          acc[item.id] = item.is_checked;
+          return acc;
+        }, {});
+        setCheckedStates(initialCheckedStates);
+        updateUncheckedItems(initialCheckedStates, checkItems);
+
+        // localStorage에서도 삭제
+        localStorage.removeItem(`${username}_checkedStates`);
+
+        console.log("🔄 체크박스 상태가 오후 2시(14:00)에 초기화되었습니다.");
+      }
+    };
+
+    // 1분마다 시간 체크
+    const interval = setInterval(checkResetTime, 60 * 1000);
+
+    // 컴포넌트 언마운트 시 인터벌 정리
+    return () => clearInterval(interval);
+  }, [checkItems, username]);
+
   useEffect(() => {
     const unresolvedItems = checkItems.filter(
       (item) => checkedStates[item.id] !== "yes"

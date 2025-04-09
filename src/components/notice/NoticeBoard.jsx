@@ -326,10 +326,16 @@ const NoticeBoard = () => {
           훈련장려금
         </FilterButton>
         <FilterButton
-          active={activeFilter === "내일배움카드"}
-          onClick={() => handleFilterChange("내일배움카드")}
+          active={activeFilter === "규정"}
+          onClick={() => handleFilterChange("규정")}
         >
-          내일배움카드
+          규정
+        </FilterButton>
+        <FilterButton
+          active={activeFilter === "긴급"}
+          onClick={() => handleFilterChange("긴급")}
+        >
+          긴급
         </FilterButton>
       </FilterButtons>
       {loading ? (
