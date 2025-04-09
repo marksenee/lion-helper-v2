@@ -76,7 +76,6 @@ const TableComponents = () => {
         const response = await proPage.getAllCheckRate();
 
         if (response && response.data) {
-          console.log("asdfasdfaf", response.data.data);
           setAllCheckRate(response.data.data);
         }
       } catch (error) {

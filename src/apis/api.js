@@ -88,7 +88,6 @@ export const proPage = {
   // 일일 업무 전송하기
   postDailyCheck: async (data) => {
     try {
-      console.log("data입니다.", data);
       const response = await api.post("/tasks", data);
       return response;
     } catch (error) {
@@ -127,7 +126,6 @@ export const proPage = {
 
   // 이슈 데이터 보내기
   postIssues: async (data) => {
-    console.log("data", data);
     try {
       const response = await api.post("/issues", data);
       return response;
@@ -159,7 +157,6 @@ export const proPage = {
   getUnCheckedDescriptions: async () => {
     try {
       const response = await api.get("/unchecked_descriptions");
-      console.log("res", response);
       return response;
     } catch (error) {
       return error.response;
@@ -230,7 +227,6 @@ export const proPage = {
   // 댓글 작성
   postComments: async (data) => {
     try {
-      console.log("data", data);
       const response = await api.post("/issues/comments", data);
       return response;
     } catch (error) {
@@ -262,7 +258,6 @@ export const proPage = {
   getCheckPercent: async () => {
     try {
       const response = await api.get("/admin/task_status");
-      // console.log("response", response);
       return response;
     } catch (error) {
       return error.response;
@@ -281,14 +276,12 @@ export const proPage = {
 
   //로그인
   postLogin: async (data) => {
-    // console.log("data", data);
     try {
       const response = await api.post("/login", JSON.stringify(data), {
         headers: {
           "Content-Type": "application/json",
         },
       });
-      console.log("response", response);
       return response;
     } catch (error) {
       console.error("로그인 오류:", error.response || error);
@@ -299,10 +292,7 @@ export const proPage = {
   // 과정 등록
   postCourse: async (data) => {
     try {
-      console.log("data", data);
-
       const response = await api.post("/training_info", data);
-      console.log("data", data);
       return response;
     } catch (error) {
       console.log("error:", error.response || error);

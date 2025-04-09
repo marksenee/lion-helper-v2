@@ -43,9 +43,6 @@ const NavigationTabs = () => {
       currentPath.includes(tab.path.split("/").pop())
     );
 
-    console.log("현재 경로:", currentPath);
-    console.log("매칭된 탭:", matchedTab?.name); // 디버깅 로그 추가
-
     if (matchedTab) {
       setSelectedTab(matchedTab.name);
     }

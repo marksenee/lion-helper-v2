@@ -111,14 +111,10 @@ const NoticeBoard = () => {
       setLoading(true);
       try {
         const response = await proPage.getNotice();
-        console.log("API 응답:", response);
-        console.log("공지사항 데이터 구조:", response.data);
-
         // API 응답 구조에 맞게 데이터 설정
         if (response && response.data && response.data.data) {
           // 각 공지사항의 날짜 필드 확인
           const noticesWithDates = response.data.data.map((notice) => {
-            console.log("공지사항 데이터:", notice);
             return notice;
           });
           setNotices(noticesWithDates);

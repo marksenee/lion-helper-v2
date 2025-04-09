@@ -49,7 +49,6 @@ const GetIssuesComponent = () => {
     const fetchIssuesList = async () => {
       try {
         const response = await proPage.getIssues();
-        console.log("response", response);
         if (response?.data?.data && Array.isArray(response.data.data)) {
           setItems(response.data.data);
 
