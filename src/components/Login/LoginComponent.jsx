@@ -63,25 +63,33 @@ const LoginComponent = () => {
     };
 
     try {
-      const response = await proPage.postLogin(loginData); // Zustand의 postLogin 호출
-      if (response) {
-        // 로그인 성공 시 username을 sessionStorage에 저장
-        if (response.data && response.data.success) {
-          // 로그인한 사용자의 username을 직접 저장
-          const username = id; // 로그인에 사용한 id를 username으로 사용
-          sessionStorage.setItem("username", username);
-          setUsername(username); // Zustand store에 username 저장
-          console.log("로그인 성공, 저장된 username:", username);
-        }
-
+      const response = await proPage.postLogin(loginData);
+      if (response && response.data && response.data.success) {
+        // 로그인한 사용자의 username을 직접 저장
+        const username = id; // 로그인에 사용한 id를 username으로 사용
+        sessionStorage.setItem("username", username);
+        setUsername(username); // Zustand store에 username 저장
+        console.log("로그인 성공, 저장된 username:", username);
         navigate("/app/checklist/today");
-        return response;
+      } else {
+        // 로그인 실패 시 에러 메시지 표시
+        if (response && response.data && response.data.message) {
+          alert(response.data.message);
+        } else {
+          alert("아이디와 비밀번호를 다시 확인해주세요.");
+        }
       }
-      // alert("로그인 완료!");
-      // navigate("/app/checklist/today");
     } catch (error) {
+      if (
+        error.response &&
+        error.response.data &&
+        error.response.data.message
+      ) {
+        alert(error.response.data.message);
+      } else {
+        alert("아이디와 비밀번호를 다시 확인해주세요.");
+      }
       console.error("로그인 오류:", error);
-      //   alert("로그인 실패. 다시 시도해주세요.");
     }
   };
 
