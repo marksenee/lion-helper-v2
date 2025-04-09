@@ -364,7 +364,7 @@ const GetIssuesComponent = () => {
                       ))}
                     <TextAreaContainer>
                       <TextArea
-                        placeholder="작성자명과 댓글을 입력하세요 예) 김멋사: 1:1상담 진행"
+                        placeholder="댓글을 입력하세요"
                         value={comments[index] || ""}
                         onChange={(event) => handleCommentChange(index, event)}
                       />
