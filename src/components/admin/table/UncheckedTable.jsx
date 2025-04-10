@@ -71,6 +71,29 @@ const UncheckedTable = () => {
     return `${dueDate.getMonth() + 1}/${dueDate.getDate()}`;
   };
 
+  // ✅ due_day를 더한 날짜 계산
+  const calculateDueDateWithDays = (createdAt, dueDays) => {
+    if (!createdAt || !dueDays) return "-";
+
+    // 날짜 문자열을 Date 객체로 변환
+    const [month, day] = createdAt.split("/").map(Number);
+    if (isNaN(month) || isNaN(day)) return "-";
+
+    // 현재 연도 가져오기
+    const currentYear = new Date().getFullYear();
+
+    // Date 객체 생성 (월은 0부터 시작하므로 1을 빼줌)
+    const createdDate = new Date(currentYear, month - 1, day);
+    if (isNaN(createdDate.getTime())) return "-";
+
+    // dueDays 더하기
+    const dueDate = new Date(createdDate);
+    dueDate.setDate(createdDate.getDate() + dueDays);
+
+    // 결과를 "월/일" 형식으로 반환
+    return `${dueDate.getMonth() + 1}/${dueDate.getDate()}`;
+  };
+
   const cleanContent = (text) => {
     if (!text) return "";
     return text.replace("에 대한 미체크 사유", "").trim();
@@ -107,7 +130,10 @@ const UncheckedTable = () => {
           content: cleanContent(item.content),
           created_at: formatDate(item.created_at),
           delay: calculateDelay(item.created_at),
-          due_date: calculateDueDate(item.created_at),
+          due_date: calculateDueDateWithDays(
+            formatDate(item.created_at),
+            item.due_days
+          ),
         }));
 
         setAllTaskData(processedData); // ✅ 원본 데이터 저장
