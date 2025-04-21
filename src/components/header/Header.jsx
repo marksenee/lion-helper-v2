@@ -64,6 +64,13 @@ const Header = () => {
       icon: <ImLab />,
       path: "/app/laboratory",
     },
+    {
+      id: "recruitment_status",
+      label: "모집현황",
+      icon: <BiBarChart />,
+      path: "https://bootapplication-test.onrender.com/",
+      isExternal: true,
+    },
   ];
 
   // 초기 active 상태 설정
@@ -120,7 +127,11 @@ const Header = () => {
               active={active === item.id}
               onClick={() => {
                 setActive(item.id);
-                navigate(item.path);
+                if (item.isExternal) {
+                  window.location.href = item.path;
+                } else {
+                  navigate(item.path);
+                }
               }}
             >
               <Icon active={active === item.id}>{item.icon}</Icon>

@@ -2,8 +2,8 @@ import axios from "axios";
 import useLoadingStore from "../store/useLoadingStore";
 
 export const api = axios.create({
-  // baseURL: "https://mvp-dashboard.onrender.com", //실서버
-  baseURL: "https://mvp-dashboard-testserver.onrender.com",
+  baseURL: "https://mvp-dashboard.onrender.com", //실서버
+  // baseURL: "https://mvp-dashboard-testserver.onrender.com",
   headers: {
     "content-type": "application/json",
     accept: "application/json,",
