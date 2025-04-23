@@ -426,7 +426,15 @@ const NoticeBoard = () => {
               </NoticeHeader>
               {openIndex === index && (
                 <NoticeDetails className="notice-details-content">
-                  <div>{notice.content}</div>
+                  <div
+                    style={{
+                      whiteSpace: "pre-wrap",
+                      wordWrap: "break-word",
+                      lineHeight: "1.2",
+                    }}
+                  >
+                    {notice.content}
+                  </div>
                   <div
                     style={{
                       marginTop: "10px",
