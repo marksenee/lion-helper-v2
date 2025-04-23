@@ -6,6 +6,7 @@ import { MdDashboard, MdAdminPanelSettings } from "react-icons/md";
 import { IoIosAddCircle } from "react-icons/io";
 import { BiBarChart } from "react-icons/bi";
 import { ImLab } from "react-icons/im";
+import { FiPower } from "react-icons/fi"; // 상단에 import 추가
 import { useNavigate, useLocation } from "react-router-dom";
 import {
   Layout,
@@ -153,7 +154,16 @@ const Header = () => {
             </NavItem>
           ))}
         </NavList>
-        <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
+        <LogoutButton onClick={handleLogout}>
+          <FiPower
+            style={{
+              marginRight: "5px",
+              marginBottom: "6px",
+              verticalAlign: "middle",
+            }}
+          />
+          로그아웃
+        </LogoutButton>
       </Sidebar>
     </Layout>
   );

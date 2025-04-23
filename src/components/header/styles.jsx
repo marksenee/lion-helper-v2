@@ -82,12 +82,13 @@ const LogoutButton = styled.button`
   border: none;
   color: #3f3f3f;
   font-family: "Suite";
-  font-size: 16px;
+  font-size: 18px;
   cursor: pointer;
-  padding: 10px;
+  padding: 5px;
   margin-top: auto;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
   width: fit-content;
+  font-weight: 700;
 
   &:hover {
     color: #ff7710;
