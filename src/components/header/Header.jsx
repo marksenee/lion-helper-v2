@@ -16,9 +16,11 @@ import {
   NavList,
   NavItem,
   Icon,
+  LogoutButton,
 } from "./styles";
 import useAuthStore from "../../\bstore/useAuthStore";
 import { Outlet } from "react-router-dom"; // ✅ Outlet을 가져오기!
+import { proPage } from "../../apis/api";
 
 const Header = () => {
   const navigate = useNavigate();
@@ -107,6 +109,18 @@ const Header = () => {
     setActive(activeId);
   }, [location.pathname]);
 
+  const handleLogout = async () => {
+    try {
+      const response = await proPage.postLogout();
+      if (response.status === 200) {
+        logout();
+        navigate("/");
+      }
+    } catch (error) {
+      console.error("로그아웃 실패:", error);
+    }
+  };
+
   return (
     <Layout>
       <Sidebar>
@@ -119,7 +133,7 @@ const Header = () => {
           }}
           style={{ cursor: "pointer" }}
         />
-        {/* <Title>{username}님의 라이언헬퍼</Title> */}
+        <Title>{username}님의 라이언헬퍼</Title>
         <NavList>
           {menuItems.map((item) => (
             <NavItem
@@ -139,6 +153,7 @@ const Header = () => {
             </NavItem>
           ))}
         </NavList>
+        <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
       </Sidebar>
     </Layout>
   );

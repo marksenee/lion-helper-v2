@@ -9,13 +9,13 @@ const Sidebar = styled.div`
   width: 270px;
   height: 100vh;
   background-color: #fffaf5;
-  position: fixed; /* 화면에 고정 */
+  position: fixed;
   top: 0;
   left: 0;
-  /* display: flex; */
-  /* flex-direction: column; */
   padding: 20px;
   z-index: 5;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Content = styled.div`
@@ -77,4 +77,31 @@ const Icon = styled.div`
     props.active ? "#FF7710" : "#3f3f3f"}; /* 아이콘 색상 변경 */
 `;
 
-export { Layout, Sidebar, Content, Logo, Title, NavList, NavItem, Icon };
+const LogoutButton = styled.button`
+  background: none;
+  border: none;
+  color: #3f3f3f;
+  font-family: "Suite";
+  font-size: 16px;
+  cursor: pointer;
+  padding: 10px;
+  margin-top: auto;
+  margin-bottom: 20px;
+  width: fit-content;
+
+  &:hover {
+    color: #ff7710;
+  }
+`;
+
+export {
+  Layout,
+  Sidebar,
+  Content,
+  Logo,
+  Title,
+  NavList,
+  NavItem,
+  Icon,
+  LogoutButton,
+};

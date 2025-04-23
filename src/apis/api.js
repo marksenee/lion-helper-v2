@@ -290,6 +290,21 @@ export const proPage = {
     }
   },
 
+  //로그아웃
+  postLogout: async () => {
+    try {
+      const response = await api.post("/logout", {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      return response;
+    } catch (error) {
+      console.error("로그아웃 오류:", error.response || error);
+      return error.response;
+    }
+  },
+
   // 과정 등록
   postCourse: async (data) => {
     try {
