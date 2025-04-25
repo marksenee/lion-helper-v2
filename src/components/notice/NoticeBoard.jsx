@@ -118,7 +118,10 @@ const NoticeBoard = () => {
 
   // username 또는 sessionUsername 중 하나를 사용
   const currentUsername = username || sessionUsername;
-  const isAdmin = currentUsername === "장지연" || currentUsername === "김은지";
+  const isAdmin =
+    currentUsername === "장지연" ||
+    currentUsername === "김은지" ||
+    currentUsername === "김슬기";
 
   // 디버깅을 위한 콘솔 로그 추가
   useEffect(() => {
