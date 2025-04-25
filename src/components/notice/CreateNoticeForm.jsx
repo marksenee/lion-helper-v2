@@ -206,8 +206,8 @@ const CreateNoticeForm = () => {
           <option value="출결">출결</option>
           <option value="공결">공결</option>
           <option value="훈련장려금">훈련장려금</option>
-          <option value="내일배움카드">규정</option>
-          <option value="내일배움카드">긴급</option>
+          {/* <option value="규정">규정</option>
+          <option value="긴급">긴급</option> */}
         </Select>
         <Button onClick={handleSubmit} disabled={isSubmitting}>
           {isSubmitting ? "처리 중..." : isEdit ? "수정하기" : "등록하기"}
