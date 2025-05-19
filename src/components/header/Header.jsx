@@ -71,7 +71,7 @@ const Header = () => {
       id: "recruitment_status",
       label: "모집현황",
       icon: <BiBarChart />,
-      path: "https://bootapplication-test.onrender.com/",
+      path: "https://bootapplication.onrender.com/",
       isExternal: true,
     },
   ];
