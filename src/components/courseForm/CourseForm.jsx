@@ -29,7 +29,7 @@ const CourseForm = () => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
 
-  const dept = ["Pilot", "TechSol", "Dev"];
+  const dept = ["교육기획1팀", "교육기획2팀", "교육기획3팀", "교육기획4팀"];
 
   const courses = [
     "데이터 분석",
@@ -41,6 +41,7 @@ const CourseForm = () => {
     "앱 개발 : Android",
     "UI/UX 디자인",
     "유니티 게임 개발",
+    "AI Web 서비스 기획",
   ];
 
   // 1기부터 10기까지 배열 생성 (원하는 숫자만큼 확장 가능)
